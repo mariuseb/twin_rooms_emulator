@@ -34,47 +34,103 @@ model Floor5Zone_Shading
   parameter Buildings.HeatTransfer.Data.Solids.Plywood matFur(x=0.15, nStaRef=5)
     "Material for furniture"
     annotation (Placement(transformation(extent={{140,460},{160,480}})));
-  parameter Buildings.HeatTransfer.Data.Resistances.Carpet matCar "Carpet"
-    annotation (Placement(transformation(extent={{180,460},{200,480}})));
-  parameter Buildings.HeatTransfer.Data.Solids.Concrete matCon(
-    x=0.1,
-    k=1.311,
-    c=836,
-    nStaRef=5) "Concrete"
-    annotation (Placement(transformation(extent={{140,430},{160,450}})));
-  parameter Buildings.HeatTransfer.Data.Solids.Plywood matWoo(
-    x=0.01,
-    k=0.11,
-    d=544,
-    nStaRef=1) "Wood for exterior construction"
-    annotation (Placement(transformation(extent={{140,400},{160,420}})));
-  parameter Buildings.HeatTransfer.Data.Solids.Generic matIns(
-    x=0.250,
-    k=0.049,
-    c=852,
-    d=214,
-    nStaRef=5) "Steelframe construction with insulation"
-    annotation (Placement(transformation(extent={{180,398},{200,418}})));
-  parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp(
-    x=0.0127,
-    k=0.16,
-    c=830,
-    d=784,
-    nStaRef=2) "Gypsum board"
-    annotation (Placement(transformation(extent={{138,372},{158,392}})));
-  parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
-    x=0.025,
-    k=0.16,
-    c=830,
-    d=784,
-    nStaRef=2) "Gypsum board"
-    annotation (Placement(transformation(extent={{178,372},{198,392}})));
+parameter Buildings.HeatTransfer.Data.Resistances.Carpet matCar "Carpet"
+  annotation (Placement(transformation(extent={{180,460},{200,480}})));
+parameter Buildings.HeatTransfer.Data.Solids.Concrete matCon(
+  x=0.1,
+  k=1.311,
+  c=836,
+  nStaRef=5) "Concrete"
+  annotation (Placement(transformation(extent={{140,430},{160,450}})));
+parameter Buildings.HeatTransfer.Data.Solids.Plywood matWoo(
+  x=0.01,
+  k=0.11,
+  d=544,
+  nStaRef=1) "Wood for exterior construction"
+  annotation (Placement(transformation(extent={{140,400},{160,420}})));
+parameter Buildings.HeatTransfer.Data.Solids.Generic matIns(
+  x=0.250,
+  k=0.049,
+  c=852,
+  d=214,
+  nStaRef=5) "Steelframe construction with insulation"
+  annotation (Placement(transformation(extent={{180,398},{200,418}})));
+ parameter Buildings.HeatTransfer.Data.Solids.Generic matDoubleBevel(
+   x=0.019,
+   k=0.13,
+   c=1600,
+   d=500) "Vertical panel double bevel square edge"
+   annotation (Placement(transformation(extent={{-360,518},{-340,538}})));
+ parameter Buildings.HeatTransfer.Data.Solids.Generic matHorBatt(
+   x=0.068,
+   k=0.12,
+   c=1600,
+   d=450) "Horizontal batten"
+   annotation (Placement(transformation(extent={{-360,498},{-340,518}})));
+ parameter Buildings.HeatTransfer.Data.Solids.Generic matVerBatt(
+   x=0.036,
+   k=0.12,
+   c=1600,
+   d=450) "Vertical batten"
+   annotation (Placement(transformation(extent={{-360,478},{-340,498}})));
+ parameter Buildings.HeatTransfer.Data.Solids.Generic matWinBar(
+   x=0.002,
+   k=0.04,
+   c=1400,
+   d=60) "Wind barrier fabric, black"
+   annotation (Placement(transformation(extent={{-358,458},{-338,478}})));
+ parameter Buildings.HeatTransfer.Data.Solids.Generic matGUx(
+   x=0.09,
+   k=0.22,
+   c=1000,
+   d=1000) "GUx"
+   annotation (Placement(transformation(extent={{-360,438},{-340,458}})));
+ parameter Buildings.HeatTransfer.Data.Solids.Generic matMinWooFra(
+   x=0.223,
+   k=0.046,
+   c=1900,
+   d=74) "Frame with mineral wool"
+   annotation (Placement(transformation(extent={{-360,418},{-340,438}})));
+ parameter Buildings.HeatTransfer.Data.Solids.Generic matVapBar(
+   x=0.005,
+   k=0.22,
+   c=1700,
+   d=130) "Vapor barrier"
+   annotation (Placement(transformation(extent={{-360,398},{-340,418}})));
+ parameter Buildings.HeatTransfer.Data.Solids.Generic matMinWooFur(
+   x=0.073,
+   k=0.046,
+   c=1900,
+   d=74) "Inner furring with mineral wool"
+   annotation (Placement(transformation(extent={{-332,510},{-312,530}})));
+ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp(
+    x=0.013,
+    k=0.25,
+    c=960,
+    d=680,
+   nStaRef=2) "Gypsum board"
+   annotation (Placement(transformation(extent={{-332,484},{-312,504}})));
+parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp3(
+  x=0.0127,
+  k=0.16,
+  c=830,
+  d=784,
+  nStaRef=2) "Gypsum board"
+  annotation (Placement(transformation(extent={{138,372},{158,392}})));
+parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
+  x=0.025,
+  k=0.16,
+  c=830,
+  d=784,
+  nStaRef=2) "Gypsum board"
+  annotation (Placement(transformation(extent={{178,372},{198,392}})));
   parameter Buildings.HeatTransfer.Data.OpaqueConstructions.Generic conExtWal(final
-      nLay=3, material={matWoo,matIns,matConExt})
+      nLay=9, material={matDoubleBevel, matHorBatt, matVerBatt, matWinBar, matGUx, matMinWooFra, matVapBar, matMinWooFur, matGyp})
                                                "Exterior construction"
-    annotation (Placement(transformation(extent={{280,460},{300,480}})));
+    annotation (Placement(transformation(extent={{278,460},{298,480}})));
   parameter Buildings.HeatTransfer.Data.OpaqueConstructions.Generic conIntWal(final
-      nLay=1, material={matGyp2}) "Interior wall construction"
+      nLay=3, material={matGyp1,matMinWooFraWoo,matGyp1})
+                                  "Interior wall construction"
     annotation (Placement(transformation(extent={{320,460},{340,480}})));
   parameter Buildings.HeatTransfer.Data.OpaqueConstructions.Generic conFlo(final
       nLay=1, material={matCon}) "Floor construction (opa_a is carpet)"
@@ -448,6 +504,37 @@ model Floor5Zone_Shading
     c=836,
     nStaRef=5) "Concrete for external facade"
     annotation (Placement(transformation(extent={{178,432},{198,452}})));
+ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp1(
+    x=0.026,
+    k=0.25,
+    c=960,
+    d=680,
+    nStaRef=2) "Gypsum board"
+   annotation (Placement(transformation(extent={{-356,246},{-336,266}})));
+ parameter Buildings.HeatTransfer.Data.Solids.Generic matMinWooFraWoo(
+    x=0.098,
+    k=0.046,
+    c=1900,
+    d=74) "Wooden frame and mineral wool"
+    annotation (Placement(transformation(extent={{-356,216},{-336,236}})));
+  parameter Buildings.HeatTransfer.Data.Solids.Generic matChiBoa(
+    x=0.044,
+    k=0.14,
+    c=1800,
+    d=650) "Chipboard"
+    annotation (Placement(transformation(extent={{566,450},{586,470}})));
+  parameter Buildings.HeatTransfer.Data.Solids.Generic matMinWoo(
+    x=0.068,
+    k=0.035,
+    c=830,
+    d=20) "Mineral Wool"
+    annotation (Placement(transformation(extent={{566,424},{586,444}})));
+  parameter Buildings.HeatTransfer.Data.Solids.Generic matCLT(
+    x=0.21,
+    k=0.13,
+    c=1600,
+    d=471) "CLT"
+    annotation (Placement(transformation(extent={{566,398},{586,418}})));
 equation
   connect(sou.surf_conBou[1], wes.surf_surBou[2]) annotation (Line(
       points={{170,-40.3333},{170,-54},{62,-54},{62,20},{28.2,20},{28.2,42.25}},
@@ -584,7 +671,7 @@ equation
       smooth=Smooth.None,
       thickness=0.5));
   connect(leaEas.port_b, eas.ports[3]) annotation (Line(
-      points={{-22,360},{246,360},{246,65.6667},{309,65.6667}},
+      points={{-22,360},{50,360},{50,65.6667},{309,65.6667}},
       color={0,127,255},
       smooth=Smooth.None,
       thickness=0.5));
@@ -861,7 +948,23 @@ equation
           {-135.6,89},{-140.2,89}}, color={0,0,127}));
   annotation (Diagram(coordinateSystem(preserveAspectRatio=true,
         extent={{-160,-100},{380,500}},
-        initialScale=0.1)),     Icon(coordinateSystem(
+        initialScale=0.1), graphics={
+        Text(
+          extent={{-420,576},{-228,538}},
+          lineColor={28,108,200},
+          textString="External wall (ZEB YV-223+73)"),
+        Rectangle(extent={{-442,580},{-206,378}}, lineColor={28,108,200}),
+        Text(
+          extent={{-424,314},{-232,276}},
+          lineColor={28,108,200},
+          textString="Internal Wall (ZEB IV-98 GG)"),
+        Rectangle(extent={{-442,320},{-206,118}}, lineColor={28,108,200}),
+        Text(
+          extent={{490,536},{682,498}},
+          lineColor={28,108,200},
+          textString="Internal Slab"),
+        Rectangle(extent={{476,552},{688,360}}, lineColor={28,108,200})}),
+                                Icon(coordinateSystem(
           preserveAspectRatio=true, extent={{-80,-80},{380,180}}), graphics={
         Rectangle(
           extent={{-80,-80},{380,180}},
@@ -986,5 +1089,6 @@ as described in the set of DOE Commercial Building Benchmarks.
 There are four perimeter zones and one core zone.
 The envelope thermal properties meet ASHRAE Standard 90.1-2004.
 </p>
-</html>"));
+</html>"),
+    experiment(StopTime=604800, __Dymola_Algorithm="Dassl"));
 end Floor5Zone_Shading;
