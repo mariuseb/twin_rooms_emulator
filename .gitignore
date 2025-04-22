@@ -20,6 +20,9 @@
 ## Simulation files
 *.mat
 
+## Lock-files
+*.~
+
 ## Package files
 *.gz
 *.rar
