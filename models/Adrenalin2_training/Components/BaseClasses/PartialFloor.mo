@@ -113,11 +113,11 @@ partial model PartialFloor "Interface for a model of a floor of a building"
             {{78,-32},{118,-16}})));
   Modelica.Fluid.Vessels.BaseClasses.VesselFluidPorts_b ports1st[2](redeclare
       package Medium = Medium) "Fluid inlets and outlets" annotation (Placement(
-        transformation(extent={{530,142},{570,158}}), iconTransformation(extent
+        transformation(extent={{528,-50},{568,-34}}), iconTransformation(extent
           ={{78,-32},{118,-16}})));
   Modelica.Fluid.Vessels.BaseClasses.VesselFluidPorts_b ports3rd[2](redeclare
       package Medium = Medium) "Fluid inlets and outlets" annotation (Placement(
-        transformation(extent={{534,-34},{574,-18}}), iconTransformation(extent
+        transformation(extent={{526,120},{566,136}}), iconTransformation(extent
           ={{78,-32},{118,-16}})));
   Modelica.Blocks.Routing.Multiplex5 multiplex5_2
     annotation (Placement(transformation(extent={{380,290},{400,310}})));

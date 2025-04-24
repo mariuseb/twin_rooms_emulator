@@ -10,8 +10,8 @@ model Floor5Zone_Shading
     final VRooCor=secFloor.AFlo*hRoo,
     final VRooSou=room219.AFlo*hRoo,
     final VRooNor=room220.AFlo*hRoo,
-    final VRooEas=ThirdFloor.VAir,
-    final VRooWes=FirstFloor.VAir,
+    final VRooEas=ThirdFloor.AFlo*hRoo,
+    final VRooWes=FirstFloor.AFlo*hRoo,
     AFloCor=2698/hRoo,
     AFloSou=568.77/hRoo,
     AFloNor=568.77/hRoo,
@@ -182,14 +182,14 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
       A={6.47,40.76,6.47}*hRoo,
       til={Buildings.Types.Tilt.Wall,Buildings.Types.Tilt.Wall,Buildings.Types.Tilt.Wall}),
     nSurBou=0,
-    use_C_flow=true,
+    use_C_flow=false,
     C_start=fill(400e-6*Modelica.Media.IdealGases.Common.SingleGasesData.CO2.MM/
         Modelica.Media.IdealGases.Common.SingleGasesData.Air.MM, Medium.nC),
     intConMod=intConMod,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     final sampleModel=sampleModel,
-    nPorts=4)                      "Room 2.19"
-    annotation (Placement(transformation(extent={{198,-134},{248,-86}})));
+    nPorts=6) "Room 2.19"
+    annotation (Placement(transformation(extent={{134,-178},{248,-86}})));
 
   Buildings.ThermalZones.Detailed.MixedAir room220(
     redeclare package Medium = Medium,
@@ -223,14 +223,14 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
       each absIR=0.9,
       each absSol=0.9,
       til={Buildings.Types.Tilt.Wall,Buildings.Types.Tilt.Wall}),
-    use_C_flow=true,
+    use_C_flow=false,
     C_start=fill(400e-6*Modelica.Media.IdealGases.Common.SingleGasesData.CO2.MM/
         Modelica.Media.IdealGases.Common.SingleGasesData.Air.MM, Medium.nC),
     intConMod=intConMod,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     final sampleModel=sampleModel,
-    nPorts=4)                      "Room 2.20"
-    annotation (Placement(transformation(extent={{-82,-72},{-42,-32}})));
+    nPorts=6)                      "Room 2.20"
+    annotation (Placement(transformation(extent={{-64,-260},{52,-160}})));
   Buildings.ThermalZones.Detailed.MixedAir secFloor(
     redeclare package Medium = Medium,
     lat=lat,
@@ -251,14 +251,14 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
       each absSol=0.9,
       til={Buildings.Types.Tilt.Wall,Buildings.Types.Tilt.Wall,Buildings.Types.Tilt.Wall,
           Buildings.Types.Tilt.Wall}),
-    use_C_flow=true,
+    use_C_flow=false,
     C_start=fill(400e-6*Modelica.Media.IdealGases.Common.SingleGasesData.CO2.MM/
         Modelica.Media.IdealGases.Common.SingleGasesData.Air.MM, Medium.nC),
     intConMod=intConMod,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     final sampleModel=sampleModel,
     nPorts=6)                      "Rest of 2nd floor"
-    annotation (Placement(transformation(extent={{78,100},{118,140}})));
+    annotation (Placement(transformation(extent={{104,230},{202,324}})));
 
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heaPorAirWes
     "Heat port to air volume" annotation (Placement(transformation(extent={{-104,
@@ -300,7 +300,7 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
   Buildings.Fluid.Sensors.PPM senCO2SecFloor(redeclare package Medium = Medium,
       warnAboutOnePortConnection=false)
     annotation (Placement(transformation(extent={{294,144},{314,164}})));
-  Modelica.Blocks.Interfaces.RealOutput CO2Roo[3]
+  Modelica.Blocks.Interfaces.RealOutput CO2Roo[5]
     "Connector of Real output signals" annotation (Placement(transformation(
           extent={{380,70},{400,90}}), iconTransformation(extent={{380,70},{400,
             90}})));
@@ -381,116 +381,116 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
     c=1600,
     d=471) "CLT"
     annotation (Placement(transformation(extent={{566,398},{586,418}})));
-  Modelica.Blocks.Routing.Multiplex3 multiplex3_1
-    annotation (Placement(transformation(extent={{340,104},{360,124}})));
-  Buildings.ThermalZones.ReducedOrder.RC.OneElement ThirdFloor(
-    redeclare package Medium = Buildings.Media.Air,
-    VAir=100,
-    hRad=0.15,
-    nOrientations=1,
-    AWin={1},
-    ATransparent={1},
-    hConWin=0.15,
-    RWin=10,
-    gWin=1,
-    ratioWinConRad=1,
-    AExt={1},
-    hConExt=0.15,
-    nExt=1,
-    RExt={1},
-    RExtRem=1,
-    CExt={1e7},
-    use_moisture_balance=false,
-    use_C_flow=true,
-    nPorts=2)
-    annotation (Placement(transformation(extent={{570,122},{716,230}})));
-  Buildings.ThermalZones.ReducedOrder.RC.OneElement FirstFloor(
-    redeclare package Medium = Buildings.Media.Air,
-      VAir=100,
-    hRad=0.15,
-    nOrientations=1,
-    AWin={1},
-    ATransparent={1},
-    hConWin=0.15,
-    RWin=10,
-    gWin=1,
-    ratioWinConRad=1,
-    AExt={1},
-    hConExt=0.15,
-    nExt=1,
-    RExt={1},
-    RExtRem=1,
-    CExt={1e7},
-    use_C_flow=true,
-    nPorts=2)
-    annotation (Placement(transformation(extent={{574,-150},{746,-52}})));
-  Buildings.BoundaryConditions.SolarIrradiation.DiffusePerez
-                                                   HDifTil[1](
-    each outSkyCon=true,
-    each outGroCon=true,
-    each til=1.5707963267949,
-    each lat=0.87266462599716,
-    azi={4.7123889803847})
-    "Calculates diffuse solar radiation on titled surface for both directions"
-    annotation (Placement(transformation(extent={{784,280},{804,300}})));
-  Buildings.BoundaryConditions.SolarIrradiation.DirectTiltedSurface
-                                                          HDirTil[1](
-    each til=1.5707963267949,
-    each lat=0.87266462599716,
-    azi={4.7123889803847})
-    "Calculates direct solar radiation on titled surface for both directions"
-    annotation (Placement(transformation(extent={{784,312},{804,332}})));
-  Buildings.ThermalZones.ReducedOrder.SolarGain.CorrectionGDoublePane
-                                  corGDouPan(UWin=2.1, n=1)
-    "Correction factor for solar transmission"
-    annotation (Placement(transformation(extent={{858,306},{878,326}})));
-  Buildings.ThermalZones.ReducedOrder.EquivalentAirTemperature.VDI6007WithWindow
-                                             eqAirTemp(
-    wfGro=0,
-    withLongwave=true,
-    aExt=0.7,
-    hConWallOut=20,
-    hRad=5,
-    hConWinOut=20,
-    n=1,
-    wfWall={1},
-    wfWin={1},
-    TGro=285.15) "Computes equivalent air temperature"
-    annotation (Placement(transformation(extent={{828,246},{848,266}})));
-  Modelica.Blocks.Math.Add solRad[1]
-    "Sums up solar radiation of both directions"
-    annotation (Placement(transformation(extent={{814,266},{824,276}})));
-  Buildings.HeatTransfer.Sources.PrescribedTemperature preTem
-    "Prescribed temperature for exterior walls outdoor surface temperature"
-    annotation (Placement(transformation(extent={{860,254},{872,266}})));
-  Buildings.HeatTransfer.Sources.PrescribedTemperature preTem1
-    "Prescribed temperature for windows outdoor surface temperature"
-    annotation (Placement(transformation(extent={{860,274},{872,286}})));
-  Modelica.Thermal.HeatTransfer.Components.Convection theConWin
-    "Outdoor convective heat transfer of windows"
-    annotation (Placement(transformation(extent={{890,276},{880,286}})));
-  Modelica.Thermal.HeatTransfer.Components.Convection theConWall
-    "Outdoor convective heat transfer of walls"
-    annotation (Placement(transformation(extent={{888,266},{878,256}})));
-  Modelica.Blocks.Sources.Constant const[1](each k=0)
-    "Sets sunblind signal to zero (open)"
-    annotation (Placement(transformation(extent={{832,274},{838,280}})));
-  Modelica.Blocks.Sources.Constant hConWall(k=25*11.5)
-    "Outdoor coefficient of heat transfer for walls"
-    annotation (Placement(transformation(extent={{-4,-4},{4,4}}, rotation=90,
-    origin={882,244})));
-  Modelica.Blocks.Sources.Constant hConWin(k=20*14)
-    "Outdoor coefficient of heat transfer for windows"
-    annotation (Placement(transformation(extent={{4,-4},{-4,4}},
-    rotation=90,origin={884,298})));
   Buildings.Utilities.IO.SignalExchange.Overwrite oveShaSecFloor(description="Overwrite shading position for second floor",
       u(
       unit="1",
       min=0,
       max=1)) annotation (Placement(transformation(extent={{14,134},{24,144}})));
+  Buildings.ThermalZones.Detailed.MixedAir ThirdFloor(
+    redeclare package Medium = Medium,
+    lat=lat,
+    AFlo=AFloSou,
+    hRoo=hRoo,
+    nConExt=0,
+    nConExtWin=1,
+    datConExtWin(
+      layers={conExtWal},
+      A={49.91*hRoo},
+      glaSys={glaSys},
+      wWin={winWalRat/hWin*49.91*hRoo},
+      each hWin=hWin,
+      fFra={0.1},
+      til={Buildings.Types.Tilt.Wall},
+      azi={Buildings.Types.Azimuth.S}),
+    nConPar=2,
+    datConPar(
+      layers={conFlo,conFur},
+      A={AFloSou,414.68},
+      til={Buildings.Types.Tilt.Floor,Buildings.Types.Tilt.Wall}),
+    nConBou=3,
+    datConBou(
+      layers={conIntWal,conIntWal,conIntWal},
+      A={6.47,40.76,6.47}*hRoo,
+      til={Buildings.Types.Tilt.Wall,Buildings.Types.Tilt.Wall,Buildings.Types.Tilt.Wall}),
+    nSurBou=0,
+    use_C_flow=false,
+    C_start=fill(400e-6*Modelica.Media.IdealGases.Common.SingleGasesData.CO2.MM/
+        Modelica.Media.IdealGases.Common.SingleGasesData.Air.MM, Medium.nC),
+    intConMod=intConMod,
+    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
+    final sampleModel=sampleModel,
+    nPorts=3) "Room 2.19"
+    annotation (Placement(transformation(extent={{604,58},{726,160}})));
+
+  Buildings.ThermalZones.Detailed.MixedAir FirstFloor(
+    redeclare package Medium = Medium,
+    lat=lat,
+    AFlo=AFloSou,
+    hRoo=hRoo,
+    nConExt=0,
+    nConExtWin=1,
+    datConExtWin(
+      layers={conExtWal},
+      A={49.91*hRoo},
+      glaSys={glaSys},
+      wWin={winWalRat/hWin*49.91*hRoo},
+      each hWin=hWin,
+      fFra={0.1},
+      til={Buildings.Types.Tilt.Wall},
+      azi={Buildings.Types.Azimuth.S}),
+    nConPar=2,
+    datConPar(
+      layers={conFlo,conFur},
+      A={AFloSou,414.68},
+      til={Buildings.Types.Tilt.Floor,Buildings.Types.Tilt.Wall}),
+    nConBou=3,
+    datConBou(
+      layers={conIntWal,conIntWal,conIntWal},
+      A={6.47,40.76,6.47}*hRoo,
+      til={Buildings.Types.Tilt.Wall,Buildings.Types.Tilt.Wall,Buildings.Types.Tilt.Wall}),
+    nSurBou=0,
+    use_C_flow=false,
+    C_start=fill(400e-6*Modelica.Media.IdealGases.Common.SingleGasesData.CO2.MM/
+        Modelica.Media.IdealGases.Common.SingleGasesData.Air.MM, Medium.nC),
+    intConMod=intConMod,
+    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
+    final sampleModel=sampleModel,
+    nPorts=3) "Room 2.19"
+    annotation (Placement(transformation(extent={{564,-206},{690,-108}})));
+
+  Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor temAirThirdFloor
+    "Air temperature sensor"
+    annotation (Placement(transformation(extent={{294,246},{314,266}})));
+  Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor temAirFirstFloor
+    "Air temperature sensor"
+    annotation (Placement(transformation(extent={{290,216},{310,236}})));
+  InternalGains.InternalGains gai
+    annotation (Placement(transformation(extent={{-414,-30},{-300,58}})));
+  Buildings.Fluid.Sensors.PPM senCO2FirstFloor(redeclare package Medium =
+        Medium, warnAboutOnePortConnection=false)
+    annotation (Placement(transformation(extent={{292,108},{312,128}})));
+  Buildings.Utilities.IO.SignalExchange.Read reaCO2FirstFloor(
+    description="Temperature of north zone",
+    KPIs=Buildings.Utilities.IO.SignalExchange.SignalTypes.SignalsForKPIs.CO2Concentration,
+    zone="4",
+    y(unit="ppm"))
+    annotation (Placement(transformation(extent={{322,114},{330,122}})));
+
+  Buildings.Fluid.Sensors.PPM senCO2ThirdFloor(redeclare package Medium =
+        Medium, warnAboutOnePortConnection=false)
+    annotation (Placement(transformation(extent={{294,72},{314,92}})));
+  Buildings.Utilities.IO.SignalExchange.Read reaCO2ThirdFloor(
+    description="Temperature of north zone",
+    KPIs=Buildings.Utilities.IO.SignalExchange.SignalTypes.SignalsForKPIs.CO2Concentration,
+    zone="5",
+    y(unit="ppm"))
+    annotation (Placement(transformation(extent={{324,78},{332,86}})));
+
+  Modelica.Blocks.Routing.Multiplex5 multiplex5_1
+    annotation (Placement(transformation(extent={{356,118},{376,138}})));
 equation
   connect(room219.weaBus, weaBus) annotation (Line(
-      points={{245.375,-88.52},{245.375,200},{210,200}},
+      points={{242.015,-90.83},{242.015,144},{210,144},{210,200}},
       color={255,204,51},
       thickness=0.5,
       smooth=Smooth.None), Text(
@@ -498,13 +498,12 @@ equation
       index=1,
       extent={{6,3},{6,3}}));
   connect(room220.weaBus, weaBus) annotation (Line(
-      points={{-44.1,-34.1},{88,-34.1},{88,84},{136,84},{136,100},{210,100},{210,
-          200}},
+      points={{45.91,-165.25},{45.91,-32},{240,-32},{240,144},{210,144},{210,200}},
       color={255,204,51},
       thickness=0.5,
       smooth=Smooth.None));
   connect(secFloor.weaBus, weaBus) annotation (Line(
-      points={{115.9,137.9},{210,137.9},{210,200}},
+      points={{196.855,319.065},{196.855,336},{232,336},{232,200},{210,200}},
       color={255,204,51},
       thickness=0.5,
       smooth=Smooth.None));
@@ -566,337 +565,181 @@ equation
       points={{-37,184},{-16,184},{-16,76},{-11,76},{-11,75}},
       color={0,0,127},
       pattern=LinePattern.Dash));
-  connect(reaCO2Sou.y, multiplex3_1.u1[1]) annotation (Line(points={{330.4,202},
-          {346,202},{346,134},{324,134},{324,121},{338,121}}, color={0,0,127}));
-  connect(reaCO2Eas.y, multiplex3_1.u2[1]) annotation (Line(points={{330.4,178},
-          {340,178},{340,136},{306,136},{306,114},{338,114}}, color={0,0,127}));
-  connect(reaCO2Nor.y, multiplex3_1.u3[1]) annotation (Line(points={{330.4,154},
-          {336,154},{336,138},{294,138},{294,107},{338,107}}, color={0,0,127}));
-  connect(CO2Roo, multiplex3_1.y) annotation (Line(points={{390,80},{368,80},{368,
-          114},{361,114}}, color={0,0,127}));
-  connect(heaPorAir1, FirstFloor.intGainsConv) annotation (Line(points={{798,-92},
-          {746,-92},{746,-90.1111}}, color={191,0,0}));
-  connect(FirstFloor.intGainsRad, heaPorRad1) annotation (Line(points={{746,
-          -79.2222},{798,-79.2222},{798,-74}},
-                                     color={191,0,0}));
-  connect(eqAirTemp.TEqAirWin,preTem1. T)
-    annotation (Line(points={{849,259.8},{852,259.8},{852,280},{858.8,280}},
-    color={0,0,127}));
-  connect(eqAirTemp.TEqAir,preTem. T)
-    annotation (Line(points={{849,256},{856,256},{856,260},{858.8,260}},
-    color={0,0,127}));
-  connect(const.y,eqAirTemp. sunblind)
-    annotation (Line(points={{838.3,277},{840,277},{840,268},{838,268}},
-    color={0,0,127}));
-  connect(HDifTil.HSkyDifTil,corGDouPan. HSkyDifTil)
-    annotation (Line(points={{805,296},{846,296},{846,318},{852,318},{852,317.8},
-          {856,317.8},{856,318}},
-    color={0,0,127}));
-  connect(HDirTil.H,corGDouPan. HDirTil)
-    annotation (Line(points={{805,322},{856,322}},     color={0,0,127}));
-  connect(HDirTil.H,solRad. u1)
-    annotation (Line(points={{805,322},{810,322},{810,274},{813,274}},
-    color={0,0,127}));
-  connect(HDifTil.H,solRad. u2)
-    annotation (Line(points={{805,290},{808,290},{808,268},{813,268}},
-    color={0,0,127}));
-  connect(HDifTil.HGroDifTil,corGDouPan. HGroDifTil)
-    annotation (Line(points={{805,284},{848,284},{848,314},{856,314}},
-    color={0,0,127}));
-  connect(solRad.y,eqAirTemp. HSol)
-    annotation (Line(points={{824.5,271},{826,271},{826,262}},
-    color={0,0,127}));
-  connect(preTem1.port,theConWin. fluid)
-    annotation (Line(points={{872,280},{880,280},{880,281}},
-                                                       color={191,0,0}));
-  connect(theConWall.fluid,preTem. port)
-    annotation (Line(points={{878,261},{876,261},{876,260},{872,260}},
-                                                           color={191,0,0}));
-  connect(hConWall.y,theConWall. Gc)
-    annotation (Line(points={{882,248.4},{882,256},{883,256}},
-                                                          color={0,0,127}));
-  connect(hConWin.y,theConWin. Gc)
-    annotation (Line(points={{884,293.6},{884,286},{885,286}},
-                                                         color={0,0,127}));
-  connect(HDirTil.inc,corGDouPan. inc)
-    annotation (Line(points={{805,318},{842,318},{842,310},{856,310}},
-    color={0,0,127}));
-  connect(corGDouPan.solarRadWinTrans, ThirdFloor.solRad) annotation (Line(
-        points={{879,316},{918,316},{918,286},{974,286},{974,230},{732,230},{
-          732,268},{528,268},{528,221},{566.958,221}},
-                                                   color={0,0,127}));
-  connect(theConWin.solid, ThirdFloor.window) annotation (Line(points={{890,281},
-          {900,281},{900,280},{940,280},{940,374},{724,374},{724,298},{488,298},
-          {488,188},{570,188}}, color={191,0,0}));
-  connect(theConWall.solid, ThirdFloor.extWall) annotation (Line(points={{888,261},
-          {960,261},{960,340},{514,340},{514,164},{570,164}}, color={191,0,0}));
-  connect(weaBus, HDirTil[1].weaBus) annotation (Line(
-      points={{210,200},{258,200},{258,232},{334,232},{334,322},{784,322}},
-      color={255,204,51},
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{-6,3},{-6,3}},
-      horizontalAlignment=TextAlignment.Right));
-  connect(weaBus, HDifTil[1].weaBus) annotation (Line(
-      points={{210,200},{260,200},{260,246},{590,246},{590,290},{784,290}},
-      color={255,204,51},
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{-6,3},{-6,3}},
-      horizontalAlignment=TextAlignment.Right));
-  connect(weaBus.TBlaSky, eqAirTemp.TBlaSky) annotation (Line(
-      points={{210,200},{222,200},{222,252},{254,252},{254,256},{826,256}},
-      color={255,204,51},
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{-6,3},{-6,3}},
-      horizontalAlignment=TextAlignment.Right));
-  connect(weaBus.TDryBul, eqAirTemp.TDryBul) annotation (Line(
-      points={{210,200},{206,200},{206,218},{458,218},{458,250},{826,250}},
-      color={255,204,51},
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{-6,3},{-6,3}},
-      horizontalAlignment=TextAlignment.Right));
-  connect(ThirdFloor.extWall, FirstFloor.extWall) annotation (Line(points={{570,164},
-          {530,164},{530,108},{474,108},{474,-111.889},{574,-111.889}},
-        color={191,0,0}));
-  connect(ThirdFloor.window, FirstFloor.window) annotation (Line(points={{570,188},
-          {544,188},{544,-90.1111},{574,-90.1111}}, color={191,0,0}));
-  connect(ThirdFloor.solRad[1], FirstFloor.solRad[1]) annotation (Line(points={{566.958,
-          221},{506,221},{506,-60.1667},{570.417,-60.1667}},         color={0,0,
-          127}));
-  connect(oveSha219.y, room219.uSha[1]) annotation (Line(points={{268.5,-67},{272,
-          -67},{272,-152},{188,-152},{188,-88.4},{196,-88.4}}, color={0,0,127}));
+  connect(oveSha219.y, room219.uSha[1]) annotation (Line(points={{268.5,-67},{268.5,
+          -48},{184,-48},{184,-64},{112,-64},{112,-90.6},{129.44,-90.6}},
+                                                               color={0,0,127}));
   connect(oveShaSecFloor.y, secFloor.uSha[1]) annotation (Line(points={{24.5,139},
-          {48,139},{48,138},{76.4,138}}, color={0,0,127}));
+          {32,139},{32,319.3},{100.08,319.3}},
+                                         color={0,0,127}));
   connect(oveShaSecFloor.u, shading_control[3].y) annotation (Line(points={{13,139},
           {6,139},{6,184},{-37,184}}, color={0,0,127}));
-  connect(oveSha220.y, room220.uSha[1]) annotation (Line(points={{0.5,75},{48,75},
-          {48,12},{-100,12},{-100,-34},{-83.6,-34}}, color={0,0,127}));
-  connect(heaPorAirWes, room220.heaPorAir) annotation (Line(points={{-99,-45},{-86,
-          -45},{-86,-52},{-63,-52}}, color={191,0,0}));
-  connect(room220.heaPorRad, heaPorRadWes) annotation (Line(points={{-63,-55.8},
-          {-92,-55.8},{-92,-59},{-101,-59}}, color={191,0,0}));
-  connect(room219.heaPorRad, heaPorRadSou) annotation (Line(points={{221.75,-114.56},
-          {184,-114.56},{184,-156},{284,-156},{284,-45},{271,-45}}, color={191,0,
+  connect(oveSha220.y, room220.uSha[1]) annotation (Line(points={{0.5,75},{0.5,56},
+          {-56,56},{-56,-48},{-96,-48},{-96,-96},{-104,-96},{-104,-165},{-68.64,
+          -165}},                                    color={0,0,127}));
+  connect(heaPorAirWes, room220.heaPorAir) annotation (Line(points={{-99,-45},{-96,
+          -45},{-96,-288},{-8.9,-288},{-8.9,-210}},
+                                     color={191,0,0}));
+  connect(room220.heaPorRad, heaPorRadWes) annotation (Line(points={{-8.9,-219.5},
+          {-8.9,-59},{-101,-59}},            color={191,0,0}));
+  connect(room219.heaPorRad, heaPorRadSou) annotation (Line(points={{188.15,-140.74},
+          {192,-140.74},{192,-200},{272,-200},{272,-88},{304,-88},{304,-45},{271,
+          -45}},                                                    color={191,0,
           0}));
-  connect(room219.heaPorAir, heaPorAirSou) annotation (Line(points={{221.75,-110},
-          {221.75,-112},{180,-112},{180,-160},{288,-160},{288,-31},{271,-31}},
+  connect(room219.heaPorAir, heaPorAirSou) annotation (Line(points={{188.15,-132},
+          {188.15,-208},{280,-208},{280,-96},{376,-96},{376,-48},{320,-48},{320,
+          -31},{271,-31}},
         color={191,0,0}));
-  connect(ThirdFloor.TAir, reaTAir3rd.u) annotation (Line(points={{719.042,224},
-          {710,224},{710,290},{456,290},{456,274},{162,274},{162,222},{319.2,
-          222}},
-        color={0,0,127}));
-  connect(FirstFloor.TAir, reaTAir1st.u) annotation (Line(points={{749.583,
-          -57.4444},{749.583,40},{254,40},{254,256},{323.2,256}},
-                                                        color={0,0,127}));
   connect(heaPorAirNor, secFloor.heaPorAir)
-    annotation (Line(points={{43,123},{97,123},{97,120}}, color={191,0,0}));
-  connect(heaPorRadNor, secFloor.heaPorRad) annotation (Line(points={{43,107},{66,
-          107},{66,116.2},{97,116.2}}, color={191,0,0}));
-  connect(room219.heaPorAir, temAir219.port) annotation (Line(points={{221.75,-110},
-          {221.75,-112},{180,-112},{180,-160},{288,-160},{288,304},{284,304},{284,
-          350},{290,350}}, color={191,0,0}));
-  connect(room220.heaPorAir, temAir220.port) annotation (Line(points={{-63,-52},
-          {174,-52},{174,320},{292,320}}, color={191,0,0}));
-  connect(secFloor.heaPorAir, temAir2nd.port) annotation (Line(points={{97,120},
-          {97,310},{256,310},{256,288},{296,288}}, color={191,0,0}));
-  connect(secFloor.ports[1], senRelPre.port_a) annotation (Line(points={{83,
-          108.333},{78,108.333},{78,250},{60,250}},
-                                           color={0,127,255}));
-  connect(lea219.port_b, room219.ports[1]) annotation (Line(points={{-20,320},{-6,
-          320},{-6,300},{156,300},{156,-123.8},{204.25,-123.8}}, color={0,127,255}));
-  connect(ports219[2], room219.ports[2]) annotation (Line(points={{341,-74},{341,
-          -162},{196,-162},{196,-122.6},{204.25,-122.6}}, color={0,127,255}));
-  connect(lea220.port_b, room220.ports[1]) annotation (Line(points={{-20,280},{2,
-          280},{2,268},{14,268},{14,-86},{-86,-86},{-86,-63.5},{-77,-63.5}},
-        color={0,127,255}));
-  connect(ports220[2], room220.ports[2]) annotation (Line(points={{-111,-78},{-111,
-          -122},{-94,-122},{-94,-62.5},{-77,-62.5}}, color={0,127,255}));
-  connect(ports2nd[2], secFloor.ports[2]) annotation (Line(points={{99,160},{50,
-          160},{50,150},{64,150},{64,109},{83,109}}, color={0,127,255}));
-  connect(ope220.port_b2, room220.ports[3]) annotation (Line(points={{-130,-26},
-          {-134,-26},{-134,-52},{-77,-52},{-77,-61.5}}, color={0,127,255}));
-  connect(ope220.port_a1, room220.ports[4]) annotation (Line(points={{-130,-14},
-          {-138,-14},{-138,-10},{-142,-10},{-142,-60.5},{-77,-60.5}}, color={0,127,
-          255}));
-  connect(ope220.port_b1, secFloor.ports[3]) annotation (Line(points={{-110,-14},
-          {-80,-14},{-80,-10},{-60,-10},{-60,109.667},{83,109.667}}, color={0,127,
-          255}));
-  connect(ope220.port_a2, secFloor.ports[4]) annotation (Line(points={{-110,-26},
-          {-96,-26},{-96,-20},{-88,-20},{-88,92},{83,92},{83,110.333}}, color={0,
-          127,255}));
-  connect(ope219.port_b2, room219.ports[3]) annotation (Line(points={{320,-28},{
-          310,-28},{310,-32},{304,-32},{304,-72},{164,-72},{164,-121.4},{204.25,
-          -121.4}}, color={0,127,255}));
-  connect(ope219.port_a1, room219.ports[4]) annotation (Line(points={{320,-16},{
-          118,-16},{118,-120.2},{204.25,-120.2}}, color={0,127,255}));
-  connect(ope219.port_b1, secFloor.ports[5]) annotation (Line(points={{340,-16},
-          {354,-16},{354,30},{70,30},{70,111},{83,111}}, color={0,127,255}));
-  connect(ope219.port_a2, secFloor.ports[6]) annotation (Line(points={{340,-28},
-          {374,-28},{374,10},{58,10},{58,111.667},{83,111.667}}, color={0,127,255}));
-  connect(heaPorRad1, ThirdFloor.intGainsRad) annotation (Line(points={{798,-74},
-          {796,-74},{796,96},{756,96},{756,200},{716,200}}, color={191,0,0}));
-  connect(heaPorAir1, ThirdFloor.intGainsConv) annotation (Line(points={{798,-92},
-          {892,-92},{892,188},{716,188}}, color={191,0,0}));
+    annotation (Line(points={{43,123},{44,123},{44,216},{150.55,216},{150.55,277}},
+                                                          color={191,0,0}));
+  connect(heaPorRadNor, secFloor.heaPorRad) annotation (Line(points={{43,107},{44,
+          107},{44,124},{56,124},{56,212},{150.55,212},{150.55,268.07}},
+                                       color={191,0,0}));
+  connect(lea219.port_b, room219.ports[1]) annotation (Line(points={{-20,320},{
+          -8,320},{-8,360},{-200,360},{-200,-158.833},{148.25,-158.833}},
+                                                                 color={0,127,255}));
+  connect(ope219.port_a1, room219.ports[2]) annotation (Line(points={{320,-16},{
+          304,-16},{304,16},{384,16},{384,-144},{392,-144},{392,-224},{112,-224},
+          {112,-157.3},{148.25,-157.3}},          color={0,127,255}));
   connect(multiplex5_2.y, TRooAir) annotation (Line(points={{401,300},{426,300},
           {426,280},{430,280},{430,190},{364,190},{364,160},{390,160}}, color={0,
           0,127}));
-  connect(ThirdFloor.ports[1], ports3rd[1]) annotation (Line(points={{686.306,
-          122.15},{686.306,60},{539.333,60},{539.333,128}},
-                                                    color={0,127,255}));
-  connect(ThirdFloor.ports[2], ports3rd[2]) annotation (Line(points={{690.944,
-          122.15},{622,122.15},{622,76},{546,76},{546,128}},
-                                                     color={0,127,255}));
-  annotation (Diagram(coordinateSystem(preserveAspectRatio=true,
-        extent={{-160,-260},{1000,500}},
-        initialScale=0.1), graphics={
-        Text(
-          extent={{-420,576},{-228,538}},
-          lineColor={28,108,200},
-          textString="External wall (ZEB YV-223+73)"),
-        Rectangle(extent={{-442,580},{-206,378}}, lineColor={28,108,200}),
-        Text(
-          extent={{-424,314},{-232,276}},
-          lineColor={28,108,200},
-          textString="Internal Wall (ZEB IV-98 GG)"),
-        Rectangle(extent={{-442,320},{-206,118}}, lineColor={28,108,200}),
-        Text(
-          extent={{490,536},{682,498}},
-          lineColor={28,108,200},
-          textString="Internal Slab"),
-        Rectangle(extent={{476,552},{688,360}}, lineColor={28,108,200})}),
-                                Icon(coordinateSystem(
-          preserveAspectRatio=true, extent={{-160,-260},{1000,500}}),
-                                                                   graphics={
-        Rectangle(
-          extent={{-80,-80},{380,180}},
-          lineColor={95,95,95},
-          fillColor={95,95,95},
-          fillPattern=FillPattern.Solid),
-        Rectangle(
-          extent={{-60,160},{360,-60}},
-          pattern=LinePattern.None,
-          lineColor={117,148,176},
-          fillColor={170,213,255},
-          fillPattern=FillPattern.Sphere),
-        Rectangle(
-          extent={{0,-80},{294,-60}},
-          lineColor={95,95,95},
-          fillColor={255,255,255},
-          fillPattern=FillPattern.Solid),
-        Rectangle(
-          extent={{0,-74},{294,-66}},
-          lineColor={95,95,95},
-          fillColor={170,213,255},
-          fillPattern=FillPattern.Solid),
-        Rectangle(
-          extent={{8,8},{294,100}},
-          lineColor={95,95,95},
-          fillColor={95,95,95},
-          fillPattern=FillPattern.Solid),
-        Rectangle(
-          extent={{20,88},{280,22}},
-          pattern=LinePattern.None,
-          lineColor={117,148,176},
-          fillColor={170,213,255},
-          fillPattern=FillPattern.Sphere),
-        Polygon(
-          points={{-56,170},{20,94},{12,88},{-62,162},{-56,170}},
-          smooth=Smooth.None,
-          fillColor={95,95,95},
-          fillPattern=FillPattern.Solid,
-          pattern=LinePattern.None),
-        Polygon(
-          points={{290,16},{366,-60},{358,-66},{284,8},{290,16}},
-          smooth=Smooth.None,
-          fillColor={95,95,95},
-          fillPattern=FillPattern.Solid,
-          pattern=LinePattern.None),
-        Polygon(
-          points={{284,96},{360,168},{368,162},{292,90},{284,96}},
-          smooth=Smooth.None,
-          fillColor={95,95,95},
-          fillPattern=FillPattern.Solid,
-          pattern=LinePattern.None),
-        Rectangle(
-          extent={{-80,120},{-60,-20}},
-          lineColor={95,95,95},
-          fillColor={255,255,255},
-          fillPattern=FillPattern.Solid),
-        Rectangle(
-          extent={{-74,120},{-66,-20}},
-          lineColor={95,95,95},
-          fillColor={170,213,255},
-          fillPattern=FillPattern.Solid),
-        Polygon(
-          points={{-64,-56},{18,22},{26,16},{-58,-64},{-64,-56}},
-          smooth=Smooth.None,
-          fillColor={95,95,95},
-          fillPattern=FillPattern.Solid,
-          pattern=LinePattern.None),
-        Rectangle(
-          extent={{360,122},{380,-18}},
-          lineColor={95,95,95},
-          fillColor={255,255,255},
-          fillPattern=FillPattern.Solid),
-        Rectangle(
-          extent={{366,122},{374,-18}},
-          lineColor={95,95,95},
-          fillColor={170,213,255},
-          fillPattern=FillPattern.Solid),
-        Rectangle(
-          extent={{2,170},{296,178}},
-          lineColor={95,95,95},
-          fillColor={170,213,255},
-          fillPattern=FillPattern.Solid),
-        Rectangle(
-          extent={{2,160},{296,180}},
-          lineColor={95,95,95},
-          fillColor={255,255,255},
-          fillPattern=FillPattern.Solid),
-        Rectangle(
-          extent={{2,166},{296,174}},
-          lineColor={95,95,95},
-          fillColor={170,213,255},
-          fillPattern=FillPattern.Solid)}),
-    Documentation(revisions="<html>
-    <ul>
-<li>
-April 30, 2021, by Michael Wetter:<br/>
-Reformulated replaceable class and introduced floor areas in base class
-to avoid access of components that are not in the constraining type.<br/>
-This is for <a href=\"https://github.com/lbl-srg/modelica-buildings/issues/2471\">issue #2471</a>.
-</li>
-<li>
-January 23, 2020, by Milica Grahovac:<br/>
-Updated core zone geometry parameters related to
-room heat and mass balance.
-</li>
-<li>
-November 15, 2019, by Milica Grahovac:<br/>
-Added extend from a partial floor model.
-</li>
-<li>
-May 1, 2013, by Michael Wetter:<br/>
-Declared the parameter record to be a parameter, as declaring its elements
-to be parameters does not imply that the whole record has the variability of a parameter.
-</li>
-</ul>
-</html>", info="<html>
-<p>
-Model of a floor that consists
-of five thermal zones that are representative of one floor of the
-new construction medium office building for Chicago, IL,
-as described in the set of DOE Commercial Building Benchmarks.
-There are four perimeter zones and one core zone.
-The envelope thermal properties meet ASHRAE Standard 90.1-2004.
-</p>
-</html>"),
-    experiment(StopTime=604800, __Dymola_Algorithm="Dassl"));
+  connect(ports3rd[1], ThirdFloor.ports[1]) annotation (Line(points={{541,128},{
+          540,128},{540,80.1},{619.25,80.1}},
+                                          color={0,127,255}));
+  connect(ThirdFloor.ports[2], ports3rd[2]) annotation (Line(points={{619.25,83.5},
+          {551,83.5},{551,128}},color={0,127,255}));
+  connect(heaPorRad1, FirstFloor.heaPorRad) annotation (Line(points={{798,-74},{
+          820,-74},{820,-220},{623.85,-220},{623.85,-166.31}},          color={191,
+          0,0}));
+  connect(heaPorAir1, heaPorAir1)
+    annotation (Line(points={{798,-92},{798,-92}}, color={191,0,0}));
+  connect(heaPorAir1, FirstFloor.heaPorAir) annotation (Line(points={{798,-92},{
+          623.85,-92},{623.85,-157}},                       color={191,0,0}));
+  connect(ope219.port_b2, room219.ports[3]) annotation (Line(points={{320,-28},
+          {300,-28},{300,-200},{132,-200},{132,-155.767},{148.25,-155.767}},
+                                                                    color={0,127,
+          255}));
+
+  connect(secFloor.ports[1], senRelPre.port_a) annotation (Line(points={{116.25,
+          249.583},{112,250},{60,250}},                          color={0,127,255}));
+  connect(ope220.port_b1, secFloor.ports[2]) annotation (Line(points={{-110,-14},
+          {72,-14},{72,140},{128,140},{128,220},{92,220},{92,251.15},{116.25,251.15}},
+                                                                      color={0,127,
+          255}));
+  connect(ope220.port_a2, secFloor.ports[3]) annotation (Line(points={{-110,-26},
+          {-104,-26},{-104,-16},{72,-16},{72,140},{128,140},{128,220},{92,220},
+          {92,252.717},{116.25,252.717}},                           color={0,127,
+          255}));
+  connect(ope219.port_b1, secFloor.ports[4]) annotation (Line(points={{340,-16},
+          {348,-16},{348,56},{264,56},{264,136},{252,136},{252,172},{128,172},{
+          128,220},{92,220},{92,254.283},{116.25,254.283}},
+                                        color={0,127,255}));
+  connect(ope219.port_a2, secFloor.ports[5]) annotation (Line(points={{340,-28},
+          {348,-28},{348,56},{264,56},{264,136},{252,136},{252,172},{128,172},{128,
+          220},{92,220},{92,255.85},{116.25,255.85}},
+        color={0,127,255}));
+  connect(FirstFloor.ports[1], ports1st[1]) annotation (Line(points={{579.75,
+          -184.767},{579.75,-180},{528,-180},{528,-48},{519,-48},{519,-46}},
+                                                                   color={0,127,
+          255}));
+  connect(FirstFloor.ports[2], ports1st[2]) annotation (Line(points={{579.75,-181.5},
+          {579.75,-184},{529,-184},{529,-46}}, color={0,127,255}));
+  connect(ports219[1], room219.ports[4]) annotation (Line(points={{331,-74},{
+          331,-258},{148.25,-258},{148.25,-154.233}},
+                                                  color={0,127,255}));
+  connect(ports219[2], room219.ports[5]) annotation (Line(points={{341,-74},{341,
+          -280},{86,-280},{86,-152.7},{148.25,-152.7}}, color={0,127,255}));
+  connect(senCO2SecFloor.port, secFloor.ports[6]) annotation (Line(points={{304,144},
+          {304,136},{252,136},{252,172},{128,172},{128,220},{92,220},{92,
+          257.417},{116.25,257.417}},                      color={0,127,255}));
+  connect(senCO2Roo219.port, room219.ports[6]) annotation (Line(points={{304,192},
+          {284,192},{284,194},{248,194},{248,-190},{148.25,-190},{148.25,
+          -151.167}},
+        color={0,127,255}));
+  connect(weaBus, ThirdFloor.weaBus) annotation (Line(
+      points={{210,200},{212,200},{212,144},{244,144},{244,32},{744,32},{744,172},
+          {719.595,172},{719.595,154.645}},
+      color={255,204,51},
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{6,3},{6,3}},
+      horizontalAlignment=TextAlignment.Left));
+  connect(weaBus, FirstFloor.weaBus) annotation (Line(
+      points={{210,200},{212,200},{212,144},{240,144},{240,32},{683.385,32},{683.385,
+          -113.145}},
+      color={255,204,51},
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{6,3},{6,3}},
+      horizontalAlignment=TextAlignment.Left));
+  connect(temAirThirdFloor.T, reaTAir1st.u) annotation (Line(points={{314,256},{
+          318,256},{318,258},{323.2,258},{323.2,256}}, color={0,0,127}));
+  connect(temAirFirstFloor.T, reaTAir3rd.u) annotation (Line(points={{310,226},{
+          312,226},{312,224},{319.2,224},{319.2,222}}, color={0,0,127}));
+  connect(FirstFloor.uSha[1], shading_control[1].y) annotation (Line(points={{558.96,
+          -112.9},{460,-112.9},{460,-42},{-18,-42},{-18,184},{-37,184}}, color={
+          0,0,127}));
+  connect(ThirdFloor.uSha[1], shading_control[1].y) annotation (Line(points={{599.12,
+          154.9},{476,154.9},{476,48},{28,48},{28,186},{-37,186},{-37,184}},
+        color={0,0,127}));
+  connect(gai.intGai, room220.qGai_flow) annotation (Line(points={{-294.3,14},{-238,
+          14},{-238,-190},{-68.64,-190}}, color={0,0,127}));
+  connect(gai.intGai, room219.qGai_flow) annotation (Line(points={{-294.3,14},{-294.3,
+          -304},{74,-304},{74,-113.6},{129.44,-113.6}}, color={0,0,127}));
+  connect(gai.intGai, FirstFloor.qGai_flow) annotation (Line(points={{-294.3,14},
+          {-294.3,-284},{464,-284},{464,-137.4},{558.96,-137.4}}, color={0,0,127}));
+  connect(gai.intGai, ThirdFloor.qGai_flow) annotation (Line(points={{-294.3,14},
+          {-294.3,-2},{494,-2},{494,129.4},{599.12,129.4}}, color={0,0,127}));
+  connect(gai.intGai, secFloor.qGai_flow) annotation (Line(points={{-294.3,14},{
+          -294.3,295.8},{100.08,295.8}}, color={0,0,127}));
+  connect(senCO2FirstFloor.ppm, reaCO2FirstFloor.u)
+    annotation (Line(points={{313,118},{321.2,118}}, color={0,0,127}));
+  connect(senCO2ThirdFloor.ppm, reaCO2ThirdFloor.u)
+    annotation (Line(points={{315,82},{323.2,82}}, color={0,0,127}));
+  connect(ThirdFloor.ports[3], senCO2ThirdFloor.port) annotation (Line(points={{
+          619.25,86.9},{326,86.9},{326,72},{304,72}}, color={0,127,255}));
+  connect(FirstFloor.ports[3], senCO2FirstFloor.port) annotation (Line(points={{579.75,
+          -178.233},{474,-178.233},{474,-10},{274,-10},{274,108},{302,108}},
+        color={0,127,255}));
+  connect(reaCO2Sou.y, multiplex5_1.u1[1]) annotation (Line(points={{330.4,202},
+          {336,202},{336,196},{344,196},{344,138},{354,138}}, color={0,0,127}));
+  connect(reaCO2Eas.y, multiplex5_1.u2[1]) annotation (Line(points={{330.4,178},
+          {334,178},{334,174},{338,174},{338,133},{354,133}}, color={0,0,127}));
+  connect(reaCO2Nor.y, multiplex5_1.u3[1]) annotation (Line(points={{330.4,154},
+          {330.4,128},{354,128}}, color={0,0,127}));
+  connect(reaCO2FirstFloor.y, multiplex5_1.u4[1]) annotation (Line(points={{330.4,
+          118},{336,118},{336,123},{354,123}}, color={0,0,127}));
+  connect(reaCO2ThirdFloor.y, multiplex5_1.u5[1]) annotation (Line(points={{332.4,
+          82},{336,82},{336,118},{354,118}}, color={0,0,127}));
+  connect(multiplex5_1.y, CO2Roo) annotation (Line(points={{377,128},{386,128},{
+          386,124},{406,124},{406,108},{350,108},{350,80},{390,80}}, color={0,0,
+          127}));
+  connect(ports220[1], room220.ports[1]) annotation (Line(points={{-121,-78},{
+          -121,-239.167},{-49.5,-239.167}},
+                         color={0,127,255}));
+  connect(room220.ports[2], ports220[2]) annotation (Line(points={{-49.5,-237.5},
+          {-111,-237.5},{-111,-78}}, color={0,127,255}));
+  connect(room220.ports[3], ope220.port_b2) annotation (Line(points={{-49.5,
+          -235.833},{-174,-235.833},{-174,-26},{-130,-26}}, color={0,127,255}));
+  connect(room220.ports[4], ope220.port_a1) annotation (Line(points={{-49.5,
+          -234.167},{-184,-234.167},{-184,-14},{-130,-14}}, color={0,127,255}));
+  connect(room220.ports[5], senCO2Roo220.port) annotation (Line(points={{-49.5,
+          -232.5},{-138,-232.5},{-138,168},{304,168}}, color={0,127,255}));
+  connect(lea220.port_b, room220.ports[6]) annotation (Line(points={{-20,280},{
+          -6,280},{-6,78},{-86,78},{-86,-230.833},{-49.5,-230.833}}, color={0,
+          127,255}));
+  connect(room219.heaPorAir, temAir219.port) annotation (Line(points={{188.15,
+          -132},{166,-132},{166,350},{290,350}}, color={191,0,0}));
+  connect(room220.heaPorAir, temAir220.port) annotation (Line(points={{-8.9,
+          -210},{-8.9,350},{246,350},{246,320},{292,320}}, color={191,0,0}));
+  connect(secFloor.heaPorAir, temAir2nd.port) annotation (Line(points={{150.55,
+          277},{260,277},{260,288},{296,288}}, color={191,0,0}));
+  connect(FirstFloor.heaPorAir, temAirThirdFloor.port) annotation (Line(points=
+          {{623.85,-157},{623.85,6},{216,6},{216,256},{294,256}}, color={191,0,
+          0}));
+  connect(ThirdFloor.heaPorAir, temAirFirstFloor.port) annotation (Line(points=
+          {{661.95,109},{252,109},{252,226},{290,226}}, color={191,0,0}));
 end Floor5Zone_Shading;
