@@ -121,18 +121,6 @@ partial model PartialFloor "Interface for a model of a floor of a building"
   Modelica.Blocks.Routing.Multiplex5 multiplex5_1
     annotation (Placement(transformation(extent={{350,280},{370,300}})));
 
-  Buildings.Airflow.Multizone.DoorOpen opeSouCor(redeclare package Medium =
-        Medium, wOpe=10) "Opening between perimeter1 and core"
-    annotation (Placement(transformation(extent={{84,0},{104,20}})));
-  Buildings.Airflow.Multizone.DoorOpen opeEasCor(redeclare package Medium =
-        Medium, wOpe=10) "Opening between perimeter2 and core"
-    annotation (Placement(transformation(extent={{250,38},{270,58}})));
-  Buildings.Airflow.Multizone.DoorOpen opeNorCor(redeclare package Medium =
-        Medium, wOpe=10) "Opening between perimeter3 and core"
-    annotation (Placement(transformation(extent={{80,74},{100,94}})));
-  Buildings.Airflow.Multizone.DoorOpen opeWesCor(redeclare package Medium =
-        Medium, wOpe=10) "Opening between perimeter3 and core"
-    annotation (Placement(transformation(extent={{20,-20},{40,0}})));
   Buildings.Fluid.Sensors.RelativePressure senRelPre(redeclare package Medium = Medium)
     "Building pressure measurement"
     annotation (Placement(transformation(extent={{60,240},{40,260}})));
