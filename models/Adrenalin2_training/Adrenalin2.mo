@@ -361,14 +361,6 @@ equation
           76},{-42,102},{-32,102}},
       color={0,0,127},
       pattern=LinePattern.Dash));
-  connect(radEas.heatPortRad, floor5Zone_Shading.heaPorRad1) annotation (Line(
-        points={{176,129.2},{176,134},{156,134},{156,110},{143.787,110},{
-          143.787,136.385}},
-                     color={191,0,0}));
-  connect(radEas.heatPortCon, floor5Zone_Shading.heaPorAir1) annotation (Line(
-        points={{172,129.2},{172,134},{156,134},{156,110},{143.787,110},{
-          143.787,139.615}},
-                     color={191,0,0}));
   connect(radSou.heatPortRad, floor5Zone_Shading.heaPorRadSou) annotation (Line(
         points={{112,107.2},{112,122},{99.0826,122},{99.0826,124.846}}, color={191,
           0,0}));
