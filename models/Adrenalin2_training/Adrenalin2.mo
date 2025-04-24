@@ -295,21 +295,21 @@ equation
       extent={{-6,3},{-6,3}},
       horizontalAlignment=TextAlignment.Right));
 
-  connect(floor5Zone_Shading.portsNor[2], VenRetMan.ports_a[3]) annotation (
-      Line(points={{92.1696,159.231},{90,159.231},{90,142},{-12,142}}, color={255,
-          170,85}));
-  connect(floor5Zone_Shading.portsWes[2], VenRetMan.ports_a[4]) annotation (
+  connect(floor5Zone_Shading.ports1st[2], VenRetMan.ports_a[3]) annotation (
+      Line(points={{92.1696,159.231},{90,159.231},{90,142},{-12,142}}, color={
+          255,170,85}));
+  connect(floor5Zone_Shading.ports220[2], VenRetMan.ports_a[4]) annotation (
       Line(points={{63.5957,143.538},{21.2217,143.538},{21.2217,142},{-12,142}},
         color={255,170,85}));
-  connect(floor5Zone_Shading.portsCor[2], VenRetMan.ports_a[5]) annotation (
+  connect(floor5Zone_Shading.ports2nd[2], VenRetMan.ports_a[5]) annotation (
       Line(points={{92.1696,143.538},{35.5087,143.538},{35.5087,142},{-12,142}},
         color={255,170,85}));
-  connect(floor5Zone_Shading.portsSou[2], VenRetMan.ports_a[1]) annotation (
+  connect(floor5Zone_Shading.ports219[2], VenRetMan.ports_a[1]) annotation (
       Line(points={{92.1696,126.923},{92.1696,124},{90,124},{90,142},{-12,142}},
         color={255,170,85}));
-  connect(floor5Zone_Shading.portsEas[2], VenRetMan.ports_a[2]) annotation (
-      Line(points={{144.709,143.538},{146,143.538},{146,142},{-12,142}}, color={
-          255,170,85}));
+  connect(floor5Zone_Shading.ports3rd[2], VenRetMan.ports_a[2]) annotation (
+      Line(points={{144.709,143.538},{146,143.538},{146,142},{-12,142}}, color=
+          {255,170,85}));
   connect(AHU.weaBus, weaBus) annotation (Line(
       points={{-163,127.4},{-163,150},{-168,150},{-168,170},{-154,170},{-154,
           180}},
@@ -341,19 +341,19 @@ equation
   connect(AHU.port_b2, twoWayHeatBattery.secRet) annotation (Line(points={{-144,
           108},{-144,100},{-151.8,100}},
                                        color={0,127,255}));
-  connect(venSupManDam.ports_b[5], floor5Zone_Shading.portsCor[1]) annotation (
-      Line(points={{-12,95.6},{12,95.6},{12,143.538},{89.8652,143.538}}, color={
-          0,140,72}));
-  connect(venSupManDam.ports_b[1], floor5Zone_Shading.portsSou[1]) annotation (
+  connect(venSupManDam.ports_b[5], floor5Zone_Shading.ports2nd[1]) annotation (
+      Line(points={{-12,95.6},{12,95.6},{12,143.538},{89.8652,143.538}}, color=
+          {0,140,72}));
+  connect(venSupManDam.ports_b[1], floor5Zone_Shading.ports219[1]) annotation (
       Line(points={{-12,92.4},{12,92.4},{12,140},{82,140},{82,142},{89.8652,142},
           {89.8652,126.923}}, color={0,140,72}));
-  connect(venSupManDam.ports_b[3], floor5Zone_Shading.portsNor[1]) annotation (
+  connect(venSupManDam.ports_b[3], floor5Zone_Shading.ports1st[1]) annotation (
       Line(points={{-12,94},{12,94},{12,142},{89.8652,142},{89.8652,159.231}},
         color={0,140,72}));
-  connect(venSupManDam.ports_b[4], floor5Zone_Shading.portsWes[1]) annotation (
-      Line(points={{-12,94.8},{12,94.8},{12,143.538},{61.2913,143.538}}, color={
-          0,140,72}));
-  connect(venSupManDam.ports_b[2], floor5Zone_Shading.portsEas[1]) annotation (
+  connect(venSupManDam.ports_b[4], floor5Zone_Shading.ports220[1]) annotation (
+      Line(points={{-12,94.8},{12,94.8},{12,143.538},{61.2913,143.538}}, color=
+          {0,140,72}));
+  connect(venSupManDam.ports_b[2], floor5Zone_Shading.ports3rd[1]) annotation (
       Line(points={{-12,93.2},{12,93.2},{12,140},{82,140},{82,143.538},{142.404,
           143.538}}, color={0,140,72}));
   connect(floor5Zone_Shading.CO2Roo, venSupManDam.CO2Mea) annotation (Line(
@@ -361,22 +361,22 @@ equation
           76},{-42,102},{-32,102}},
       color={0,0,127},
       pattern=LinePattern.Dash));
-  connect(radSou.heatPortRad, floor5Zone_Shading.heaPorRadSou) annotation (Line(
+  connect(radSou.heatPortRad,floor5Zone_Shading.heaPorRad219)  annotation (Line(
         points={{112,107.2},{112,122},{99.0826,122},{99.0826,124.846}}, color={191,
           0,0}));
-  connect(radSou.heatPortCon, floor5Zone_Shading.heaPorAirSou) annotation (Line(
+  connect(radSou.heatPortCon,floor5Zone_Shading.heaPorAir219)  annotation (Line(
         points={{108,107.2},{108,126},{99.0826,126},{99.0826,128.538}}, color={191,
           0,0}));
-  connect(radWes.heatPortRad, floor5Zone_Shading.heaPorRadWes) annotation (Line(
+  connect(radWes.heatPortRad,floor5Zone_Shading.heaPorRad220)  annotation (Line(
         points={{34,131.2},{34,136.385},{61.7522,136.385}}, color={191,0,0}));
-  connect(radWes.heatPortCon, floor5Zone_Shading.heaPorAirWes) annotation (Line(
+  connect(radWes.heatPortCon,floor5Zone_Shading.heaPorAir220)  annotation (Line(
         points={{30,131.2},{30,138},{61.7522,138},{61.7522,139.615}}, color={191,
           0,0}));
-  connect(floor5Zone_Shading.heaPorRadNor, radNor.heatPortRad) annotation (Line(
+  connect(floor5Zone_Shading.heaPorRad1st, radNor.heatPortRad) annotation (Line(
         points={{99.0826,158.538},{99.0826,156},{94,156},{94,192},{80,192},{80,
           189.2}},
         color={191,0,0}));
-  connect(radNor.heatPortCon, floor5Zone_Shading.heaPorAirNor) annotation (Line(
+  connect(radNor.heatPortCon,floor5Zone_Shading.heaPorAir1st)  annotation (Line(
         points={{76,189.2},{76,196},{96,196},{96,178},{99.0826,178},{99.0826,
           162.231}},
         color={191,0,0}));
