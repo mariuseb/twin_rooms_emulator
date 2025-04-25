@@ -110,7 +110,8 @@ partial model PartialFloor "Interface for a model of a floor of a building"
   Modelica.Blocks.Routing.Multiplex5 multiplex5_1
     annotation (Placement(transformation(extent={{350,280},{370,300}})));
 
-  Buildings.Fluid.Sensors.RelativePressure senRelPre(redeclare package Medium = Medium)
+  Buildings.Fluid.Sensors.RelativePressure senRelPre(redeclare package Medium
+      =                                                                         Medium)
     "Building pressure measurement"
     annotation (Placement(transformation(extent={{60,240},{40,260}})));
   Buildings.Fluid.Sources.Outside out(nPorts=1, redeclare package Medium = Medium)
@@ -151,6 +152,14 @@ partial model PartialFloor "Interface for a model of a floor of a building"
     y(unit="K"))
     annotation (Placement(transformation(extent={{322,224},{330,232}})));
 
+  Buildings.Airflow.Multizone.DoorOperable door220To2nd(redeclare package
+      Medium =                                                                     Medium,
+      LClo=0.1)
+    annotation (Placement(transformation(extent={{-54,-110},{-34,-90}})));
+  Buildings.Airflow.Multizone.DoorOperable door219To2nd(redeclare package
+      Medium =                                                                     Medium,
+      LClo=0.1)
+    annotation (Placement(transformation(extent={{88,-110},{108,-90}})));
 equation
   connect(weaBus, lea219.weaBus) annotation (Line(
       points={{210,200},{-80,200},{-80,400},{-58,400}},

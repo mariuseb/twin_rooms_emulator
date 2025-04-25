@@ -44,12 +44,7 @@ model Adrenalin2
     annotation (Placement(transformation(extent={{-132,80},{-152,100}})));
   Components.AirDCVSplitterManifold5Zone venSupManDam(
     redeclare package Medium = MediumA,
-    m_flow_nominal=m_flow_nominal_air*{floor5Zone_Shading.AFloSou/
-        floor5Zone_Shading.AFloTot,floor5Zone_Shading.AFloEas/
-        floor5Zone_Shading.AFloTot,floor5Zone_Shading.AFloNor/
-        floor5Zone_Shading.AFloTot,floor5Zone_Shading.AFloWes/
-        floor5Zone_Shading.AFloTot,floor5Zone_Shading.AFloCor/
-        floor5Zone_Shading.AFloTot},
+    m_flow_nominal={0.1,0.1,0.1,1E-3,1E-3},
     Kp=fill(10, 5),
     yMin=fill(0.1, 5),
     dpFixed_nominal=fill(200 - 0.27, 5),
@@ -57,48 +52,40 @@ model Adrenalin2
     annotation (Placement(transformation(extent={{-32,84},{-12,104}})));
   Buildings.Fluid.HeatExchangers.Radiators.RadiatorEN442_2 radEas(
     redeclare package Medium = MediumW,
-    Q_flow_nominal(displayUnit="W") = 30*floor5Zone_Shading.AFloTot*
-      floor5Zone_Shading.AFloEas/(floor5Zone_Shading.AFloTot -
-      floor5Zone_Shading.AFloCor),
+    Q_flow_nominal(displayUnit="W") = 1,
     T_a_nominal=328.15,
     T_b_nominal=308.15,
     TAir_nominal=294.15,
     dp_nominal=0) "radiator for east facade"
     annotation (Placement(transformation(extent={{164,112},{184,132}})));
-  Buildings.Fluid.HeatExchangers.Radiators.RadiatorEN442_2 radSou(
+  Buildings.Fluid.HeatExchangers.Radiators.RadiatorEN442_2 rad219(
     redeclare package Medium = MediumW,
-    Q_flow_nominal(displayUnit="W") = 30*floor5Zone_Shading.AFloTot*
-      floor5Zone_Shading.AFloSou/(floor5Zone_Shading.AFloTot -
-      floor5Zone_Shading.AFloCor),
+    Q_flow_nominal(displayUnit="W") = 50*floor5Zone_Shading.AFlo219,
     T_a_nominal=328.15,
     T_b_nominal=308.15,
     TAir_nominal=294.15,
-    dp_nominal=0) "radiator for south facade"
+    dp_nominal=0) "radiator for room 2.19"
     annotation (Placement(transformation(extent={{100,90},{120,110}})));
-  Buildings.Fluid.HeatExchangers.Radiators.RadiatorEN442_2 radWes(
+  Buildings.Fluid.HeatExchangers.Radiators.RadiatorEN442_2 rad220(
     redeclare package Medium = MediumW,
-    Q_flow_nominal(displayUnit="W") = 30*floor5Zone_Shading.AFloTot*
-      floor5Zone_Shading.AFloWes/(floor5Zone_Shading.AFloTot -
-      floor5Zone_Shading.AFloCor),
+    Q_flow_nominal(displayUnit="W") = 30*floor5Zone_Shading.AFlo220,
     T_a_nominal=328.15,
     T_b_nominal=308.15,
     TAir_nominal=294.15,
-    dp_nominal=0) "radiator for west facade"
+    dp_nominal=0) "radiator for room 2.20"
     annotation (Placement(transformation(extent={{22,114},{42,134}})));
-  Buildings.Fluid.HeatExchangers.Radiators.RadiatorEN442_2 radNor(
+  Buildings.Fluid.HeatExchangers.Radiators.RadiatorEN442_2 rad2nd(
     redeclare package Medium = MediumW,
-    Q_flow_nominal(displayUnit="W") = 30*floor5Zone_Shading.AFloTot*
-      floor5Zone_Shading.AFloNor/(floor5Zone_Shading.AFloTot -
-      floor5Zone_Shading.AFloCor),
+    Q_flow_nominal(displayUnit="W") = 30*floor5Zone_Shading.AFlo2nd,
     T_a_nominal=328.15,
     T_b_nominal=308.15,
     TAir_nominal=294.15,
-    dp_nominal=0) "radiator for north facade"
+    dp_nominal=0) "radiator for rest of 2nd floor"
     annotation (Placement(transformation(extent={{68,172},{88,192}})));
   Components.WaterTRVSplitterManifold4Zone radSupMan(
     redeclare package Medium = MediumW,
-    m_flow_nominal={radSou.m_flow_nominal,radEas.m_flow_nominal,radNor.m_flow_nominal,
-        radWes.m_flow_nominal},
+    m_flow_nominal={rad219.m_flow_nominal,radEas.m_flow_nominal,rad2nd.m_flow_nominal,
+        rad220.m_flow_nominal},
     nPorts=4) "Radiator manifold with valves" annotation (Placement(
         transformation(
         extent={{-10,-10},{10,10}},
@@ -113,7 +100,7 @@ model Adrenalin2
         rotation=270,
         origin={-20,4})));
   Components.AirJoinerManifold5Zone VenRetMan(redeclare package Medium =
-        MediumA, m_flow_nominal=m_flow_nominal_air*{0.2,0.133,0.2,0.133,1/3})
+        MediumA, m_flow_nominal={0.1,0.1,0.1,1E-3,1E-3})
     "Ventilation return manifold"
     annotation (Placement(transformation(extent={{-12,132},{-32,152}})));
   Components.DistrictHeating_dp districtHeating(
@@ -361,45 +348,45 @@ equation
           76},{-42,102},{-32,102}},
       color={0,0,127},
       pattern=LinePattern.Dash));
-  connect(radSou.heatPortRad,floor5Zone_Shading.heaPorRad219)  annotation (Line(
+  connect(rad219.heatPortRad,floor5Zone_Shading.heaPorRad219)  annotation (Line(
         points={{112,107.2},{112,122},{99.0826,122},{99.0826,124.846}}, color={191,
           0,0}));
-  connect(radSou.heatPortCon,floor5Zone_Shading.heaPorAir219)  annotation (Line(
+  connect(rad219.heatPortCon,floor5Zone_Shading.heaPorAir219)  annotation (Line(
         points={{108,107.2},{108,126},{99.0826,126},{99.0826,128.538}}, color={191,
           0,0}));
-  connect(radWes.heatPortRad,floor5Zone_Shading.heaPorRad220)  annotation (Line(
+  connect(rad220.heatPortRad,floor5Zone_Shading.heaPorRad220)  annotation (Line(
         points={{34,131.2},{34,136.385},{61.7522,136.385}}, color={191,0,0}));
-  connect(radWes.heatPortCon,floor5Zone_Shading.heaPorAir220)  annotation (Line(
+  connect(rad220.heatPortCon,floor5Zone_Shading.heaPorAir220)  annotation (Line(
         points={{30,131.2},{30,138},{61.7522,138},{61.7522,139.615}}, color={191,
           0,0}));
-  connect(floor5Zone_Shading.heaPorRad1st, radNor.heatPortRad) annotation (Line(
+  connect(floor5Zone_Shading.heaPorRad1st,rad2nd. heatPortRad) annotation (Line(
         points={{99.0826,158.538},{99.0826,156},{94,156},{94,192},{80,192},{80,
           189.2}},
         color={191,0,0}));
-  connect(radNor.heatPortCon,floor5Zone_Shading.heaPorAir1st)  annotation (Line(
+  connect(rad2nd.heatPortCon,floor5Zone_Shading.heaPorAir1st)  annotation (Line(
         points={{76,189.2},{76,196},{96,196},{96,178},{99.0826,178},{99.0826,
           162.231}},
         color={191,0,0}));
-  connect(radSupMan.ports_b[1], radSou.port_a) annotation (Line(points={{15.5,14},
+  connect(radSupMan.ports_b[1],rad219. port_a) annotation (Line(points={{15.5,14},
           {15.5,100},{100,100}}, color={102,44,145}));
   connect(radSupMan.ports_b[2], radEas.port_a) annotation (Line(points={{14.5,14},
           {14.5,84},{164,84},{164,122}}, color={102,44,145}));
-  connect(radSupMan.ports_b[3], radNor.port_a) annotation (Line(points={{13.5,14},
+  connect(radSupMan.ports_b[3],rad2nd. port_a) annotation (Line(points={{13.5,14},
           {13.5,182},{68,182}}, color={102,44,145}));
-  connect(radSupMan.ports_b[4], radWes.port_a) annotation (Line(points={{12.5,14},
+  connect(radSupMan.ports_b[4],rad220. port_a) annotation (Line(points={{12.5,14},
           {12.5,124},{22,124}}, color={102,44,145}));
   connect(floor5Zone_Shading.TRooAir, radSupMan.TMea) annotation (Line(
       points={{158.304,144},{160,144},{160,70},{-4,70},{-4,-6},{4,-6}},
       color={0,0,127},
       pattern=LinePattern.Dash));
-  connect(radSou.port_b, radRetMan.ports_a[1]) annotation (Line(points={{120,100},
+  connect(rad219.port_b, radRetMan.ports_a[1]) annotation (Line(points={{120,100},
           {122,100},{122,68},{-21.5,68},{-21.5,14}}, color={0,127,255}));
   connect(radEas.port_b, radRetMan.ports_a[2]) annotation (Line(points={{184,122},
           {190,122},{190,68},{-20.5,68},{-20.5,14}}, color={0,127,255}));
-  connect(radNor.port_b, radRetMan.ports_a[3]) annotation (Line(points={{88,182},
+  connect(rad2nd.port_b, radRetMan.ports_a[3]) annotation (Line(points={{88,182},
           {98,182},{98,198},{10,198},{10,74},{-19.5,74},{-19.5,14}}, color={0,127,
           255}));
-  connect(radWes.port_b, radRetMan.ports_a[4]) annotation (Line(points={{42,124},
+  connect(rad220.port_b, radRetMan.ports_a[4]) annotation (Line(points={{42,124},
           {42,68},{-18.5,68},{-18.5,14}}, color={0,127,255}));
   connect(jun2.port_2, districtHeating.port_a) annotation (Line(points={{-162,-146},
           {-166,-146},{-166,-134},{-172,-134}}, color={0,127,255}));

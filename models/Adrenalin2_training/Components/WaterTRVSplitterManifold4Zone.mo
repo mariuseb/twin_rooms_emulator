@@ -51,7 +51,7 @@ model WaterTRVSplitterManifold4Zone
         rotation=270,
         origin={0,128}), iconTransformation(extent={{-120,80},{-80,120}})));
 
-  TwoWayTRV valSou(
+  TwoWayPIDV valSou(
     redeclare package Medium = Medium,
     allowFlowReversal=allowFlowReversal,
     m_flow_nominal=m_flow_nominal[1],
@@ -61,7 +61,7 @@ model WaterTRVSplitterManifold4Zone
         extent={{-10,-10},{10,10}},
         rotation=0,
         origin={0,-80})));
-  TwoWayTRV valEas(
+  TwoWayPIDV valEas(
     redeclare package Medium = Medium,
     allowFlowReversal=allowFlowReversal,
     m_flow_nominal=m_flow_nominal[2],
@@ -71,7 +71,7 @@ model WaterTRVSplitterManifold4Zone
         extent={{-10,-10},{10,10}},
         rotation=0,
         origin={0,-40})));
-  TwoWayTRV valNor(
+  TwoWayPIDV valNor(
     redeclare package Medium = Medium,
     allowFlowReversal=allowFlowReversal,
     m_flow_nominal=m_flow_nominal[3],
@@ -79,7 +79,7 @@ model WaterTRVSplitterManifold4Zone
     use_TSet_in=true,
     dpFixed_nominal=dpFixed_nominal[3]) annotation (Placement(transformation(
           extent={{-10,-10},{10,10}}, rotation=0)));
-  TwoWayTRV valWes(
+  TwoWayPIDV valWes(
     redeclare package Medium = Medium,
     allowFlowReversal=allowFlowReversal,
     m_flow_nominal=m_flow_nominal[4],
@@ -89,8 +89,6 @@ model WaterTRVSplitterManifold4Zone
         extent={{-10,-10},{10,10}},
         rotation=0,
         origin={0,40})));
-  Modelica.Blocks.Sources.Constant Tset(k=TSet_fixed)
-    annotation (Placement(transformation(extent={{-100,100},{-80,120}})));
 
   Buildings.Utilities.IO.SignalExchange.Overwrite TSetRadWes(description="Radiator setpoint for zone west",
       u(
@@ -116,6 +114,17 @@ model WaterTRVSplitterManifold4Zone
       min=285.15,
       max=313.15)) "Zone south radiator setpoint"
     annotation (Placement(transformation(extent={{-32,-78},{-20,-66}})));
+  Buildings.Controls.SetPoints.OccupancySchedule
+                                       occSch(occupancy=3600*{8,18})
+                                              "Occupancy schedule"
+    annotation (Placement(transformation(extent={{-182,88},{-162,108}})));
+  Modelica.Blocks.Sources.Constant TRooNig(k=273.15 + 16)
+    "Room temperature set point at night"
+    annotation (Placement(transformation(extent={{-182,60},{-162,80}})));
+  Modelica.Blocks.Sources.Constant TRooSet(k=273.15 + 21)
+    annotation (Placement(transformation(extent={{-182,120},{-162,140}})));
+  Modelica.Blocks.Logical.Switch switch1
+    annotation (Placement(transformation(extent={{-108,110},{-88,130}})));
 equation
   connect(port_a, jun1.port_1) annotation (Line(points={{-100,0},{-96,0},{-96,-90},
           {-60,-90}}, color={0,127,255}));
@@ -158,38 +167,36 @@ equation
       pattern=LinePattern.Dash));
   connect(valWes.port_a, jun3.port_2)
     annotation (Line(points={{-10,40},{-60,40},{-60,10}}, color={0,127,255}));
-  connect(Tset.y, TSetRadWes.u) annotation (Line(
-      points={{-79,110},{-40,110},{-40,48},{-33.2,48}},
-      color={0,0,127},
-      pattern=LinePattern.Dash));
   connect(TSetRadWes.y, valWes.TSet_in) annotation (Line(
       points={{-19.4,48},{-12,48}},
-      color={0,0,127},
-      pattern=LinePattern.Dash));
-  connect(Tset.y, TSetRadNor.u) annotation (Line(
-      points={{-79,110},{-40,110},{-40,8},{-33.2,8}},
       color={0,0,127},
       pattern=LinePattern.Dash));
   connect(TSetRadNor.y, valNor.TSet_in) annotation (Line(
       points={{-19.4,8},{-12,8}},
       color={0,0,127},
       pattern=LinePattern.Dash));
-  connect(Tset.y, TSetRadEas.u) annotation (Line(
-      points={{-79,110},{-40,110},{-40,-32},{-35.2,-32}},
-      color={0,0,127},
-      pattern=LinePattern.Dash));
   connect(TSetRadEas.y, valEas.TSet_in) annotation (Line(
       points={{-21.4,-32},{-12,-32}},
-      color={0,0,127},
-      pattern=LinePattern.Dash));
-  connect(Tset.y, TSetRadSou.u) annotation (Line(
-      points={{-79,110},{-40,110},{-40,-72},{-33.2,-72}},
       color={0,0,127},
       pattern=LinePattern.Dash));
   connect(TSetRadSou.y, valSou.TSet_in) annotation (Line(
       points={{-19.4,-72},{-12,-72}},
       color={0,0,127},
       pattern=LinePattern.Dash));
+  connect(occSch.occupied, switch1.u2) annotation (Line(points={{-161,92},{-154,
+          92},{-154,114},{-110,114},{-110,120}}, color={255,0,255}));
+  connect(TRooNig.y, switch1.u3) annotation (Line(points={{-161,70},{-146,70},
+          {-146,112},{-110,112}}, color={0,0,127}));
+  connect(TRooSet.y, switch1.u1) annotation (Line(points={{-161,130},{-146,130},
+          {-146,138},{-134,138},{-134,128},{-110,128}}, color={0,0,127}));
+  connect(switch1.y, TSetRadWes.u) annotation (Line(points={{-87,120},{-72,120},
+          {-72,104},{-54,104},{-54,48},{-33.2,48}}, color={0,0,127}));
+  connect(switch1.y, TSetRadNor.u) annotation (Line(points={{-87,120},{-72,120},
+          {-72,114},{-46,114},{-46,8},{-33.2,8}}, color={0,0,127}));
+  connect(switch1.y, TSetRadEas.u) annotation (Line(points={{-87,120},{-76,120},
+          {-76,96},{-44,96},{-44,-32},{-35.2,-32}}, color={0,0,127}));
+  connect(switch1.y, TSetRadSou.u) annotation (Line(points={{-87,120},{-74,120},
+          {-74,112},{-44,112},{-44,-72},{-33.2,-72}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(
           extent={{-100,100},{100,-100}},

@@ -17,7 +17,8 @@ model InternalGains "InternalGains to heat to zone"
     latPower_nominal=0,
     senPower_nominal=data.ligSenPowNom)
     annotation (Placement(transformation(extent={{-84,-50},{-64,-30}})));
-  replaceable parameter Data.Generic data             constrainedby Data.Generic
+  replaceable parameter Data.Generic data             constrainedby
+    Data.Generic
     "Record with internal gains data data" annotation (choicesAllMatching=true,
       Placement(transformation(extent={{78,78},{98,98}})));
   Modelica.Blocks.Math.MultiSum sumRad(k=fill(Area, sumRad.nu), nu=3)

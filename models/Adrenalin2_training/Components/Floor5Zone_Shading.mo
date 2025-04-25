@@ -14,7 +14,9 @@ model Floor5Zone_Shading
     lea220(amb(C=fill(400e-6*Modelica.Media.IdealGases.Common.SingleGasesData.CO2.MM
             /Modelica.Media.IdealGases.Common.SingleGasesData.Air.MM, Medium.nC))),
     lea2nd(amb(C=fill(400e-6*Modelica.Media.IdealGases.Common.SingleGasesData.CO2.MM
-            /Modelica.Media.IdealGases.Common.SingleGasesData.Air.MM, Medium.nC))));
+            /Modelica.Media.IdealGases.Common.SingleGasesData.Air.MM, Medium.nC))),
+    door220To2nd(wOpe=1.710),
+    door219To2nd(wOpe=1.710));
 
   package MediumA = Buildings.Media.Air(extraPropertiesNames={"CO2"}) "Medium model for air";
 
@@ -129,7 +131,7 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
   parameter Buildings.HeatTransfer.Data.OpaqueConstructions.Generic conFlo(final
       nLay=3, material={matChiBoa,matMinWoo,matCLT})
                                  "Floor construction (opa_a is carpet)"
-    annotation (Placement(transformation(extent={{280,418},{300,438}})));
+    annotation (Placement(transformation(extent={{276,420},{296,440}})));
   parameter Buildings.HeatTransfer.Data.OpaqueConstructions.Generic conFur(final
       nLay=1, material={matFur}) "Construction for internal mass of furniture"
     annotation (Placement(transformation(extent={{320,420},{340,440}})));
@@ -179,7 +181,7 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
     datConExtWin(
       layers={conExtWal},
       A={12*hRoo},
-      glaSys={glaSys},
+      glaSys={datGlaSys},
       wWin={winWalRat/hWin*12*hRoo},
       each hWin=hWin,
       fFra={0.1},
@@ -191,7 +193,7 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
     use_C_flow=true,
     C_start=fill(400e-6*Modelica.Media.IdealGases.Common.SingleGasesData.CO2.MM/
         Modelica.Media.IdealGases.Common.SingleGasesData.Air.MM, Medium.nC),
-    nPorts=3,
+    nPorts=5,
     intConMod=intConMod,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     final sampleModel=sampleModel) "Room 2.19"
@@ -221,7 +223,7 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
     datConExtWin(
       layers={conExtWal},
       A={12*hRoo},
-      glaSys={glaSys},
+      glaSys={datGlaSys},
       wWin={winWalRat/hWin*12*hRoo},
       each hWin=hWin,
       fFra={0.1},
@@ -233,12 +235,17 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
     use_C_flow=true,
     C_start=fill(400e-6*Modelica.Media.IdealGases.Common.SingleGasesData.CO2.MM/
         Modelica.Media.IdealGases.Common.SingleGasesData.Air.MM, Medium.nC),
-    nPorts=3,
+    nPorts=5,
     intConMod=intConMod,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     final sampleModel=sampleModel) "Room 2.20"
     annotation (Placement(transformation(extent={{20,-46},{60,-6}})));
   Buildings.ThermalZones.Detailed.MixedAir SecFloor(
+    datConExt(
+      layers={conExtWal,conExtWal,conExtWal},
+      A={(4.073 + 1.8 + 4.8)*hRoo,28.873*hRoo,(4.073 + 1.8 + 4.8)*hRoo},
+      til={Buildings.Types.Tilt.Wall,Buildings.Types.Tilt.Wall,Buildings.Types.Tilt.Wall},
+      azi={Buildings.Types.Azimuth.W,Buildings.Types.Azimuth.N,Buildings.Types.Azimuth.E}),
     surBou(
       each A=(wSouFac/2)*hRoo,
       each absIR=0.9,
@@ -260,13 +267,14 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
     use_C_flow=true,
     C_start=fill(400e-6*Modelica.Media.IdealGases.Common.SingleGasesData.CO2.MM/
         Modelica.Media.IdealGases.Common.SingleGasesData.Air.MM, Medium.nC),
-    nPorts=5,
+    nPorts=7,
     intConMod=intConMod,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     final sampleModel=sampleModel) "Rest of 2nd floor lumped as one zone"
     annotation (Placement(transformation(extent={{146,36},{186,76}})));
 
-  InternalGains.InternalGains                           gai(Area=AFloTot, redeclare
+  InternalGains.InternalGains                           gai(
+    Area=1,                                                               redeclare
       Adrenalin2_training.Components.InternalGains.Data.SNTS3031_Office data(
         equSenPowNom=0.5, ligSenPowNom=0.5),
     combiTimeTable(
@@ -401,7 +409,7 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
     y(unit="W", displayUnit="W"))
     annotation (Placement(transformation(extent={{-142,80},{-160,98}})));
 
-  Modelica.Blocks.Math.Gain gaiArea(k=AFlo219 + AFlo220 + AFlo2nd)
+  Modelica.Blocks.Math.Gain gaiArea(k=1)
     annotation (Placement(transformation(extent={{-110,80},{-130,100}})));
   parameter Buildings.HeatTransfer.Data.Solids.Concrete matConExt(
     x=0.15,
@@ -473,6 +481,14 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
         extent={{-10,-10},{10,10}},
         rotation=90,
         origin={238,14})));
+  Buildings.Controls.SetPoints.OccupancySchedule
+                                       occSch(occupancy=3600*{8,18})
+                                              "Occupancy schedule"
+    annotation (Placement(transformation(extent={{-150,-146},{-130,-126}})));
+  Modelica.Blocks.Math.BooleanToReal booleanToReal
+    annotation (Placement(transformation(extent={{-98,-148},{-78,-128}})));
+  parameter BaseClasses.TripleArgon18Argon18Clear datGlaSys
+    annotation (Placement(transformation(extent={{240,422},{260,442}})));
 equation
   connect(room219.weaBus, weaBus) annotation (Line(
       points={{179.9,-6.1},{179.9,8},{210,8},{210,200}},
@@ -511,31 +527,31 @@ equation
       color={191,0,0},
       smooth=Smooth.None));
   connect(room219.ports[1],ports219 [1]) annotation (Line(
-      points={{147,-35.3333},{114,-35.3333},{114,-36},{85,-36}},
+      points={{147,-35.6},{114,-35.6},{114,-36},{85,-36}},
       color={0,127,255},
       thickness=0.5));
   connect(room219.ports[2],ports219 [2]) annotation (Line(
-      points={{147,-34},{122,-34},{122,-50},{108,-50},{108,-36},{95,-36}},
+      points={{147,-34.8},{122,-34.8},{122,-50},{108,-50},{108,-36},{95,-36}},
       color={0,127,255},
       thickness=0.5));
   connect(room220.ports[1],ports220 [1]) annotation (Line(
-      points={{25,-37.3333},{25,-32},{-32,-32},{-32,4},{-35,4},{-35,44}},
+      points={{25,-37.6},{25,-32},{-32,-32},{-32,4},{-35,4},{-35,44}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(room220.ports[2],ports220 [2]) annotation (Line(
-      points={{25,-36},{-32,-36},{-32,4},{-36,4},{-36,44},{-25,44}},
+      points={{25,-36.8},{-32,-36.8},{-32,4},{-36,4},{-36,44},{-25,44}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(SecFloor.ports[1],ports2nd [1]) annotation (Line(
-      points={{151,44.4},{114,44.4},{114,46},{85,46}},
+      points={{151,44.2857},{114,44.2857},{114,46},{85,46}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(SecFloor.ports[2],ports2nd [2]) annotation (Line(
-      points={{151,45.2},{124,45.2},{124,46},{95,46}},
+      points={{151,44.8571},{124,44.8571},{124,46},{95,46}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(SecFloor.ports[3], senRelPre.port_a) annotation (Line(
-      points={{151,46},{112,46},{112,250},{60,250}},
+      points={{151,45.4286},{112,45.4286},{112,250},{60,250}},
       color={0,127,255},
       smooth=Smooth.None,
       thickness=0.5));
@@ -567,16 +583,15 @@ equation
           4},{120,4},{120,8},{140.4,8},{140.4,-21.2}},
                                color={0,0,127}));
   connect(senCO2Sou.port, room219.ports[3]) annotation (Line(points={{304,192},
-          {216,192},{216,-44},{128,-44},{128,-32.6667},{147,-32.6667}},
-                                                                 color={0,127,255}));
+          {216,192},{216,-44},{128,-44},{128,-34},{147,-34}},    color={0,127,255}));
   connect(senCO2Wes.port, room220.ports[3]) annotation (Line(points={{304,120},
           {282,120},{282,196},{226,196},{226,200},{190,200},{190,196},{46,196},
-          {46,68},{6,68},{6,44},{-38,44},{-38,4},{-34,4},{-34,-34.6667},{25,
-          -34.6667}},
+          {46,68},{6,68},{6,44},{-38,44},{-38,4},{-34,4},{-34,-36},{25,-36}},
         color={0,127,255}));
   connect(senCO2Cor.port, SecFloor.ports[3]) annotation (Line(points={{304,100},
           {288,100},{288,28},{228,28},{228,40},{188,40},{188,32},{140,32},{140,
-          46},{151,46}},  color={0,127,255}));
+          45.4286},{151,45.4286}},
+                          color={0,127,255}));
   connect(multiplex5_2.y, CO2Roo) annotation (Line(points={{371,154},{372,154},{
           372,80},{390,80}},  color={0,0,127},
       pattern=LinePattern.Dash));
@@ -717,6 +732,32 @@ equation
   connect(parWal220To2nd.port_b, SecFloor.surf_surBou[2]) annotation (Line(
         points={{78,26},{78,28},{162,28},{162,36},{162.2,36},{162.2,42.25}},
         color={191,0,0}));
+  connect(occSch.occupied, booleanToReal.u) annotation (Line(points={{-129,-142},
+          {-120,-142},{-120,-132},{-100,-132},{-100,-138}}, color={255,0,255}));
+  connect(booleanToReal.y, door220To2nd.y) annotation (Line(points={{-77,-138},
+          {-52,-138},{-52,-118},{-86,-118},{-86,-100},{-55,-100}}, color={0,0,
+          127}));
+  connect(booleanToReal.y, door219To2nd.y) annotation (Line(points={{-77,-138},
+          {-38,-138},{-38,-146},{10,-146},{10,-100},{87,-100}}, color={0,0,127}));
+  connect(room220.ports[4], door220To2nd.port_a1) annotation (Line(points={{25,
+          -35.2},{-86,-35.2},{-86,-92},{-54,-92},{-54,-94}}, color={0,127,255}));
+  connect(door220To2nd.port_b2, room220.ports[5]) annotation (Line(points={{-54,
+          -106},{-86,-106},{-86,-102},{-102,-102},{-102,-34.4},{25,-34.4}},
+        color={0,127,255}));
+  connect(door220To2nd.port_b1, SecFloor.ports[4]) annotation (Line(points={{-34,
+          -94},{22,-94},{22,46},{151,46}}, color={0,127,255}));
+  connect(door220To2nd.port_a2, SecFloor.ports[5]) annotation (Line(points={{-34,
+          -106},{-18,-106},{-18,-96},{-6,-96},{-6,46.5714},{151,46.5714}},
+        color={0,127,255}));
+  connect(room219.ports[4], door219To2nd.port_b2) annotation (Line(points={{147,
+          -33.2},{147,-136},{58,-136},{58,-106},{88,-106}}, color={0,127,255}));
+  connect(room219.ports[5], door219To2nd.port_a1) annotation (Line(points={{147,
+          -32.4},{132,-32.4},{132,-76},{60,-76},{60,-94},{88,-94}}, color={0,127,
+          255}));
+  connect(door219To2nd.port_b1, SecFloor.ports[6]) annotation (Line(points={{108,-94},
+          {118,-94},{118,47.1429},{151,47.1429}},      color={0,127,255}));
+  connect(door219To2nd.port_a2, SecFloor.ports[7]) annotation (Line(points={{108,
+          -106},{110,-106},{110,47.7143},{151,47.7143}}, color={0,127,255}));
   annotation (Diagram(coordinateSystem(preserveAspectRatio=true,
         extent={{-160,-100},{380,500}},
         initialScale=0.1), graphics={
