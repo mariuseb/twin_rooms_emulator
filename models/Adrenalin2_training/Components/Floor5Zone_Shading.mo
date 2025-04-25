@@ -147,6 +147,7 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
     annotation (Placement(transformation(extent={{240,460},{260,480}})));
 
   constant Modelica.SIunits.Height hRoo=3.850 "Room height";
+  constant Modelica.SIunits.Length wSouFac=24.073 "South facade length";
 
   parameter Boolean sampleModel = false
     "Set to true to time-sample the model, which can give shorter simulation time if there is already time sampling in the system model"
@@ -155,15 +156,25 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
       Dialog(tab="Experimental (may be changed in future releases)"));
 
   Buildings.ThermalZones.Detailed.MixedAir room219(
+    datConExt(
+      layers={conExtWal},
+      A={(4.073 + 1.8)*hRoo},
+      til={Buildings.Types.Tilt.Wall},
+      azi={Buildings.Types.Azimuth.E}),
     datConPar(
-      layers={conFlo},
-      A={AFlo2nd},
-      til={Buildings.Types.Tilt.Floor}),
+      layers={conFlo,conFlo},
+      A={AFlo2nd,AFlo2nd},
+      til={Buildings.Types.Tilt.Floor,Buildings.Types.Tilt.Ceiling}),
+    surBou(
+      each A=(wSouFac/2)*hRoo,
+      each absIR=0.9,
+      each absSol=0.9,
+      each til=Buildings.Types.Tilt.Wall),
     redeclare package Medium = Medium,
     lat=lat,
     AFlo=AFlo219,
     hRoo=hRoo,
-    nConExt=0,
+    nConExt=1,
     nConExtWin=1,
     datConExtWin(
       layers={conExtWal},
@@ -174,9 +185,9 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
       fFra={0.1},
       til={Buildings.Types.Tilt.Wall},
       azi={Buildings.Types.Azimuth.S}),
-    nConPar=1,
+    nConPar=2,
     nConBou=0,
-    nSurBou=0,
+    nSurBou=1,
     use_C_flow=true,
     C_start=fill(400e-6*Modelica.Media.IdealGases.Common.SingleGasesData.CO2.MM/
         Modelica.Media.IdealGases.Common.SingleGasesData.Air.MM, Medium.nC),
@@ -187,15 +198,25 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
     annotation (Placement(transformation(extent={{142,-44},{182,-4}})));
 
   Buildings.ThermalZones.Detailed.MixedAir room220(
+    datConExt(
+      layers={conExtWal},
+      A={(4.073 + 1.8)*hRoo},
+      til={Buildings.Types.Tilt.Wall},
+      azi={Buildings.Types.Azimuth.W}),
     datConPar(
-      layers={conFlo},
-      A={AFlo2nd},
-      til={Buildings.Types.Tilt.Floor}),
+      layers={conFlo,conFlo},
+      A={AFlo2nd,AFlo2nd},
+      til={Buildings.Types.Tilt.Floor,Buildings.Types.Tilt.Ceiling}),
+    surBou(
+      each A=(wSouFac/2)*hRoo,
+      each absIR=0.9,
+      each absSol=0.9,
+      each til=Buildings.Types.Tilt.Wall),
     redeclare package Medium = Medium,
     lat=lat,
     AFlo=AFlo220,
     hRoo=hRoo,
-    nConExt=0,
+    nConExt=1,
     nConExtWin=1,
     datConExtWin(
       layers={conExtWal},
@@ -206,9 +227,9 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
       fFra={0.1},
       til={Buildings.Types.Tilt.Wall},
       azi={Buildings.Types.Azimuth.S}),
-    nConPar=1,
+    nConPar=2,
     nConBou=0,
-    nSurBou=0,
+    nSurBou=1,
     use_C_flow=true,
     C_start=fill(400e-6*Modelica.Media.IdealGases.Common.SingleGasesData.CO2.MM/
         Modelica.Media.IdealGases.Common.SingleGasesData.Air.MM, Medium.nC),
@@ -218,29 +239,28 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
     final sampleModel=sampleModel) "Room 2.20"
     annotation (Placement(transformation(extent={{20,-46},{60,-6}})));
   Buildings.ThermalZones.Detailed.MixedAir SecFloor(
+    surBou(
+      each A=(wSouFac/2)*hRoo,
+      each absIR=0.9,
+      each absSol=0.9,
+      each til=Buildings.Types.Tilt.Wall),
     redeclare package Medium = Medium,
     lat=lat,
     AFlo=AFlo2nd,
     hRoo=hRoo,
-    nConExt=0,
+    nConExt=3,
     nConExtWin=0,
     nConPar=2,
     datConPar(
-      layers={conFlo,conFur},
-      A={AFlo2nd,1967.01},
-      til={Buildings.Types.Tilt.Floor,Buildings.Types.Tilt.Wall}),
+      layers={conFlo,conFlo},
+      A={AFlo2nd,AFlo2nd},
+      til={Buildings.Types.Tilt.Floor,Buildings.Types.Tilt.Ceiling}),
     nConBou=0,
-    nSurBou=4,
-    surBou(
-      A={40.76,24.13,40.76,24.13}*hRoo,
-      each absIR=0.9,
-      each absSol=0.9,
-      til={Buildings.Types.Tilt.Wall,Buildings.Types.Tilt.Wall,Buildings.Types.Tilt.Wall,
-          Buildings.Types.Tilt.Wall}),
+    nSurBou=2,
     use_C_flow=true,
     C_start=fill(400e-6*Modelica.Media.IdealGases.Common.SingleGasesData.CO2.MM/
         Modelica.Media.IdealGases.Common.SingleGasesData.Air.MM, Medium.nC),
-    nPorts=3,
+    nPorts=5,
     intConMod=intConMod,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     final sampleModel=sampleModel) "Rest of 2nd floor lumped as one zone"
@@ -433,6 +453,26 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
     V=10,
     nPorts=3)
     annotation (Placement(transformation(extent={{228,144},{248,164}})));
+  Buildings.HeatTransfer.Conduction.MultiLayer parWal220To2nd(
+    A=(wSouFac/2)*hRoo,
+    layers=conIntWal,
+    stateAtSurface_a=true,
+    stateAtSurface_b=true)
+    "Partition wall between room 2.20 to rest of 2nd floor" annotation (
+      Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=90,
+        origin={78,16})));
+  Buildings.HeatTransfer.Conduction.MultiLayer parWal219To2nd(
+    A=(wSouFac/2)*hRoo,
+    layers=conIntWal,
+    stateAtSurface_a=true,
+    stateAtSurface_b=true)
+    "Partition wall between room 2.19 to rest of 2nd floor" annotation (
+      Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=90,
+        origin={238,14})));
 equation
   connect(room219.weaBus, weaBus) annotation (Line(
       points={{179.9,-6.1},{179.9,8},{210,8},{210,200}},
@@ -487,15 +527,15 @@ equation
       color={0,127,255},
       smooth=Smooth.None));
   connect(SecFloor.ports[1],ports2nd [1]) annotation (Line(
-      points={{151,44.6667},{114,44.6667},{114,46},{85,46}},
+      points={{151,44.4},{114,44.4},{114,46},{85,46}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(SecFloor.ports[2],ports2nd [2]) annotation (Line(
-      points={{151,46},{95,46}},
+      points={{151,45.2},{124,45.2},{124,46},{95,46}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(SecFloor.ports[3], senRelPre.port_a) annotation (Line(
-      points={{151,47.3333},{112,47.3333},{112,250},{60,250}},
+      points={{151,46},{112,46},{112,250},{60,250}},
       color={0,127,255},
       smooth=Smooth.None,
       thickness=0.5));
@@ -536,8 +576,7 @@ equation
         color={0,127,255}));
   connect(senCO2Cor.port, SecFloor.ports[3]) annotation (Line(points={{304,100},
           {288,100},{288,28},{228,28},{228,40},{188,40},{188,32},{140,32},{140,
-          47.3333},{151,47.3333}},
-                          color={0,127,255}));
+          46},{151,46}},  color={0,127,255}));
   connect(multiplex5_2.y, CO2Roo) annotation (Line(points={{371,154},{372,154},{
           372,80},{390,80}},  color={0,0,127},
       pattern=LinePattern.Dash));
@@ -667,6 +706,17 @@ equation
           114},{-80,138},{-72,138},{-72,-18},{18.4,-18}}, color={0,0,127}));
   connect(gai.intGai, SecFloor.qGai_flow) annotation (Line(points={{-95,114},{-48,
           114},{-48,110},{62,110},{62,64},{144.4,64}}, color={0,0,127}));
+  connect(SecFloor.surf_surBou[1], parWal219To2nd.port_b) annotation (Line(
+        points={{162.2,41.75},{184,41.75},{184,40},{238,40},{238,24}}, color={
+          191,0,0}));
+  connect(room219.surf_surBou[1], parWal219To2nd.port_a) annotation (Line(
+        points={{158.2,-38},{158.2,-74},{238,-74},{238,4}}, color={191,0,0}));
+  connect(room220.surf_surBou[1], parWal220To2nd.port_a) annotation (Line(
+        points={{36.2,-40},{36,-40},{36,-74},{62,-74},{62,-4},{78,-4},{78,6}},
+        color={191,0,0}));
+  connect(parWal220To2nd.port_b, SecFloor.surf_surBou[2]) annotation (Line(
+        points={{78,26},{78,28},{162,28},{162,36},{162.2,36},{162.2,42.25}},
+        color={191,0,0}));
   annotation (Diagram(coordinateSystem(preserveAspectRatio=true,
         extent={{-160,-100},{380,500}},
         initialScale=0.1), graphics={
