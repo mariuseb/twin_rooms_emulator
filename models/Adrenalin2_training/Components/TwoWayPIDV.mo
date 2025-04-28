@@ -22,7 +22,7 @@ model TwoWayPIDV "Two way thermostatic radiator valve"
   Modelica.Blocks.Interfaces.RealInput TSet_in(final unit="K",
                                             displayUnit="degC") if use_TSet_in
     "Prescribed temperature setpoint"
-    annotation (Placement(transformation(extent={{-140,60},{-100,100}})));
+    annotation (Placement(transformation(extent={{-136,58},{-96,98}})));
 
   parameter Modelica.SIunits.Temperature P(displayUnit="K") = 2 "Proportional band of valve";
 
@@ -92,8 +92,14 @@ model TwoWayPIDV "Two way thermostatic radiator valve"
 
   Buildings.Controls.Continuous.LimPID conPID(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=2,
-    Ti=7200) annotation (Placement(transformation(extent={{-52,38},{-32,58}})));
+    k=0.5,
+    Ti=3600,
+    Td=900,
+    yMax=100,
+    Ni=0.9,
+    Nd=0.5,
+    xi_start=0)
+    annotation (Placement(transformation(extent={{-62,68},{-42,88}})));
 protected
   parameter Medium.ThermodynamicState sta_default=
      Medium.setState_pTX(T=Medium.T_default, p=Medium.p_default, X=Medium.X_default);
@@ -120,12 +126,12 @@ equation
     TSet_in_internal = TSet;
   end if;
 
-  connect(conPID.u_s, TSet_in) annotation (Line(points={{-54,48},{-80,48},{-80,
-          80},{-120,80}}, color={0,0,127}));
-  connect(T, conPID.u_m) annotation (Line(points={{0,106},{0,90},{-68,90},{-68,
-          18},{-42,18},{-42,36}}, color={0,0,127}));
-  connect(conPID.y, val.y)
-    annotation (Line(points={{-31,48},{0,48},{0,12}}, color={0,0,127}));
+  connect(T, conPID.u_m) annotation (Line(points={{0,106},{0,56},{-52,56},{-52,
+          66}},          color={0,0,127}));
+  connect(conPID.y, val.y) annotation (Line(points={{-41,78},{-28,78},{-28,18},
+          {0,18},{0,12}}, color={0,0,127}));
+  connect(conPID.u_s, TSet_in)
+    annotation (Line(points={{-64,78},{-116,78}}, color={0,0,127}));
 annotation (
 defaultComponentName="val",
 Documentation(info="<html>

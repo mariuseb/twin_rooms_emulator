@@ -5,9 +5,10 @@ model Adrenalin2
   package MediumA = Buildings.Media.Air (extraPropertiesNames={"CO2"}) "Medium model for air";
   package MediumW = Buildings.Media.Water "Medium model for water";
 
-  Components.Floor5Zone_Shading                                 floor5Zone_Shading(
-                                                                           lat=lat, gai(data(
-          MatEmi=8.64E-6*0.01)))
+  Components.Floor5Zone_Shading floor5Zone_Shading(
+    lat=lat,
+    gai(data(MatEmi=8.64E-6*0.01)),
+    fixedTempBoundary(T=288.15))
     annotation (Placement(transformation(extent={{50,114},{156,174}})));
   Buildings.BoundaryConditions.WeatherData.ReaderTMY3
                                             weaDat(filNam=
@@ -60,16 +61,18 @@ model Adrenalin2
     annotation (Placement(transformation(extent={{164,112},{184,132}})));
   Buildings.Fluid.HeatExchangers.Radiators.RadiatorEN442_2 rad219(
     redeclare package Medium = MediumW,
-    Q_flow_nominal(displayUnit="W") = 50*floor5Zone_Shading.AFlo219,
-    T_a_nominal=328.15,
+    Q_flow_nominal(displayUnit="W") = 30*floor5Zone_Shading.AFlo219,
+    T_a_nominal=320.15,
     T_b_nominal=308.15,
     TAir_nominal=294.15,
+    VWat=5.68E-5*abs(rad219.Q_flow_nominal),
+    mDry=0.263*abs(rad219.Q_flow_nominal),
     dp_nominal=0) "radiator for room 2.19"
     annotation (Placement(transformation(extent={{100,90},{120,110}})));
   Buildings.Fluid.HeatExchangers.Radiators.RadiatorEN442_2 rad220(
     redeclare package Medium = MediumW,
     Q_flow_nominal(displayUnit="W") = 30*floor5Zone_Shading.AFlo220,
-    T_a_nominal=328.15,
+    T_a_nominal=320.15,
     T_b_nominal=308.15,
     TAir_nominal=294.15,
     dp_nominal=0) "radiator for room 2.20"
@@ -77,7 +80,7 @@ model Adrenalin2
   Buildings.Fluid.HeatExchangers.Radiators.RadiatorEN442_2 rad2nd(
     redeclare package Medium = MediumW,
     Q_flow_nominal(displayUnit="W") = 30*floor5Zone_Shading.AFlo2nd,
-    T_a_nominal=328.15,
+    T_a_nominal=320.15,
     T_b_nominal=308.15,
     TAir_nominal=294.15,
     dp_nominal=0) "radiator for rest of 2nd floor"
@@ -86,7 +89,13 @@ model Adrenalin2
     redeclare package Medium = MediumW,
     m_flow_nominal={rad219.m_flow_nominal,radEas.m_flow_nominal,rad2nd.m_flow_nominal,
         rad220.m_flow_nominal},
-    nPorts=4) "Radiator manifold with valves" annotation (Placement(
+    nPorts=4,
+    TRooSet(k=273.15 + 22),
+    valSou(conPID(k=0.5, yMin=0,
+        initType=Modelica.Blocks.Types.InitPID.InitialState,
+        xi_start=0,
+        xd_start=0)))
+              "Radiator manifold with valves" annotation (Placement(
         transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,

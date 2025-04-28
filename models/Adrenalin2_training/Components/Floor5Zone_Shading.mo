@@ -168,10 +168,10 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
       A={AFlo2nd,AFlo2nd},
       til={Buildings.Types.Tilt.Floor,Buildings.Types.Tilt.Ceiling}),
     surBou(
-      each A=(wSouFac/2)*hRoo,
-      each absIR=0.9,
-      each absSol=0.9,
-      each til=Buildings.Types.Tilt.Wall),
+      A={(wSouFac/2)*hRoo,5.89*hRoo},
+      absIR={0.9,0.9},
+      absSol={0.9,0.9},
+      til={Buildings.Types.Tilt.Wall,Buildings.Types.Tilt.Wall}),
     redeclare package Medium = Medium,
     lat=lat,
     AFlo=AFlo219,
@@ -189,7 +189,7 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
       azi={Buildings.Types.Azimuth.S}),
     nConPar=2,
     nConBou=0,
-    nSurBou=1,
+    nSurBou=2,
     use_C_flow=true,
     C_start=fill(400e-6*Modelica.Media.IdealGases.Common.SingleGasesData.CO2.MM/
         Modelica.Media.IdealGases.Common.SingleGasesData.Air.MM, Medium.nC),
@@ -210,10 +210,10 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
       A={AFlo2nd,AFlo2nd},
       til={Buildings.Types.Tilt.Floor,Buildings.Types.Tilt.Ceiling}),
     surBou(
-      each A=(wSouFac/2)*hRoo,
-      each absIR=0.9,
-      each absSol=0.9,
-      each til=Buildings.Types.Tilt.Wall),
+      A={(wSouFac/2)*hRoo,5.89*hRoo},
+      absIR={0.9,0.9},
+      absSol={0.9,0.9},
+      til={Buildings.Types.Tilt.Wall,Buildings.Types.Tilt.Wall}),
     redeclare package Medium = Medium,
     lat=lat,
     AFlo=AFlo220,
@@ -231,7 +231,7 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
       azi={Buildings.Types.Azimuth.S}),
     nConPar=2,
     nConBou=0,
-    nSurBou=1,
+    nSurBou=2,
     use_C_flow=true,
     C_start=fill(400e-6*Modelica.Media.IdealGases.Common.SingleGasesData.CO2.MM/
         Modelica.Media.IdealGases.Common.SingleGasesData.Air.MM, Medium.nC),
@@ -448,7 +448,7 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
     c=1600,
     d=471) "CLT"
     annotation (Placement(transformation(extent={{566,398},{586,418}})));
-  Modelica.Thermal.HeatTransfer.Sources.FixedTemperature fixedTempBoundary(T=294.15)
+  Modelica.Thermal.HeatTransfer.Sources.FixedTemperature fixedTempBoundary(T=288.15)
     annotation (Placement(transformation(extent={{282,-24},{302,-4}})));
   Buildings.Fluid.MixingVolumes.MixingVolume vol1(redeclare package Medium =
         Medium,
@@ -481,14 +481,20 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
         extent={{-10,-10},{10,10}},
         rotation=90,
         origin={238,14})));
-  Buildings.Controls.SetPoints.OccupancySchedule
-                                       occSch(occupancy=3600*{8,18})
-                                              "Occupancy schedule"
-    annotation (Placement(transformation(extent={{-150,-146},{-130,-126}})));
-  Modelica.Blocks.Math.BooleanToReal booleanToReal
-    annotation (Placement(transformation(extent={{-98,-148},{-78,-128}})));
-  parameter BaseClasses.TripleArgon18Argon18Clear datGlaSys
+  parameter BaseClasses.TripleArgon18Argon18Clear datGlaSys(haveExteriorShade=
+        true, shade=Buildings.HeatTransfer.Data.Shades.Gray())
     annotation (Placement(transformation(extent={{240,422},{260,442}})));
+  Modelica.Blocks.Sources.Constant const(k=1)
+    annotation (Placement(transformation(extent={{-128,-152},{-108,-132}})));
+  Buildings.HeatTransfer.Conduction.MultiLayer parWal220To219(
+    A=5.89*hRoo,
+    layers=conIntWal,
+    stateAtSurface_a=true,
+    stateAtSurface_b=true) "Partition wall between room 2.20 and room 2.19"
+    annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=180,
+        origin={212,-114})));
 equation
   connect(room219.weaBus, weaBus) annotation (Line(
       points={{179.9,-6.1},{179.9,8},{210,8},{210,200}},
@@ -725,20 +731,15 @@ equation
         points={{162.2,41.75},{184,41.75},{184,40},{238,40},{238,24}}, color={
           191,0,0}));
   connect(room219.surf_surBou[1], parWal219To2nd.port_a) annotation (Line(
-        points={{158.2,-38},{158.2,-74},{238,-74},{238,4}}, color={191,0,0}));
+        points={{158.2,-38.25},{158.2,-74},{238,-74},{238,4}},
+                                                            color={191,0,0}));
   connect(room220.surf_surBou[1], parWal220To2nd.port_a) annotation (Line(
-        points={{36.2,-40},{36,-40},{36,-74},{62,-74},{62,-4},{78,-4},{78,6}},
+        points={{36.2,-40.25},{36,-40.25},{36,-74},{62,-74},{62,-4},{78,-4},{78,
+          6}},
         color={191,0,0}));
   connect(parWal220To2nd.port_b, SecFloor.surf_surBou[2]) annotation (Line(
         points={{78,26},{78,28},{162,28},{162,36},{162.2,36},{162.2,42.25}},
         color={191,0,0}));
-  connect(occSch.occupied, booleanToReal.u) annotation (Line(points={{-129,-142},
-          {-120,-142},{-120,-132},{-100,-132},{-100,-138}}, color={255,0,255}));
-  connect(booleanToReal.y, door220To2nd.y) annotation (Line(points={{-77,-138},
-          {-52,-138},{-52,-118},{-86,-118},{-86,-100},{-55,-100}}, color={0,0,
-          127}));
-  connect(booleanToReal.y, door219To2nd.y) annotation (Line(points={{-77,-138},
-          {-38,-138},{-38,-146},{10,-146},{10,-100},{87,-100}}, color={0,0,127}));
   connect(room220.ports[4], door220To2nd.port_a1) annotation (Line(points={{25,
           -35.2},{-86,-35.2},{-86,-92},{-54,-92},{-54,-94}}, color={0,127,255}));
   connect(door220To2nd.port_b2, room220.ports[5]) annotation (Line(points={{-54,
@@ -758,6 +759,16 @@ equation
           {118,-94},{118,47.1429},{151,47.1429}},      color={0,127,255}));
   connect(door219To2nd.port_a2, SecFloor.ports[7]) annotation (Line(points={{108,
           -106},{110,-106},{110,47.7143},{151,47.7143}}, color={0,127,255}));
+  connect(const.y, door220To2nd.y) annotation (Line(points={{-107,-142},{-88,
+          -142},{-88,-140},{-90,-140},{-90,-100},{-55,-100}}, color={0,0,127}));
+  connect(const.y, door219To2nd.y) annotation (Line(points={{-107,-142},{34,
+          -142},{34,-100},{87,-100}}, color={0,0,127}));
+  connect(room220.surf_surBou[2], parWal220To219.port_b) annotation (Line(
+        points={{36.2,-39.75},{68,-39.75},{68,-82},{168,-82},{168,-114},{202,
+          -114}}, color={191,0,0}));
+  connect(parWal220To219.port_a, room219.surf_surBou[2]) annotation (Line(
+        points={{222,-114},{246,-114},{246,-112},{222,-112},{222,-66},{158.2,
+          -66},{158.2,-37.75}}, color={191,0,0}));
   annotation (Diagram(coordinateSystem(preserveAspectRatio=true,
         extent={{-160,-100},{380,500}},
         initialScale=0.1), graphics={
