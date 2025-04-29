@@ -12,8 +12,7 @@ model Adrenalin2
     annotation (Placement(transformation(extent={{50,114},{156,174}})));
   Buildings.BoundaryConditions.WeatherData.ReaderTMY3
                                             weaDat(filNam=
-        ModelicaServices.ExternalReferences.loadResource(
-        "Resources/NOR_OS_Oslo.Blindern.014920_TMYx.mos"),
+        "/home/marius/Desktop/twin_rooms_emulator/models/Resources/NOR_TD_Trondheim-Voll.012570_TMYx.2009-2023.mos",
       computeWetBulbTemperature=false)
     annotation (Placement(transformation(extent={{-200,182},{-180,202}})));
   Buildings.BoundaryConditions.WeatherData.Bus
@@ -91,10 +90,12 @@ model Adrenalin2
         rad220.m_flow_nominal},
     nPorts=4,
     TRooSet(k=273.15 + 22),
-    valSou(conPID(k=0.5, yMin=0,
+    valSou(conPID(
+        k=0.1,           yMin=0,
         initType=Modelica.Blocks.Types.InitPID.InitialState,
         xi_start=0,
-        xd_start=0)))
+        xd_start=0,
+        reset=Buildings.Types.Reset.Disabled)))
               "Radiator manifold with valves" annotation (Placement(
         transformation(
         extent={{-10,-10},{10,10}},

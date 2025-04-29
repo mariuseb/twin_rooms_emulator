@@ -26,7 +26,18 @@ model Floor5Zone_Shading
   parameter Real winWalRat(
     min=0.01,
     max=0.99) = 0.33 "Window to wall ratio for exterior walls";
-  parameter Modelica.SIunits.Length hWin = 1.5 "Height of windows";
+
+  parameter Modelica.SIunits.Height hWin = 1.775 "Height of windows";
+  parameter Modelica.SIunits.Length wWin = 0.9 "Width of windows";
+  parameter Modelica.SIunits.DimensionlessRatio nWinTwin = 8 "# of windows in each twin room";
+  parameter Modelica.SIunits.Height hWinNor = 2.210 "Height of windows, north facace";
+  parameter Modelica.SIunits.Length wWinNor = 1.890 "Width of windows, north facade";
+  parameter Modelica.SIunits.DimensionlessRatio nWinNor = 7 "# of windows on north facade";
+  parameter Modelica.SIunits.Height hWinWes = 2.290 "Height of windows, west facace";
+  parameter Modelica.SIunits.Length wWinWes = 3.34 "Width of windows, west facade";
+  parameter Modelica.SIunits.Height hWinEas = 2.290 "Height of windows, east facace";
+  parameter Modelica.SIunits.Length wWinEas = 2.34 "Width of windows, east facade";
+
   parameter Buildings.HeatTransfer.Data.Solids.Plywood matFur(x=0.15, nStaRef=5)
     "Material for furniture"
     annotation (Placement(transformation(extent={{140,460},{160,480}})));
@@ -121,7 +132,7 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
   nStaRef=2) "Gypsum board"
   annotation (Placement(transformation(extent={{178,372},{198,392}})));
   parameter Buildings.HeatTransfer.Data.OpaqueConstructions.Generic conExtWal(final
-      nLay=9, material={matDoubleBevel, matHorBatt, matVerBatt, matWinBar, matGUx, matMinWooFra, matVapBar, matMinWooFur, matGyp})
+      nLay=4, material={matGUx,matMinWooFra,matMinWooFur,matGyp})
                                                "Exterior construction"
     annotation (Placement(transformation(extent={{278,460},{298,480}})));
   parameter Buildings.HeatTransfer.Data.OpaqueConstructions.Generic conIntWal(final
@@ -149,6 +160,7 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
     annotation (Placement(transformation(extent={{240,460},{260,480}})));
 
   constant Modelica.SIunits.Height hRoo=3.850 "Room height";
+
   constant Modelica.SIunits.Length wSouFac=24.073 "South facade length";
 
   parameter Boolean sampleModel = false
@@ -182,7 +194,7 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
       layers={conExtWal},
       A={12*hRoo},
       glaSys={datGlaSys},
-      wWin={winWalRat/hWin*12*hRoo},
+      wWin={nWinTwin*wWin*hWin},
       each hWin=hWin,
       fFra={0.1},
       til={Buildings.Types.Tilt.Wall},
@@ -196,6 +208,7 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
     nPorts=5,
     intConMod=intConMod,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
+    m_flow_nominal=(AFlo219*hRoo)*1.2*0.5/3600,
     final sampleModel=sampleModel) "Room 2.19"
     annotation (Placement(transformation(extent={{142,-44},{182,-4}})));
 
@@ -224,7 +237,7 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
       layers={conExtWal},
       A={12*hRoo},
       glaSys={datGlaSys},
-      wWin={winWalRat/hWin*12*hRoo},
+      wWin={nWinTwin*wWin*hWin},
       each hWin=hWin,
       fFra={0.1},
       til={Buildings.Types.Tilt.Wall},
@@ -238,12 +251,17 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
     nPorts=5,
     intConMod=intConMod,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
+    m_flow_nominal=(AFlo220*hRoo)*1.2*0.5/3600,
     final sampleModel=sampleModel) "Room 2.20"
     annotation (Placement(transformation(extent={{20,-46},{60,-6}})));
   Buildings.ThermalZones.Detailed.MixedAir SecFloor(
-    datConExt(
+    datConExtWin(
       layers={conExtWal,conExtWal,conExtWal},
       A={(4.073 + 1.8 + 4.8)*hRoo,28.873*hRoo,(4.073 + 1.8 + 4.8)*hRoo},
+      glaSys={datGlaSys,datGlaSys,datGlaSys},
+      wWin={wWinWes,nWinTwin*wWinNor,wWinEas},
+      hWin={hWinWes,hWinNor,hWinEas},
+      fFra={0.1,0.1,0.1},
       til={Buildings.Types.Tilt.Wall,Buildings.Types.Tilt.Wall,Buildings.Types.Tilt.Wall},
       azi={Buildings.Types.Azimuth.W,Buildings.Types.Azimuth.N,Buildings.Types.Azimuth.E}),
     surBou(
@@ -255,8 +273,8 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
     lat=lat,
     AFlo=AFlo2nd,
     hRoo=hRoo,
-    nConExt=3,
-    nConExtWin=0,
+    nConExt=0,
+    nConExtWin=3,
     nConPar=2,
     datConPar(
       layers={conFlo,conFlo},
@@ -270,6 +288,7 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
     nPorts=7,
     intConMod=intConMod,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
+    m_flow_nominal=(AFlo219*hRoo)*1.2*0.5/3600,
     final sampleModel=sampleModel) "Rest of 2nd floor lumped as one zone"
     annotation (Placement(transformation(extent={{146,36},{186,76}})));
 
@@ -351,12 +370,11 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
     "Connector of Real output signals" annotation (Placement(transformation(
           extent={{380,70},{400,90}}), iconTransformation(extent={{380,70},{400,
             90}})));
-  BaseClasses.shading              shading_control[4](
+  BaseClasses.shading              shading_control[5](
     each threshold=150,
     each til=Buildings.Types.Tilt.Wall,
     each lat=lat,
-    azi={Buildings.Types.Azimuth.S,Buildings.Types.Azimuth.E,Buildings.Types.Azimuth.N,
-        Buildings.Types.Azimuth.W})
+    azi={Buildings.Types.Azimuth.S,Buildings.Types.Azimuth.S,Buildings.Types.Azimuth.W,Buildings.Types.Azimuth.N,Buildings.Types.Azimuth.E})
     annotation (Placement(transformation(extent={{-58,174},{-38,194}})));
   Buildings.Utilities.IO.SignalExchange.Read reaCO2Cor(
     description="Temperature of core zone",
@@ -393,13 +411,13 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
     y(unit="ppm"))
     annotation (Placement(transformation(extent={{322,198},{330,206}})));
 
-  Buildings.Utilities.IO.SignalExchange.Overwrite oveShaSou(description=
-        "Overwrite shading position for south facade", u(
+  Buildings.Utilities.IO.SignalExchange.Overwrite oveSha219(description="Overwrite shading position for 2.19",
+                                                       u(
       unit="1",
       min=0,
       max=1)) annotation (Placement(transformation(extent={{126,-10},{136,0}})));
-  Buildings.Utilities.IO.SignalExchange.Overwrite oveShaWes(description=
-        "Overwrite shading position for west facade", u(
+  Buildings.Utilities.IO.SignalExchange.Overwrite oveSha220(description="Overwrite shading position for 2.20",
+                                                      u(
       unit="1",
       min=0,
       max=1)) annotation (Placement(transformation(extent={{-10,70},{0,80}})));
@@ -495,6 +513,21 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
         extent={{-10,-10},{10,10}},
         rotation=180,
         origin={212,-114})));
+  Buildings.Utilities.IO.SignalExchange.Overwrite oveShaSecFloorWes(description
+      ="Overwrite shading position for second floor", u(
+      unit="1",
+      min=0,
+      max=1)) annotation (Placement(transformation(extent={{72,148},{82,158}})));
+  Buildings.Utilities.IO.SignalExchange.Overwrite oveShaSecFloorNor(description
+      ="Overwrite shading position for second floor", u(
+      unit="1",
+      min=0,
+      max=1)) annotation (Placement(transformation(extent={{72,166},{82,176}})));
+  Buildings.Utilities.IO.SignalExchange.Overwrite oveShaSecFloorEas(description
+      ="Overwrite shading position for second floor", u(
+      unit="1",
+      min=0,
+      max=1)) annotation (Placement(transformation(extent={{72,182},{82,192}})));
 equation
   connect(room219.weaBus, weaBus) annotation (Line(
       points={{179.9,-6.1},{179.9,8},{210,8},{210,200}},
@@ -625,14 +658,6 @@ equation
       index=-1,
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
-  connect(weaBus, shading_control[4].weaBus) annotation (Line(
-      points={{210,200},{-57,200},{-57,193.4}},
-      color={255,204,51},
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{6,3},{6,3}},
-      horizontalAlignment=TextAlignment.Left));
   connect(senCO2Sou.ppm, reaCO2Sou.u) annotation (Line(
       points={{315,202},{321.2,202}},
       color={0,0,127},
@@ -673,19 +698,11 @@ equation
       points={{330.4,202},{340,202},{340,164},{348,164}},
       color={0,0,127},
       pattern=LinePattern.Dash));
-  connect(oveShaSou.y, room219.uSha[1]) annotation (Line(
+  connect(oveSha219.y, room219.uSha[1]) annotation (Line(
       points={{136.5,-5},{139.45,-5},{139.45,-6},{140.4,-6}},
       color={0,0,127},
       pattern=LinePattern.Dash));
-  connect(shading_control[1].y, oveShaSou.u) annotation (Line(
-      points={{-37,184},{116,184},{116,-5},{125,-5}},
-      color={0,0,127},
-      pattern=LinePattern.Dash));
-  connect(shading_control[4].y, oveShaWes.u) annotation (Line(
-      points={{-37,184},{-16,184},{-16,76},{-11,76},{-11,75}},
-      color={0,0,127},
-      pattern=LinePattern.Dash));
-  connect(oveShaWes.y, room220.uSha[1]) annotation (Line(
+  connect(oveSha220.y, room220.uSha[1]) annotation (Line(
       points={{0.5,75},{12,75},{12,-8},{18.4,-8}},
       color={0,0,127},
       pattern=LinePattern.Dash));
@@ -743,12 +760,12 @@ equation
   connect(room220.ports[4], door220To2nd.port_a1) annotation (Line(points={{25,
           -35.2},{-86,-35.2},{-86,-92},{-54,-92},{-54,-94}}, color={0,127,255}));
   connect(door220To2nd.port_b2, room220.ports[5]) annotation (Line(points={{-54,
-          -106},{-86,-106},{-86,-102},{-102,-102},{-102,-34.4},{25,-34.4}},
+          -106},{-122,-106},{-122,-28},{-30,-28},{-30,-34.4},{25,-34.4}},
         color={0,127,255}));
   connect(door220To2nd.port_b1, SecFloor.ports[4]) annotation (Line(points={{-34,
           -94},{22,-94},{22,46},{151,46}}, color={0,127,255}));
   connect(door220To2nd.port_a2, SecFloor.ports[5]) annotation (Line(points={{-34,
-          -106},{-18,-106},{-18,-96},{-6,-96},{-6,46.5714},{151,46.5714}},
+          -106},{-8,-106},{-8,46.5714},{151,46.5714}},
         color={0,127,255}));
   connect(room219.ports[4], door219To2nd.port_b2) annotation (Line(points={{147,
           -33.2},{147,-136},{58,-136},{58,-106},{88,-106}}, color={0,127,255}));
@@ -764,11 +781,38 @@ equation
   connect(const.y, door219To2nd.y) annotation (Line(points={{-107,-142},{34,
           -142},{34,-100},{87,-100}}, color={0,0,127}));
   connect(room220.surf_surBou[2], parWal220To219.port_b) annotation (Line(
-        points={{36.2,-39.75},{68,-39.75},{68,-82},{168,-82},{168,-114},{202,
-          -114}}, color={191,0,0}));
+        points={{36.2,-39.75},{68,-39.75},{68,-116},{186,-116},{186,-114},{202,-114}},
+                  color={191,0,0}));
   connect(parWal220To219.port_a, room219.surf_surBou[2]) annotation (Line(
-        points={{222,-114},{246,-114},{246,-112},{222,-112},{222,-66},{158.2,
-          -66},{158.2,-37.75}}, color={191,0,0}));
+        points={{222,-114},{250,-114},{250,-64},{158.2,-64},{158.2,-37.75}},
+                                color={191,0,0}));
+  connect(shading_control[1].y, oveSha220.u) annotation (Line(points={{-37,184},
+          {-20,184},{-20,138},{-16,138},{-16,-10},{-11,-10},{-11,75}}, color={0,
+          0,127}));
+  connect(shading_control[2].y, oveSha219.u) annotation (Line(points={{-37,184},
+          {-4,184},{-4,122},{42,122},{42,-5},{125,-5}}, color={0,0,127}));
+  connect(shading_control[3].y, oveShaSecFloorWes.u) annotation (Line(points={{
+          -37,184},{-4,184},{-4,124},{60,124},{60,153},{71,153}}, color={0,0,
+          127}));
+  connect(oveShaSecFloorWes.y, SecFloor.uSha[1]) annotation (Line(points={{82.5,
+          153},{82.5,73.4667},{144.4,73.4667}}, color={0,0,127}));
+  connect(shading_control[4].y, oveShaSecFloorNor.u) annotation (Line(points={{
+          -37,184},{-6,184},{-6,152},{26,152},{26,171},{71,171}}, color={0,0,
+          127}));
+  connect(oveShaSecFloorNor.y, SecFloor.uSha[2]) annotation (Line(points={{82.5,
+          171},{82.5,74},{144.4,74}}, color={0,0,127}));
+  connect(shading_control[5].y, oveShaSecFloorEas.u) annotation (Line(points={{
+          -37,184},{8,184},{8,187},{71,187}}, color={0,0,127}));
+  connect(oveShaSecFloorEas.y, SecFloor.uSha[3]) annotation (Line(points={{82.5,
+          187},{82.5,74.5333},{144.4,74.5333}}, color={0,0,127}));
+  connect(shading_control[4].weaBus, out.weaBus) annotation (Line(
+      points={{-57,193.4},{-92,193.4},{-92,250.2},{-58,250.2}},
+      color={255,204,51},
+      thickness=0.5));
+  connect(shading_control[5].weaBus, out.weaBus) annotation (Line(
+      points={{-57,193.4},{-108,193.4},{-108,250.2},{-58,250.2}},
+      color={255,204,51},
+      thickness=0.5));
   annotation (Diagram(coordinateSystem(preserveAspectRatio=true,
         extent={{-160,-100},{380,500}},
         initialScale=0.1), graphics={

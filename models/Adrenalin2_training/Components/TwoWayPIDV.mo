@@ -92,14 +92,17 @@ model TwoWayPIDV "Two way thermostatic radiator valve"
 
   Buildings.Controls.Continuous.LimPID conPID(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=0.5,
-    Ti=3600,
+    k=0.2,
+    Ti=1800,
     Td=900,
     yMax=100,
     Ni=0.9,
     Nd=0.5,
-    xi_start=0)
+    xi_start=0,
+    reset=Buildings.Types.Reset.Disabled)
     annotation (Placement(transformation(extent={{-62,68},{-42,88}})));
+  Modelica.Blocks.Nonlinear.Limiter limiter(uMax=1, uMin=0)
+    annotation (Placement(transformation(extent={{-24,30},{-4,50}})));
 protected
   parameter Medium.ThermodynamicState sta_default=
      Medium.setState_pTX(T=Medium.T_default, p=Medium.p_default, X=Medium.X_default);
@@ -126,12 +129,14 @@ equation
     TSet_in_internal = TSet;
   end if;
 
-  connect(T, conPID.u_m) annotation (Line(points={{0,106},{0,56},{-52,56},{-52,
-          66}},          color={0,0,127}));
-  connect(conPID.y, val.y) annotation (Line(points={{-41,78},{-28,78},{-28,18},
-          {0,18},{0,12}}, color={0,0,127}));
   connect(conPID.u_s, TSet_in)
     annotation (Line(points={{-64,78},{-116,78}}, color={0,0,127}));
+  connect(conPID.y, limiter.u) annotation (Line(points={{-41,78},{-34,78},{-34,
+          40},{-26,40}}, color={0,0,127}));
+  connect(limiter.y, val.y)
+    annotation (Line(points={{-3,40},{2,40},{2,12},{0,12}}, color={0,0,127}));
+  connect(T, conPID.u_m) annotation (Line(points={{0,106},{2,106},{2,52},{-52,
+          52},{-52,66}}, color={0,0,127}));
 annotation (
 defaultComponentName="val",
 Documentation(info="<html>
