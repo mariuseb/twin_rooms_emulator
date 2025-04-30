@@ -2,6 +2,7 @@ Floor5Zone_Shading
 DistrictHeating_dp
 TwoWayHeatBattery
 AHUPresHHB
+AHUSpeedHHB
 BaseClasses
 InternalGains
 Sensors

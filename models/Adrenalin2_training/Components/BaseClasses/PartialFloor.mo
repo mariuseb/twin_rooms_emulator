@@ -18,6 +18,9 @@ partial model PartialFloor "Interface for a model of a floor of a building"
   parameter Modelica.SIunits.Area AFlo220 "Floor area 220";
   parameter Modelica.SIunits.Area AFlo2nd "Floor area 2nd";
 
+  parameter Modelica.SIunits.Length wWesFac "Length of west facade";
+  parameter Modelica.SIunits.Length wSouFac "South facade length";
+
   final parameter Modelica.SIunits.Area AFloTot = AFlo219+AFlo220+AFlo2nd "Floor area total";
 
   Modelica.Fluid.Vessels.BaseClasses.VesselFluidPorts_b ports219[2](
@@ -67,30 +70,30 @@ partial model PartialFloor "Interface for a model of a floor of a building"
   Buildings.Examples.VAVReheat.BaseClasses.RoomLeakage lea219(
     redeclare package Medium = Medium,
     VRoo=VRoo219,
-    s=49.91/33.27,
+    s=(wSouFac/2)/wWesFac,
     azi=Buildings.Types.Azimuth.S,
     final use_windPressure=use_windPressure)
     "Model for air infiltration through the envelope"
-    annotation (Placement(transformation(extent={{-58,380},{-22,420}})));
+    annotation (Placement(transformation(extent={{-56,356},{-20,396}})));
 
 
   Buildings.Examples.VAVReheat.BaseClasses.RoomLeakage lea2nd(
     redeclare package Medium = Medium,
     VRoo=VRoo2nd,
-    s=49.91/33.27,
+    s=wWesFac/(wSouFac/2),
     azi=Buildings.Types.Azimuth.N,
     final use_windPressure=use_windPressure)
     "Model for air infiltration through the envelope"
-    annotation (Placement(transformation(extent={{-56,300},{-20,340}})));
+    annotation (Placement(transformation(extent={{-56,270},{-20,310}})));
 
   Buildings.Examples.VAVReheat.BaseClasses.RoomLeakage lea220(
     redeclare package Medium = Medium,
     VRoo=VRoo220,
-    s=33.27/49.91,
-    azi=Buildings.Types.Azimuth.W,
+    s=(wSouFac/2)/wWesFac,
+    azi=Buildings.Types.Azimuth.S,
     final use_windPressure=use_windPressure)
     "Model for air infiltration through the envelope"
-    annotation (Placement(transformation(extent={{-56,260},{-20,300}})));
+    annotation (Placement(transformation(extent={{-56,314},{-20,354}})));
 
   Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor temAir219
     "Air temperature sensor"
@@ -110,12 +113,11 @@ partial model PartialFloor "Interface for a model of a floor of a building"
   Modelica.Blocks.Routing.Multiplex5 multiplex5_1
     annotation (Placement(transformation(extent={{350,280},{370,300}})));
 
-  Buildings.Fluid.Sensors.RelativePressure senRelPre(redeclare package Medium
-      =                                                                         Medium)
-    "Building pressure measurement"
+  Buildings.Fluid.Sensors.RelativePressure senRelPre2nd(redeclare package
+      Medium = Medium) "Building pressure measurement"
     annotation (Placement(transformation(extent={{60,240},{40,260}})));
   Buildings.Fluid.Sources.Outside out(nPorts=1, redeclare package Medium = Medium)
-    annotation (Placement(transformation(extent={{-58,240},{-38,260}})));
+    annotation (Placement(transformation(extent={{-54,240},{-34,260}})));
 
   Buildings.Utilities.IO.SignalExchange.Read reaT219(
     description="Temperature of room 219",
@@ -162,22 +164,22 @@ partial model PartialFloor "Interface for a model of a floor of a building"
     annotation (Placement(transformation(extent={{88,-110},{108,-90}})));
 equation
   connect(weaBus, lea219.weaBus) annotation (Line(
-      points={{210,200},{-80,200},{-80,400},{-58,400}},
+      points={{210,200},{-80,200},{-80,376},{-56,376}},
       color={255,204,51},
       thickness=0.5,
       smooth=Smooth.None));
   connect(weaBus, lea2nd.weaBus) annotation (Line(
-      points={{210,200},{-80,200},{-80,320},{-56,320}},
+      points={{210,200},{-80,200},{-80,290},{-56,290}},
       color={255,204,51},
       thickness=0.5,
       smooth=Smooth.None));
   connect(weaBus, lea220.weaBus) annotation (Line(
-      points={{210,200},{-80,200},{-80,280},{-56,280}},
+      points={{210,200},{-80,200},{-80,334},{-56,334}},
       color={255,204,51},
       thickness=0.5,
       smooth=Smooth.None));
   connect(out.weaBus, weaBus) annotation (Line(
-      points={{-58,250.2},{-70,250.2},{-70,250},{-80,250},{-80,200},{210,200}},
+      points={{-54,250.2},{-70,250.2},{-70,250},{-80,250},{-80,200},{210,200}},
       color={255,204,51},
       thickness=0.5,
       smooth=Smooth.None), Text(
@@ -189,13 +191,13 @@ equation
       color={0,0,127},
       smooth=Smooth.None,
       pattern=LinePattern.Dash));
-  connect(senRelPre.p_rel, p_rel) annotation (Line(
+  connect(senRelPre2nd.p_rel, p_rel) annotation (Line(
       points={{50,241},{50,220},{-170,220}},
       color={0,0,127},
       smooth=Smooth.None,
       pattern=LinePattern.Dash));
-  connect(out.ports[1], senRelPre.port_b) annotation (Line(
-      points={{-38,250},{40,250}},
+  connect(out.ports[1], senRelPre2nd.port_b) annotation (Line(
+      points={{-34,250},{40,250}},
       color={0,127,255},
       smooth=Smooth.None,
       thickness=0.5));
