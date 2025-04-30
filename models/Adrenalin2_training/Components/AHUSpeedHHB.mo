@@ -45,11 +45,6 @@ model AHUSpeedHHB
     energyDynamics=Modelica.Fluid.Types.Dynamics.SteadyState,
     y_start=0.7)
       annotation (Placement(transformation(extent={{-10,-50},{10,-30}})));
-    Buildings.Fluid.Sensors.VolumeFlowRate senVolFloIn(
-                                                 redeclare package Medium = Air,
-      m_flow_nominal=m_flow_nominal_air,
-    allowFlowReversal=false)
-      annotation (Placement(transformation(extent={{78,-50},{98,-30}})));
     Buildings.Fluid.Sensors.TemperatureTwoPort senTemIn2(
                                                         redeclare package
       Medium =
@@ -77,11 +72,6 @@ model AHUSpeedHHB
       m_flow_nominal=m_flow_nominal_air,
     allowFlowReversal=false)
       annotation (Placement(transformation(extent={{-18,30},{-38,50}})));
-    Buildings.Fluid.Sensors.VolumeFlowRate senVolFloEx(
-                                                 redeclare package Medium = Air,
-      allowFlowReversal=false,
-      m_flow_nominal=m_flow_nominal_air)
-      annotation (Placement(transformation(extent={{48,30},{28,50}})));
     Buildings.Fluid.Sensors.Pressure senPreIn(redeclare package Medium = Air)
       annotation (Placement(transformation(extent={{132,-40},{152,-20}})));
     Buildings.Fluid.Sensors.Pressure senPreEx(redeclare package Medium = Air)
@@ -309,6 +299,13 @@ model AHUSpeedHHB
         extent={{6,-6},{-6,6}},
         rotation=0,
         origin={26,0})));
+  Buildings.Fluid.Sensors.MassFlowRate senMasFloSup(redeclare package Medium = Air)
+    annotation (Placement(transformation(extent={{80,-50},{100,-30}})));
+  Buildings.Fluid.Sensors.MassFlowRate senMasFloExt(redeclare package Medium = Air) annotation (Placement(
+        transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=180,
+        origin={38,40})));
 equation
     connect(fanSu.port_a, senTemIn2.port_b)
       annotation (Line(points={{-10,-40},{-16,-40}}, color={0,127,255}));
@@ -349,8 +346,6 @@ equation
           32},{-142,32}}, color={0,0,127}));
   connect(cCO2.y, outSu.C_in[1]) annotation (Line(points={{-119,0},{-146,0},{-146,
           -48},{-142,-48}}, color={0,0,127}));
-  connect(senVolFloEx.port_a, resEx.port_b)
-    annotation (Line(points={{48,40},{70,40}}, color={0,127,255}));
   connect(resEx.port_a, senPreEx.port)
     annotation (Line(points={{90,40},{112,40}}, color={0,127,255}));
   connect(port_a2, senTemCoilIn.port_a) annotation (Line(points={{100,-100},{100,
@@ -378,30 +373,16 @@ equation
     annotation (Line(points={{-88,40},{-96,40}}, color={0,127,255}));
   connect(fanEx.port_a, hex.port_b1) annotation (Line(points={{-68,40},{-62,40},
           {-62,14},{-70,14},{-70,6},{-66,6}}, color={0,127,255}));
-  connect(senTemEx1.port_a, senVolFloEx.port_b)
-    annotation (Line(points={{-18,40},{28,40}}, color={0,127,255}));
   connect(senTemIn2.T, conPID.u_m) annotation (Line(points={{-26,-29},{-26,-26},
           {-6,-26},{-6,-18},{-22,-18},{-22,-10}}, color={0,0,127}));
   connect(conPID.y, hex.rel_eps_contr) annotation (Line(points={{-33,2},{-38,2},
           {-38,14},{-56,14},{-56,8.8}}, color={0,0,127}));
   connect(conPID.u_s, TsupSet)
     annotation (Line(points={{-10,2},{-4,2},{-4,110}}, color={0,0,127}));
-  connect(reaFloSupAir.u, senVolFloIn.V_flow)
-    annotation (Line(points={{122.8,8},{88,8},{88,-29}},color={0,0,127}));
-  connect(senTemIn3.port_a, senVolFloIn.port_b)
-    annotation (Line(points={{108,-40},{98,-40}}, color={0,127,255}));
-  connect(senVolFloIn.port_a,coil. port_b1)
-    annotation (Line(points={{78,-40},{70,-40}}, color={0,127,255}));
   connect(coil.port_a1, fanSu.port_b)
     annotation (Line(points={{50,-40},{10,-40}}, color={0,127,255}));
-  connect(senVolFloEx.V_flow, reaFloExtAir.u)
-    annotation (Line(points={{38,51},{38,60},{56.8,60}}, color={0,0,127}));
   connect(conPIDfanExt.y, oveFanRet.u)
     annotation (Line(points={{1,80},{-26,80}}, color={0,0,127}));
-  connect(senVolFloEx.V_flow, conPIDfanExt.u_m) annotation (Line(points={{38,51},
-          {38,62},{12,62},{12,68}}, color={0,0,127}));
-  connect(conPIDfanExt.u_s, senVolFloIn.V_flow) annotation (Line(points={{24,80},
-          {100,80},{100,8},{88,8},{88,-29}}, color={0,0,127}));
   connect(add.u1, fanEx.P) annotation (Line(points={{-70,-68},{-64,-68},{-64,
           -26},{-84,-26},{-84,26},{-92,26},{-92,49},{-89,49}}, color={0,0,127}));
   connect(fanSu.P, add.u2) annotation (Line(points={{11,-31},{22,-31},{22,-80},
@@ -412,8 +393,24 @@ equation
     annotation (Line(points={{39.2,0},{33.2,0}}, color={0,0,127}));
   connect(oveFanSup.y, fanSu.y) annotation (Line(points={{19.4,0},{16,0},{16,
           -26},{6,-26},{6,-28},{0,-28}}, color={0,0,127}));
-  connect(senVolFloIn.V_flow, conPIDfanSup.u_m)
-    annotation (Line(points={{88,-29},{48,-29},{48,-9.6}}, color={0,0,127}));
+  connect(coil.port_b1, senMasFloSup.port_a)
+    annotation (Line(points={{70,-40},{80,-40}}, color={0,127,255}));
+  connect(senMasFloSup.port_b, senTemIn3.port_a)
+    annotation (Line(points={{100,-40},{108,-40}}, color={0,127,255}));
+  connect(senMasFloSup.m_flow, reaFloSupAir.u) annotation (Line(points={{90,-29},
+          {92,-29},{92,16},{108,16},{108,8},{122.8,8}}, color={0,0,127}));
+  connect(senMasFloSup.m_flow, conPIDfanSup.u_m) annotation (Line(points={{90,-29},
+          {74,-29},{74,-26},{48,-26},{48,-9.6}}, color={0,0,127}));
+  connect(resEx.port_b, senMasFloExt.port_a) annotation (Line(points={{70,40},{62,
+          40},{62,42},{48,42},{48,40}}, color={0,127,255}));
+  connect(senMasFloExt.port_b, senTemEx1.port_a) annotation (Line(points={{28,40},
+          {0,40},{0,44},{-18,44},{-18,40}}, color={0,127,255}));
+  connect(senMasFloExt.m_flow, reaFloExtAir.u) annotation (Line(points={{38,29},
+          {40,29},{40,26},{50,26},{50,60},{56.8,60}}, color={0,0,127}));
+  connect(senMasFloExt.m_flow, conPIDfanExt.u_m) annotation (Line(points={{38,29},
+          {30,29},{30,26},{14,26},{14,68},{12,68}}, color={0,0,127}));
+  connect(senMasFloSup.m_flow, conPIDfanExt.u_s) annotation (Line(points={{90,-29},
+          {86,-29},{86,80},{24,80}}, color={0,0,127}));
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-160,
               -100},{160,100}}), graphics={
           Rectangle(

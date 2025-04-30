@@ -20,16 +20,17 @@ model Adrenalin2
     annotation (Placement(transformation(extent={{-164,170},{-144,190}}),
         iconTransformation(extent={{-360,170},{-340,190}})));
   parameter Modelica.SIunits.Angle lat=1.0454522219446 "Latitude";
-  Components.AHUPresHHB AHU(
+  Components.AHUSpeedHHB AHU(
     m_flow_nominal_air=m_flow_nominal_air,
     m_flow_nominal_water=m_flow_nominal_water_AHU,
     dp_nominal_ext=200,
     dp_nominal_coilWat=10000,
-    Q_flow_nominal_coil=37000,
+    Q_flow_nominal_coil=3000,
     redeclare package Air = MediumA,
     redeclare package Water = MediumW)
     annotation (Placement(transformation(extent={{-164,108},{-132,128}})));
-  Modelica.Blocks.Sources.Constant SupPreSet(k=200) "Supply pressure setpoint"
+  Modelica.Blocks.Sources.Constant SupSpeSet(k=2*(300*1.2)/3600)
+    "Supply speed setpoint"
     annotation (Placement(transformation(extent={{-200,124},{-180,144}})));
   Modelica.Blocks.Sources.Constant TAirSupSet(k=273.15 + 19)
     annotation (Placement(transformation(extent={{-200,154},{-180,174}})));
@@ -44,7 +45,7 @@ model Adrenalin2
     annotation (Placement(transformation(extent={{-132,80},{-152,100}})));
   Components.AirDCVSplitterManifold5Zone venSupManDam(
     redeclare package Medium = MediumA,
-    m_flow_nominal={0.1,0.1,0.1,1E-3,1E-3},
+    m_flow_nominal={0.1,0.1,1E-3,1E-3,1E-3},
     Kp=fill(10, 5),
     yMin=fill(0.1, 5),
     dpFixed_nominal=fill(200 - 0.27, 5),
@@ -110,7 +111,8 @@ model Adrenalin2
         rotation=270,
         origin={-20,4})));
   Components.AirJoinerManifold5Zone VenRetMan(redeclare package Medium =
-        MediumA, m_flow_nominal={0.1,0.1,0.1,1E-3,1E-3},
+        MediumA,
+    m_flow_nominal={0.1,0.1,1E-3,1E-3,1E-3},
     nPorts=5)
     "Ventilation return manifold"
     annotation (Placement(transformation(extent={{-14,132},{-34,152}})));
@@ -135,10 +137,10 @@ model Adrenalin2
         m_flow_nominal_water_AHU + m_flow_nominal_water_rad},
                  dp_nominal={0,0,0})
     annotation (Placement(transformation(extent={{-142,-136},{-162,-156}})));
-  parameter Modelica.SIunits.MassFlowRate m_flow_nominal_air=3
+  parameter Modelica.SIunits.MassFlowRate m_flow_nominal_air=0.1
     "Nominal mass flow rate - air"
     annotation (Dialog(group="Nominal condition"));
-  parameter Modelica.SIunits.MassFlowRate m_flow_nominal_water_AHU=0.3
+  parameter Modelica.SIunits.MassFlowRate m_flow_nominal_water_AHU=0.1
     "Nominal mass flow rate - water in AHU"
     annotation (Dialog(group="Nominal condition"));
   parameter Modelica.SIunits.MassFlowRate m_flow_nominal_water_rad=0.6
@@ -302,7 +304,7 @@ equation
       index=1,
       extent={{-3,6},{-3,6}},
       horizontalAlignment=TextAlignment.Right));
-  connect(SupPreSet.y, AHU.y) annotation (Line(
+  connect(SupSpeSet.y, AHU.y) annotation (Line(
       points={{-179,134},{-154,134},{-154,129}},
       color={0,0,127},
       pattern=LinePattern.Dash));
