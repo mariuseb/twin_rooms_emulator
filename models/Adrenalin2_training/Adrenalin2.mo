@@ -20,7 +20,7 @@ model Adrenalin2
     annotation (Placement(transformation(extent={{-164,170},{-144,190}}),
         iconTransformation(extent={{-360,170},{-340,190}})));
   parameter Modelica.SIunits.Angle lat=1.0454522219446 "Latitude";
-  Components.AHUSpeedHHB AHU(
+  Components.AHUSpeedHHB AHU219(
     m_flow_nominal_air=m_flow_nominal_air,
     m_flow_nominal_water=m_flow_nominal_water_AHU,
     dp_nominal_ext=200,
@@ -32,13 +32,13 @@ model Adrenalin2
     redeclare package Water = MediumW)
     annotation (Placement(transformation(extent={{-164,108},{-132,128}})));
   Modelica.Blocks.Sources.Constant TAirSupSet(k=273.15 + 19)
-    annotation (Placement(transformation(extent={{-200,154},{-180,174}})));
-  Components.TwoWayHeatBattery twoWayHeatBattery(
+    annotation (Placement(transformation(extent={{-256,162},{-236,182}})));
+  Components.TwoWayHeatBattery twoWayHeatBattery219(
     redeclare package Medium = MediumW,
     m_flow_nominal=m_flow_nominal_water_AHU,
     dpValve_nominal(displayUnit="Pa"),
     dpFixed_nominal(displayUnit="Pa"),
-    dpExternal_nominal(displayUnit="Pa") = AHU.dp_nominal_coilWat,
+    dpExternal_nominal(displayUnit="Pa") = AHU219.dp_nominal_coilWat,
     m_flow_nominal_bypass=m_flow_nominal_water_AHU/1000,
     conPIDcoil(k=0.01, Ti=30))
     annotation (Placement(transformation(extent={{-132,80},{-152,100}})));
@@ -52,7 +52,8 @@ model Adrenalin2
     annotation (Placement(transformation(extent={{164,112},{184,132}})));
   Buildings.Fluid.HeatExchangers.Radiators.RadiatorEN442_2 rad219(
     redeclare package Medium = MediumW,
-    Q_flow_nominal(displayUnit="W") = 45*floor5Zone_Shading.AFlo219,
+    T_start=295.15,
+    Q_flow_nominal(displayUnit="W") = 60*floor5Zone_Shading.AFlo219,
     T_a_nominal=320.15,
     T_b_nominal=308.15,
     TAir_nominal=294.15,
@@ -62,7 +63,7 @@ model Adrenalin2
     annotation (Placement(transformation(extent={{100,90},{120,110}})));
   Buildings.Fluid.HeatExchangers.Radiators.RadiatorEN442_2 rad220(
     redeclare package Medium = MediumW,
-    Q_flow_nominal(displayUnit="W") = 30*floor5Zone_Shading.AFlo220,
+    Q_flow_nominal(displayUnit="W") = 60*floor5Zone_Shading.AFlo220,
     T_a_nominal=320.15,
     T_b_nominal=308.15,
     TAir_nominal=294.15,
@@ -70,7 +71,7 @@ model Adrenalin2
     annotation (Placement(transformation(extent={{22,114},{42,134}})));
   Buildings.Fluid.HeatExchangers.Radiators.RadiatorEN442_2 rad2nd(
     redeclare package Medium = MediumW,
-    Q_flow_nominal(displayUnit="W") = 30*floor5Zone_Shading.AFlo2nd,
+    Q_flow_nominal(displayUnit="W") = 60*floor5Zone_Shading.AFlo2nd,
     T_a_nominal=320.15,
     T_b_nominal=308.15,
     TAir_nominal=294.15,
@@ -115,13 +116,13 @@ model Adrenalin2
     m_flow_nominal={m_flow_nominal_water_AHU + m_flow_nominal_water_rad,
         m_flow_nominal_water_rad,m_flow_nominal_water_AHU},
                  dp_nominal={0,0,0})
-    annotation (Placement(transformation(extent={{-142,-98},{-122,-118}})));
+    annotation (Placement(transformation(extent={{-106,-100},{-86,-120}})));
   Buildings.Fluid.FixedResistances.Junction jun2(redeclare package Medium =
         MediumW,
     m_flow_nominal={m_flow_nominal_water_rad,m_flow_nominal_water_AHU,
         m_flow_nominal_water_AHU + m_flow_nominal_water_rad},
                  dp_nominal={0,0,0})
-    annotation (Placement(transformation(extent={{-142,-136},{-162,-156}})));
+    annotation (Placement(transformation(extent={{-96,-136},{-116,-156}})));
   parameter Modelica.SIunits.MassFlowRate m_flow_nominal_air=0.1
     "Nominal mass flow rate - air"
     annotation (Dialog(group="Nominal condition"));
@@ -133,11 +134,11 @@ model Adrenalin2
     annotation (Dialog(group="Nominal condition"));
   Modelica.Blocks.Sources.Constant pumDP(k=15000 + 20000)
     annotation (Placement(transformation(extent={{-200,-180},{-180,-160}})));
-  Buildings.Utilities.IO.SignalExchange.Read reaFanPow(
-    description="AHU Fan power",
+  Buildings.Utilities.IO.SignalExchange.Read reaFanPow219(
+    description="AHU Fan power 2.19",
     KPIs=Buildings.Utilities.IO.SignalExchange.SignalTypes.SignalsForKPIs.ElectricPower,
     y(unit="W"))
-    annotation (Placement(transformation(extent={{-188,86},{-200,98}})));
+    annotation (Placement(transformation(extent={{-186,88},{-198,100}})));
 
   Buildings.Utilities.IO.SignalExchange.Read reaPumPow(
     description="Heating pump power",
@@ -151,11 +152,11 @@ model Adrenalin2
     y(unit="W"))
     annotation (Placement(transformation(extent={{-188,-100},{-200,-88}})));
 
-  Buildings.Utilities.IO.SignalExchange.Read reaVenHeaPow(
-    description="Ventilation heating power",
+  Buildings.Utilities.IO.SignalExchange.Read reaVenHeaPow219(
+    description="Ventilation heating power 2.19",
     KPIs=Buildings.Utilities.IO.SignalExchange.SignalTypes.SignalsForKPIs.None,
     y(unit="W"))
-    annotation (Placement(transformation(extent={{-188,62},{-200,74}})));
+    annotation (Placement(transformation(extent={{-186,64},{-198,76}})));
 
   Components.Sensors.EnergyMeter energyMeter(
     redeclare package Medium1 = MediumW,
@@ -166,11 +167,11 @@ model Adrenalin2
         extent={{-10,10},{10,-10}},
         rotation=90,
         origin={-4,-68})));
-  Buildings.Utilities.IO.SignalExchange.Read reaVenHeaEne(
-    description="Ventilation heating energy",
+  Buildings.Utilities.IO.SignalExchange.Read reaVenHeaEne219(
+    description="Ventilation heating energy 2.19",
     KPIs=Buildings.Utilities.IO.SignalExchange.SignalTypes.SignalsForKPIs.None,
     y(unit="J"))
-    annotation (Placement(transformation(extent={{-188,50},{-200,62}})));
+    annotation (Placement(transformation(extent={{-186,52},{-198,64}})));
 
   Buildings.Utilities.IO.SignalExchange.Read reaRadHeaEne(
     description="Radiator heating energy",
@@ -184,7 +185,7 @@ model Adrenalin2
     y(unit="W"))
     annotation (Placement(transformation(extent={{48,-84},{60,-72}})));
 
-  Buildings.Fluid.FixedResistances.Pipe pipSupCoil(
+  Buildings.Fluid.FixedResistances.Pipe pipSupCoil219(
     redeclare package Medium = MediumW,
     energyDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,
     m_flow_nominal=m_flow_nominal_water_AHU,
@@ -197,7 +198,7 @@ model Adrenalin2
         extent={{10,-10},{-10,10}},
         rotation=270,
         origin={-132,-44})));
-  Buildings.Fluid.FixedResistances.Pipe pipRetCoil(
+  Buildings.Fluid.FixedResistances.Pipe pipRetCoil219(
     redeclare package Medium = MediumW,
     energyDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,
     m_flow_nominal=m_flow_nominal_water_AHU,
@@ -266,7 +267,83 @@ Modelica.Thermal.HeatTransfer.Sources.FixedTemperature tPipHeaLoss(T(
   Buildings.Utilities.IO.SignalExchange.WeatherStation weatherStation
     annotation (Placement(transformation(extent={{-102,178},{-82,198}})));
   Modelica.Blocks.Sources.Constant CO2SetPoi(k=800)
-    annotation (Placement(transformation(extent={{-236,128},{-216,148}})));
+    annotation (Placement(transformation(extent={{-354,160},{-334,180}})));
+  Components.AHUSpeedHHB AHU220(
+    m_flow_nominal_air=m_flow_nominal_air,
+    m_flow_nominal_water=m_flow_nominal_water_AHU,
+    dp_nominal_ext=200,
+    dp_nominal_coilWat=1000,
+    Q_flow_nominal_coil=3000,
+    T_in_air_nominal_coil=287.15,
+    T_in_wat_nominal_coil=320.15,
+    redeclare package Air = MediumA,
+    redeclare package Water = MediumW)
+    annotation (Placement(transformation(extent={{-330,58},{-298,78}})));
+  Components.TwoWayHeatBattery twoWayHeatBattery220(
+    redeclare package Medium = MediumW,
+    m_flow_nominal=m_flow_nominal_water_AHU,
+    dpValve_nominal(displayUnit="Pa"),
+    dpFixed_nominal(displayUnit="Pa"),
+    dpExternal_nominal(displayUnit="Pa") = AHU219.dp_nominal_coilWat,
+    m_flow_nominal_bypass=m_flow_nominal_water_AHU/1000,
+    conPIDcoil(k=0.01, Ti=30))
+    annotation (Placement(transformation(extent={{-290,22},{-310,42}})));
+  Buildings.Fluid.FixedResistances.Junction jun1(
+    redeclare package Medium = MediumW,
+    m_flow_nominal={m_flow_nominal_water_AHU + m_flow_nominal_water_rad,
+        m_flow_nominal_water_rad,m_flow_nominal_water_AHU},
+    dp_nominal={0,0,0})
+    annotation (Placement(transformation(extent={{-150,-100},{-130,-120}})));
+  Buildings.Fluid.FixedResistances.Junction jun3(
+    redeclare package Medium = MediumW,
+    m_flow_nominal={m_flow_nominal_water_AHU + m_flow_nominal_water_rad,
+        m_flow_nominal_water_rad,m_flow_nominal_water_AHU},
+    dp_nominal={0,0,0})
+    annotation (Placement(transformation(extent={{-154,-136},{-134,-156}})));
+  Buildings.Fluid.FixedResistances.Pipe pipRetCoil220(
+    redeclare package Medium = MediumW,
+    energyDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,
+    m_flow_nominal=m_flow_nominal_water_AHU,
+    dp_nominal=0,
+    nSeg=3,
+    thicknessIns=0.03,
+    lambdaIns=0.04,
+    length=50,
+    v_nominal=0.3) annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=270,
+        origin={-266,-48})));
+  Buildings.Fluid.FixedResistances.Pipe pipSupCoil220(
+    redeclare package Medium = MediumW,
+    energyDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,
+    m_flow_nominal=m_flow_nominal_water_AHU,
+    dp_nominal=0,
+    nSeg=3,
+    thicknessIns=0.03,
+    lambdaIns=0.04,
+    length=50,
+    v_nominal=0.3) annotation (Placement(transformation(
+        extent={{10,-10},{-10,10}},
+        rotation=270,
+        origin={-230,-46})));
+  Buildings.Utilities.IO.SignalExchange.Read reaFanPow220(
+    description="AHU Fan power 2.20",
+    KPIs=Buildings.Utilities.IO.SignalExchange.SignalTypes.SignalsForKPIs.ElectricPower,
+    y(unit="W"))
+    annotation (Placement(transformation(extent={{-346,36},{-358,48}})));
+
+  Buildings.Utilities.IO.SignalExchange.Read reaVenHeaPow220(
+    description="Ventilation heating power 2.20",
+    KPIs=Buildings.Utilities.IO.SignalExchange.SignalTypes.SignalsForKPIs.None,
+    y(unit="W"))
+    annotation (Placement(transformation(extent={{-346,12},{-358,24}})));
+
+  Buildings.Utilities.IO.SignalExchange.Read reaVenHeaEne220(
+    description="Ventilation heating energy 2.20",
+    KPIs=Buildings.Utilities.IO.SignalExchange.SignalTypes.SignalsForKPIs.None,
+    y(unit="J"))
+    annotation (Placement(transformation(extent={{-346,0},{-358,12}})));
+
 equation
   connect(weaDat.weaBus,weaBus)  annotation (Line(
       points={{-180,192},{-170,192},{-170,180},{-154,180}},
@@ -282,33 +359,32 @@ equation
       extent={{-6,3},{-6,3}},
       horizontalAlignment=TextAlignment.Right));
 
-  connect(AHU.weaBus, weaBus) annotation (Line(
-      points={{-163,127.4},{-163,150},{-168,150},{-168,170},{-154,170},{-154,
-          180}},
+  connect(AHU219.weaBus, weaBus) annotation (Line(
+      points={{-163,127.4},{-163,150},{-168,150},{-168,170},{-154,170},{-154,180}},
       color={255,204,51},
       thickness=0.5), Text(
       string="%second",
       index=1,
       extent={{-3,6},{-3,6}},
       horizontalAlignment=TextAlignment.Right));
-  connect(TAirSupSet.y, AHU.TsupSet) annotation (Line(
-      points={{-179,164},{-148.4,164},{-148.4,129}},
+
+  connect(TAirSupSet.y, AHU219.TsupSet) annotation (Line(
+      points={{-235,172},{-170,172},{-170,146},{-148.4,146},{-148.4,129}},
       color={0,0,127},
       pattern=LinePattern.Dash));
-  connect(AHU.Tsu, twoWayHeatBattery.TemMea) annotation (Line(
+  connect(AHU219.Tsu, twoWayHeatBattery219.TemMea) annotation (Line(
       points={{-131.4,110},{-124,110},{-124,91.4},{-132,91.4}},
       color={0,0,127},
       pattern=LinePattern.Dash));
-  connect(TAirSupSet.y, twoWayHeatBattery.TemSet) annotation (Line(points={{-179,
-          164},{-114,164},{-114,88},{-132,88}},
-        color={0,0,127},
+  connect(TAirSupSet.y, twoWayHeatBattery219.TemSet) annotation (Line(
+      points={{-235,172},{-170,172},{-170,146},{-148,146},{-148,138},{-126,138},
+          {-126,112},{-122,112},{-122,88},{-132,88}},
+      color={0,0,127},
       pattern=LinePattern.Dash));
-  connect(twoWayHeatBattery.secSup, AHU.port_a2) annotation (Line(points={{-132,
-          100},{-138,100},{-138,108}},
-                                     color={102,44,145}));
-  connect(AHU.port_b2, twoWayHeatBattery.secRet) annotation (Line(points={{-144,
-          108},{-144,100},{-151.8,100}},
-                                       color={0,127,255}));
+  connect(twoWayHeatBattery219.secSup, AHU219.port_a2) annotation (Line(points={
+          {-132,100},{-138,100},{-138,108}}, color={102,44,145}));
+  connect(AHU219.port_b2, twoWayHeatBattery219.secRet) annotation (Line(points={
+          {-144,108},{-144,100},{-151.8,100}}, color={0,127,255}));
   connect(rad219.heatPortRad,floor5Zone_Shading.heaPorRad219)  annotation (Line(
         points={{112,107.2},{112,122},{99.0826,122},{99.0826,124.846}}, color={191,
           0,0}));
@@ -349,10 +425,6 @@ equation
           255}));
   connect(rad220.port_b, radRetMan.ports_a[4]) annotation (Line(points={{42,124},
           {42,68},{-18.5,68},{-18.5,14}}, color={0,127,255}));
-  connect(jun2.port_2, districtHeating.port_a) annotation (Line(points={{-162,-146},
-          {-166,-146},{-166,-134},{-172,-134}}, color={0,127,255}));
-  connect(jun.port_1, districtHeating.port_b) annotation (Line(points={{-142,-108},
-          {-166,-108},{-166,-122},{-172,-122}}, color={102,44,145}));
   connect(districtHeating.weaBus, weaBus) annotation (Line(
       points={{-173,-119.4},{-173,-4},{-174,-4},{-174,110},{-204,110},{-204,180},
           {-154,180}},
@@ -364,8 +436,8 @@ equation
       horizontalAlignment=TextAlignment.Right));
   connect(pumDP.y, districtHeating.y) annotation (Line(points={{-179,-170},{-176,
           -170},{-176,-139}}, color={0,0,127}));
-  connect(AHU.qel, reaFanPow.u) annotation (Line(
-      points={{-158,107.4},{-158,92},{-186.8,92}},
+  connect(AHU219.qel, reaFanPow219.u) annotation (Line(
+      points={{-158,107.4},{-158,94},{-184.8,94}},
       color={0,0,127},
       pattern=LinePattern.Dash));
   connect(districtHeating.qel, reaPumPow.u) annotation (Line(
@@ -376,11 +448,12 @@ equation
       points={{-186.8,-117},{-186.8,-94},{-186.8,-94}},
       color={0,0,127},
       pattern=LinePattern.Dash));
-  connect(twoWayHeatBattery.Pow, reaVenHeaPow.u) annotation (Line(points={{-152.8,
-          93},{-152.8,90},{-162,90},{-162,68},{-186.8,68}}, color={0,0,127},
+  connect(twoWayHeatBattery219.Pow, reaVenHeaPow219.u) annotation (Line(
+      points={{-152.8,93},{-152.8,90},{-162,90},{-162,70},{-184.8,70}},
+      color={0,0,127},
       pattern=LinePattern.Dash));
-  connect(twoWayHeatBattery.Ene, reaVenHeaEne.u) annotation (Line(
-      points={{-152.8,91},{-152.8,88},{-158,88},{-158,56},{-186.8,56}},
+  connect(twoWayHeatBattery219.Ene, reaVenHeaEne219.u) annotation (Line(
+      points={{-152.8,91},{-152.8,88},{-158,88},{-158,58},{-184.8,58}},
       color={0,0,127},
       pattern=LinePattern.Dash));
   connect(energyMeter.Energy, reaRadHeaEne.u) annotation (Line(
@@ -391,13 +464,14 @@ equation
       points={{6.6,-66},{26,-66},{26,-78},{46.8,-78}},
       color={0,0,127},
       pattern=LinePattern.Dash));
-  connect(jun.port_2, energyMeter.port_a1) annotation (Line(points={{-122,-108},
-          {2,-108},{2,-78}}, color={0,127,255}));
-  connect(jun.port_3, pipSupCoil.port_a)
-    annotation (Line(points={{-132,-98},{-132,-54}}, color={0,127,255}));
-  connect(pipSupCoil.port_b, twoWayHeatBattery.priSup)
+  connect(jun.port_2, energyMeter.port_a1) annotation (Line(points={{-86,-110},{
+          14,-110},{14,-78},{2,-78}},
+                             color={0,127,255}));
+  connect(jun.port_3, pipSupCoil219.port_a) annotation (Line(points={{-96,-100},
+          {-96,-60},{-132,-60},{-132,-54}}, color={0,127,255}));
+  connect(pipSupCoil219.port_b, twoWayHeatBattery219.priSup)
     annotation (Line(points={{-132,-34},{-132,80}}, color={0,127,255}));
-  connect(twoWayHeatBattery.priRet, pipRetCoil.port_a)
+  connect(twoWayHeatBattery219.priRet, pipRetCoil219.port_a)
     annotation (Line(points={{-152,80},{-152,-34}}, color={0,127,255}));
   connect(energyMeter.port_b1, pipSupRad.port_a) annotation (Line(points={{2,-58},
           {2,-54},{14,-54},{14,-44}},      color={0,127,255}));
@@ -407,23 +481,24 @@ equation
           {-10,-54},{-20,-54},{-20,-42}},      color={0,127,255}));
   connect(pipRetRad.port_a, radRetMan.port_b)
     annotation (Line(points={{-20,-22},{-20,-6}}, color={0,127,255}));
-  connect(tPipHeaLoss.port, pipRetCoil.heatPort)
+  connect(tPipHeaLoss.port, pipRetCoil219.heatPort)
     annotation (Line(points={{-80,-4},{-147,-4},{-147,-44}}, color={191,0,0}));
-  connect(tPipHeaLoss.port, pipSupCoil.heatPort) annotation (Line(points={{-80,
+  connect(tPipHeaLoss.port, pipSupCoil219.heatPort) annotation (Line(points={{-80,
           -4},{-116,-4},{-116,-44},{-127,-44}}, color={191,0,0}));
   connect(tPipHeaLoss.port, pipRetRad.heatPort) annotation (Line(points={{-80,
           -4},{-116,-4},{-116,-50},{-4,-50},{-4,-32},{-15,-32}}, color={191,0,0}));
   connect(tPipHeaLoss.port, pipSupRad.heatPort) annotation (Line(points={{-80,-4},
           {-116,-4},{-116,-50},{30,-50},{30,-34},{19,-34}},
                               color={191,0,0}));
-  connect(jun2.port_1, senTemRadRet.port_b) annotation (Line(points={{-142,-146},
+  connect(jun2.port_1, senTemRadRet.port_b) annotation (Line(points={{-96,-146},
           {-10,-146},{-10,-104}}, color={0,127,255}));
   connect(senTemRadRet.port_a, energyMeter.port_b2)
     annotation (Line(points={{-10,-84},{-10,-78}}, color={0,127,255}));
-  connect(pipRetCoil.port_b, senTemVenRet.port_a)
+  connect(pipRetCoil219.port_b, senTemVenRet.port_a)
     annotation (Line(points={{-152,-54},{-152,-74}}, color={0,127,255}));
   connect(senTemVenRet.port_b, jun2.port_3)
-    annotation (Line(points={{-152,-94},{-152,-136}}, color={0,127,255}));
+    annotation (Line(points={{-152,-94},{-152,-130},{-106,-130},{-106,-136}},
+                                                      color={0,127,255}));
   connect(senTemVenRet.T, reaTemAHURet.u) annotation (Line(
       points={{-163,-84},{-174,-84},{-174,-66},{-186.8,-66}},
       color={0,0,127},
@@ -441,22 +516,86 @@ equation
       index=-1,
       extent={{-6,3},{-6,3}},
       horizontalAlignment=TextAlignment.Right));
-  connect(AHU.port_b1, floor5Zone_Shading.ports219[1]) annotation (Line(points={{-132,
-          114},{-96,114},{-96,90},{89.8652,90},{89.8652,126.923}},        color
-        ={0,127,255}));
-  connect(floor5Zone_Shading.ports219[2], AHU.port_a1) annotation (Line(points={{92.1696,
-          126.923},{92.1696,104},{-42,104},{-42,122},{-132,122}},
+  connect(AHU219.port_b1, floor5Zone_Shading.ports219[1]) annotation (Line(
+        points={{-132,114},{-96,114},{-96,90},{89.8652,90},{89.8652,126.923}},
         color={0,127,255}));
-  connect(CO2SetPoi.y, AHU.CO2SetPoi) annotation (Line(points={{-215,138},{-162,
-          138},{-162,129}}, color={0,0,127}));
-  connect(floor5Zone_Shading.CO2Roo[1], AHU.CO2meas) annotation (Line(points={{
-          158.304,150},{158.304,184},{-54,184},{-54,152},{-144.2,152},{-144.2,
-          129}}, color={0,0,127}));
-  annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-        coordinateSystem(preserveAspectRatio=false, extent={{-200,-200},{200,200}})),
+  connect(floor5Zone_Shading.ports219[2], AHU219.port_a1) annotation (Line(
+        points={{92.1696,126.923},{92.1696,104},{-42,104},{-42,122},{-132,122}},
+        color={0,127,255}));
+  connect(CO2SetPoi.y, AHU219.CO2SetPoi) annotation (Line(points={{-333,170},{-328,
+          170},{-328,129},{-162,129}}, color={0,0,127}));
+  connect(floor5Zone_Shading.CO2Roo[1], AHU219.CO2meas) annotation (Line(points={{158.304,
+          150},{158.304,184},{-72,184},{-72,166},{-144.2,166},{-144.2,129}},
+        color={0,0,127}));
+  connect(jun2.port_2, jun3.port_2)
+    annotation (Line(points={{-116,-146},{-134,-146}}, color={0,127,255}));
+  connect(jun3.port_1, districtHeating.port_a) annotation (Line(points={{-154,-146},
+          {-160,-146},{-160,-134},{-172,-134},{-172,-134}}, color={0,127,255}));
+  connect(jun.port_1, jun1.port_2)
+    annotation (Line(points={{-106,-110},{-130,-110}}, color={0,127,255}));
+  connect(jun1.port_1, districtHeating.port_b) annotation (Line(points={{-150,-110},
+          {-156,-110},{-156,-112},{-160,-112},{-160,-122},{-172,-122}}, color={0,
+          127,255}));
+  connect(jun1.port_3, pipSupCoil220.port_a) annotation (Line(points={{-140,-100},
+          {-184,-100},{-184,-112},{-230,-112},{-230,-56}}, color={0,127,255}));
+  connect(pipSupCoil220.port_b, twoWayHeatBattery220.priSup) annotation (Line(
+        points={{-230,-36},{-230,16},{-290,16},{-290,22}}, color={0,127,255}));
+  connect(jun3.port_3, pipRetCoil220.port_b) annotation (Line(points={{-144,-136},
+          {-266,-136},{-266,-58}}, color={0,127,255}));
+  connect(pipRetCoil220.port_a, twoWayHeatBattery220.priRet) annotation (Line(
+        points={{-266,-38},{-266,10},{-318,10},{-318,22},{-310,22}}, color={0,127,
+          255}));
+  connect(twoWayHeatBattery220.secSup, AHU220.port_a2) annotation (Line(points={
+          {-290,42},{-290,52},{-304,52},{-304,58}}, color={0,127,255}));
+  connect(twoWayHeatBattery220.secRet, AHU220.port_b2) annotation (Line(points={
+          {-309.8,42},{-309.8,52},{-310,52},{-310,58}}, color={0,127,255}));
+  connect(CO2SetPoi.y, AHU220.CO2SetPoi) annotation (Line(points={{-333,170},{-328,
+          170},{-328,79}}, color={0,0,127}));
+  connect(TAirSupSet.y, AHU220.TsupSet) annotation (Line(points={{-235,172},{-230,
+          172},{-230,90},{-314.4,90},{-314.4,79}}, color={0,0,127}));
+  connect(AHU220.qel, reaFanPow220.u) annotation (Line(points={{-324,57.4},{-324,
+          42},{-344.8,42}}, color={0,0,127}));
+  connect(twoWayHeatBattery220.Ene, reaVenHeaEne220.u) annotation (Line(points={
+          {-310.8,33},{-310.8,6},{-344.8,6}}, color={0,0,127}));
+  connect(twoWayHeatBattery220.Pow, reaVenHeaPow220.u) annotation (Line(points={
+          {-310.8,35},{-328,35},{-328,18},{-344.8,18}}, color={0,0,127}));
+  connect(AHU220.Tsu, twoWayHeatBattery220.TemMea) annotation (Line(points={{-297.4,
+          60},{-276,60},{-276,33.4},{-290,33.4}}, color={0,0,127}));
+  connect(TAirSupSet.y, twoWayHeatBattery220.TemSet) annotation (Line(points={{-235,
+          172},{-230,172},{-230,90},{-272,90},{-272,30},{-290,30}}, color={0,0,127}));
+  connect(floor5Zone_Shading.CO2Roo[4], AHU220.CO2meas) annotation (Line(points={{158.304,
+          151.385},{158.304,198},{-32,198},{-32,158},{-284,158},{-284,100},{
+          -310.2,100},{-310.2,79}},  color={0,0,127}));
+  connect(AHU220.port_a1, floor5Zone_Shading.ports220[1]) annotation (Line(
+        points={{-298,72},{-192,72},{-192,22},{-36,22},{-36,143.538},{61.2913,
+          143.538}},
+        color={0,127,255}));
+  connect(AHU220.port_b1, floor5Zone_Shading.ports220[2]) annotation (Line(
+        points={{-298,64},{-174,64},{-174,28},{-52,28},{-52,76},{63.5957,76},{
+          63.5957,143.538}},
+                     color={0,127,255}));
+  connect(weaDat.weaBus, AHU220.weaBus) annotation (Line(
+      points={{-180,192},{-180,144},{-250,144},{-250,104},{-329,104},{-329,77.4}},
+      color={255,204,51},
+      thickness=0.5));
+
+  annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-380,-200},
+            {200,200}})),                                        Diagram(
+        coordinateSystem(preserveAspectRatio=false, extent={{-380,-200},{200,200}}),
+        graphics={
+        Text(
+          extent={{-124,92},{-70,54}},
+          lineColor={28,108,200},
+          textString="VAV system 2.19"),
+        Rectangle(extent={{-178,134},{-64,50}}, lineColor={28,108,200}),
+        Text(
+          extent={{-280,44},{-226,6}},
+          lineColor={28,108,200},
+          textString="VAV system 2.20"),
+        Rectangle(extent={{-338,86},{-224,2}}, lineColor={28,108,200})}),
     experiment(
-      StopTime=259200,
-      Interval=30,
+      StopTime=1209600,
+      Interval=29.9999808,
       Tolerance=1e-06,
       __Dymola_Algorithm="Radau"));
 end Adrenalin2;

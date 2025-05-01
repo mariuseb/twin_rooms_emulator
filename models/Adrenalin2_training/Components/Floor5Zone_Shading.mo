@@ -205,6 +205,7 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
     nConBou=0,
     nSurBou=2,
     use_C_flow=true,
+    T_start=295.15,
     C_start=fill(400e-6*Modelica.Media.IdealGases.Common.SingleGasesData.CO2.MM/
         Modelica.Media.IdealGases.Common.SingleGasesData.Air.MM, Medium.nC),
     nPorts=6,
@@ -248,6 +249,7 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
     nConBou=0,
     nSurBou=2,
     use_C_flow=true,
+    T_start=295.15,
     C_start=fill(400e-6*Modelica.Media.IdealGases.Common.SingleGasesData.CO2.MM/
         Modelica.Media.IdealGases.Common.SingleGasesData.Air.MM, Medium.nC),
     nPorts=6,
@@ -360,7 +362,7 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
   Buildings.Fluid.Sensors.PPM senCO2Nor(redeclare package Medium = Medium,
       warnAboutOnePortConnection=false)
     annotation (Placement(transformation(extent={{294,144},{314,164}})));
-  Buildings.Fluid.Sensors.PPM senCO2Wes(redeclare package Medium = Medium,
+  Buildings.Fluid.Sensors.PPM senCO2220(redeclare package Medium = Medium,
       warnAboutOnePortConnection=false)
     annotation (Placement(transformation(extent={{294,120},{314,140}})));
   Buildings.Fluid.Sensors.PPM senCO2Cor(redeclare package Medium = Medium,
@@ -624,7 +626,7 @@ equation
   connect(senCO2Sou.port, room219.ports[3]) annotation (Line(points={{304,192},
           {216,192},{216,-44},{128,-44},{128,-34.3333},{147,-34.3333}},
                                                                  color={0,127,255}));
-  connect(senCO2Wes.port, room220.ports[3]) annotation (Line(points={{304,120},
+  connect(senCO2220.port, room220.ports[3]) annotation (Line(points={{304,120},
           {282,120},{282,196},{226,196},{226,200},{190,200},{190,196},{46,196},
           {46,68},{6,68},{6,44},{-38,44},{-38,4},{-34,4},{-34,-36.3333},{25,
           -36.3333}},
@@ -672,7 +674,7 @@ equation
       points={{315,154},{321.2,154}},
       color={0,0,127},
       pattern=LinePattern.Dash));
-  connect(senCO2Wes.ppm, reaCO2Wes.u) annotation (Line(
+  connect(senCO2220.ppm, reaCO2Wes.u) annotation (Line(
       points={{315,130},{321.2,130}},
       color={0,0,127},
       pattern=LinePattern.Dash));

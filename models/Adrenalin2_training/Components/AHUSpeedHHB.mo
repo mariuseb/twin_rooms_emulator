@@ -308,7 +308,7 @@ model AHUSpeedHHB
     k=0.5,
     Ti=300,
     yMax=(1800*1.2)/3600,
-    yMin=0,
+    yMin=(300*1.2)/3600,
     initType=Modelica.Blocks.Types.InitPID.InitialState,
     reverseActing=false) annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
