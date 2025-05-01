@@ -24,14 +24,13 @@ model Adrenalin2
     m_flow_nominal_air=m_flow_nominal_air,
     m_flow_nominal_water=m_flow_nominal_water_AHU,
     dp_nominal_ext=200,
-    dp_nominal_coilWat=10000,
+    dp_nominal_coilWat=1000,
     Q_flow_nominal_coil=3000,
+    T_in_air_nominal_coil=287.15,
+    T_in_wat_nominal_coil=320.15,
     redeclare package Air = MediumA,
     redeclare package Water = MediumW)
     annotation (Placement(transformation(extent={{-164,108},{-132,128}})));
-  Modelica.Blocks.Sources.Constant SupSpeSet(k=(300*1.2)/3600)
-    "Supply speed setpoint"
-    annotation (Placement(transformation(extent={{-200,124},{-180,144}})));
   Modelica.Blocks.Sources.Constant TAirSupSet(k=273.15 + 19)
     annotation (Placement(transformation(extent={{-200,154},{-180,174}})));
   Components.TwoWayHeatBattery twoWayHeatBattery(
@@ -266,6 +265,8 @@ Modelica.Thermal.HeatTransfer.Sources.FixedTemperature tPipHeaLoss(T(
 
   Buildings.Utilities.IO.SignalExchange.WeatherStation weatherStation
     annotation (Placement(transformation(extent={{-102,178},{-82,198}})));
+  Modelica.Blocks.Sources.Constant SupSepSetOcc(k=(300*1.2)/3600)
+    annotation (Placement(transformation(extent={{-236,128},{-216,148}})));
 equation
   connect(weaDat.weaBus,weaBus)  annotation (Line(
       points={{-180,192},{-170,192},{-170,180},{-154,180}},
@@ -290,10 +291,6 @@ equation
       index=1,
       extent={{-3,6},{-3,6}},
       horizontalAlignment=TextAlignment.Right));
-  connect(SupSpeSet.y, AHU.y) annotation (Line(
-      points={{-179,134},{-154,134},{-154,129}},
-      color={0,0,127},
-      pattern=LinePattern.Dash));
   connect(TAirSupSet.y, AHU.TsupSet) annotation (Line(
       points={{-179,164},{-148.4,164},{-148.4,129}},
       color={0,0,127},
@@ -444,17 +441,19 @@ equation
       index=-1,
       extent={{-6,3},{-6,3}},
       horizontalAlignment=TextAlignment.Right));
-  connect(AHU.port_b1, floor5Zone_Shading.ports219[1]) annotation (Line(points=
-          {{-132,114},{-96,114},{-96,90},{89.8652,90},{89.8652,126.923}}, color
+  connect(AHU.port_b1, floor5Zone_Shading.ports219[1]) annotation (Line(points={{-132,
+          114},{-96,114},{-96,90},{89.8652,90},{89.8652,126.923}},        color
         ={0,127,255}));
-  connect(floor5Zone_Shading.ports219[2], AHU.port_a1) annotation (Line(points=
-          {{92.1696,126.923},{92.1696,104},{-42,104},{-42,122},{-132,122}},
+  connect(floor5Zone_Shading.ports219[2], AHU.port_a1) annotation (Line(points={{92.1696,
+          126.923},{92.1696,104},{-42,104},{-42,122},{-132,122}},
         color={0,127,255}));
+  connect(SupSepSetOcc.y, AHU.y) annotation (Line(points={{-215,138},{-154,138},
+          {-154,129}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false, extent={{-200,-200},{200,200}})),
     experiment(
       StopTime=259200,
-      Interval=29.9999808,
+      Interval=30,
       Tolerance=1e-06,
-      __Dymola_Algorithm="Cvode"));
+      __Dymola_Algorithm="Radau"));
 end Adrenalin2;
