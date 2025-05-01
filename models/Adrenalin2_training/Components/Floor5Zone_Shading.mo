@@ -339,38 +339,16 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
     "Heat port for radiative heat gain and radiative temperature" annotation (
       Placement(transformation(extent={{128,34},{138,44}}), iconTransformation(
           extent={{128,34},{138,44}})));
-  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heaPorAir1st
-    "Heat port to air volume" annotation (Placement(transformation(extent={{128,
-            124},{138,134}}), iconTransformation(extent={{128,124},{138,134}})));
-  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heaPorRad1st
-    "Heat port for radiative heat gain and radiative temperature" annotation (
-      Placement(transformation(extent={{128,108},{138,118}}),
-        iconTransformation(extent={{128,108},{138,118}})));
-  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heaPorAir3rd
-    "Heat port to air volume" annotation (Placement(transformation(extent={{320,
-            20},{330,30}}), iconTransformation(extent={{320,20},{330,30}})));
-  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heaPorRad3rd
-    "Heat port for radiative heat gain and radiative temperature" annotation (
-      Placement(transformation(extent={{322,12},{332,22}}), iconTransformation(
-          extent={{322,12},{332,22}})));
-  Buildings.Fluid.Sensors.PPM senCO2Sou(redeclare package Medium = Medium,
+  Buildings.Fluid.Sensors.PPM senCO2219(redeclare package Medium = Medium,
       warnAboutOnePortConnection=false)
-    annotation (Placement(transformation(extent={{294,192},{314,212}})));
-  Buildings.Fluid.Sensors.PPM senCO2Eas(redeclare package Medium = Medium,
-      warnAboutOnePortConnection=false)
-    annotation (Placement(transformation(extent={{294,168},{314,188}})));
-  Buildings.Fluid.Sensors.PPM senCO2Nor(redeclare package Medium = Medium,
-      warnAboutOnePortConnection=false)
-    annotation (Placement(transformation(extent={{294,144},{314,164}})));
+    annotation (Placement(transformation(extent={{294,146},{314,166}})));
   Buildings.Fluid.Sensors.PPM senCO2220(redeclare package Medium = Medium,
       warnAboutOnePortConnection=false)
     annotation (Placement(transformation(extent={{294,120},{314,140}})));
-  Buildings.Fluid.Sensors.PPM senCO2Cor(redeclare package Medium = Medium,
+  Buildings.Fluid.Sensors.PPM senCO22nd(redeclare package Medium = Medium,
       warnAboutOnePortConnection=false)
     annotation (Placement(transformation(extent={{294,100},{314,120}})));
-  Modelica.Blocks.Routing.Multiplex5 multiplex5_2
-    annotation (Placement(transformation(extent={{350,144},{370,164}})));
-  Modelica.Blocks.Interfaces.RealOutput CO2Roo[5]
+  Modelica.Blocks.Interfaces.RealOutput CO2Roo[3]
     "Connector of Real output signals" annotation (Placement(transformation(
           extent={{380,70},{400,90}}), iconTransformation(extent={{380,70},{400,
             90}})));
@@ -381,39 +359,25 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
     azi={Buildings.Types.Azimuth.S,Buildings.Types.Azimuth.S,Buildings.Types.Azimuth.W,Buildings.Types.Azimuth.N,Buildings.Types.Azimuth.E})
     annotation (Placement(transformation(extent={{-58,174},{-38,194}})));
   Buildings.Utilities.IO.SignalExchange.Read reaCO2Cor(
-    description="Temperature of core zone",
-    KPIs=Buildings.Utilities.IO.SignalExchange.SignalTypes.SignalsForKPIs.CO2Concentration,
-    zone="5",
-    y(unit="ppm"))
-    annotation (Placement(transformation(extent={{322,106},{330,114}})));
-
-  Buildings.Utilities.IO.SignalExchange.Read reaCO2Wes(
-    description="Temperature of west zone",
-    KPIs=Buildings.Utilities.IO.SignalExchange.SignalTypes.SignalsForKPIs.CO2Concentration,
-    zone="4",
-    y(unit="ppm"))
-    annotation (Placement(transformation(extent={{322,126},{330,134}})));
-
-  Buildings.Utilities.IO.SignalExchange.Read reaCO2Nor(
-    description="Temperature of north zone",
+    description="CO2 concentration of 2nd floor",
     KPIs=Buildings.Utilities.IO.SignalExchange.SignalTypes.SignalsForKPIs.CO2Concentration,
     zone="3",
     y(unit="ppm"))
-    annotation (Placement(transformation(extent={{322,150},{330,158}})));
+    annotation (Placement(transformation(extent={{322,106},{330,114}})));
 
-  Buildings.Utilities.IO.SignalExchange.Read reaCO2Eas(
-    description="Temperature of east zone",
+  Buildings.Utilities.IO.SignalExchange.Read reaCO2220(
+    description="CO2 concentration of 2.20",
     KPIs=Buildings.Utilities.IO.SignalExchange.SignalTypes.SignalsForKPIs.CO2Concentration,
     zone="2",
     y(unit="ppm"))
-    annotation (Placement(transformation(extent={{322,174},{330,182}})));
+    annotation (Placement(transformation(extent={{322,126},{330,134}})));
 
   Buildings.Utilities.IO.SignalExchange.Read reaCO2Sou(
     description="Temperature of south zone",
     KPIs=Buildings.Utilities.IO.SignalExchange.SignalTypes.SignalsForKPIs.CO2Concentration,
     zone="1",
     y(unit="ppm"))
-    annotation (Placement(transformation(extent={{322,198},{330,206}})));
+    annotation (Placement(transformation(extent={{324,152},{332,160}})));
 
   Buildings.Utilities.IO.SignalExchange.Overwrite oveSha219(description="Overwrite shading position for 2.19",
                                                        u(
@@ -470,19 +434,6 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
     c=1600,
     d=471) "CLT"
     annotation (Placement(transformation(extent={{566,398},{586,418}})));
-  Modelica.Thermal.HeatTransfer.Sources.FixedTemperature fixedTempBoundary(T=288.15)
-    annotation (Placement(transformation(extent={{282,-24},{302,-4}})));
-  Buildings.Fluid.MixingVolumes.MixingVolume vol1(redeclare package Medium =
-        Medium,
-    m_flow_nominal=1E-3,
-    V=10,       nPorts=3)
-    annotation (Placement(transformation(extent={{356,10},{376,30}})));
-  Buildings.Fluid.MixingVolumes.MixingVolume vol2(
-    redeclare package Medium = Medium,
-    m_flow_nominal=1E-3,
-    V=10,
-    nPorts=3)
-    annotation (Placement(transformation(extent={{228,144},{248,164}})));
   Buildings.HeatTransfer.Conduction.MultiLayer parWal220To2nd(
     A=(wSouFac/2)*hRoo,
     layers=conIntWal,
@@ -507,7 +458,7 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
         true, shade=Buildings.HeatTransfer.Data.Shades.Gray())
     annotation (Placement(transformation(extent={{240,422},{260,442}})));
   Modelica.Blocks.Sources.Constant const(k=1)
-    annotation (Placement(transformation(extent={{-128,-152},{-108,-132}})));
+    annotation (Placement(transformation(extent={{-158,-110},{-138,-90}})));
   Buildings.HeatTransfer.Conduction.MultiLayer parWal220To219(
     A=5.89*hRoo,
     layers=conIntWal,
@@ -534,6 +485,8 @@ parameter Buildings.HeatTransfer.Data.Solids.GypsumBoard matGyp2(
       max=1)) annotation (Placement(transformation(extent={{72,182},{82,192}})));
   Modelica.Blocks.Sources.Constant intGains2nd[3](k=0)
     annotation (Placement(transformation(extent={{-124,12},{-104,32}})));
+  Modelica.Blocks.Routing.Multiplex3 multiplex3_2
+    annotation (Placement(transformation(extent={{350,112},{370,132}})));
 equation
   connect(room219.weaBus, weaBus) annotation (Line(
       points={{179.9,-6.1},{179.9,8},{210,8},{210,200}},
@@ -553,11 +506,6 @@ equation
       color={255,204,51},
       thickness=0.5,
       smooth=Smooth.None));
-  connect(multiplex5_1.y, TRooAir) annotation (Line(
-      points={{371,290},{372,290},{372,160},{390,160}},
-      color={0,0,127},
-      smooth=Smooth.None,
-      pattern=LinePattern.Dash));
   connect(room219.heaPorAir,temAir219.port)  annotation (Line(
       points={{161,-24},{224,-24},{224,100},{264,100},{264,350},{290,350}},
       color={191,0,0},
@@ -623,21 +571,17 @@ equation
   connect(CO2Gen219.y, room219.C_flow[1]) annotation (Line(points={{95,-20},{95,
           4},{120,4},{120,8},{140.4,8},{140.4,-21.2}},
                                color={0,0,127}));
-  connect(senCO2Sou.port, room219.ports[3]) annotation (Line(points={{304,192},
-          {216,192},{216,-44},{128,-44},{128,-34.3333},{147,-34.3333}},
-                                                                 color={0,127,255}));
+  connect(senCO2219.port, room219.ports[3]) annotation (Line(points={{304,146},
+          {276,146},{276,-136},{147,-136},{147,-34.3333}},       color={0,127,255}));
   connect(senCO2220.port, room220.ports[3]) annotation (Line(points={{304,120},
           {282,120},{282,196},{226,196},{226,200},{190,200},{190,196},{46,196},
           {46,68},{6,68},{6,44},{-38,44},{-38,4},{-34,4},{-34,-36.3333},{25,
           -36.3333}},
         color={0,127,255}));
-  connect(senCO2Cor.port, SecFloor.ports[3]) annotation (Line(points={{304,100},
+  connect(senCO22nd.port, SecFloor.ports[3]) annotation (Line(points={{304,100},
           {288,100},{288,28},{228,28},{228,40},{188,40},{188,32},{140,32},{140,
           45.4286},{151,45.4286}},
                           color={0,127,255}));
-  connect(multiplex5_2.y, CO2Roo) annotation (Line(points={{371,154},{372,154},{
-          372,80},{390,80}},  color={0,0,127},
-      pattern=LinePattern.Dash));
   connect(weaBus, shading_control[1].weaBus) annotation (Line(
       points={{210,200},{-60,200},{-60,193.4},{-57,193.4}},
       color={255,204,51},
@@ -662,44 +606,16 @@ equation
       index=-1,
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
-  connect(senCO2Sou.ppm, reaCO2Sou.u) annotation (Line(
-      points={{315,202},{321.2,202}},
+  connect(senCO2219.ppm, reaCO2Sou.u) annotation (Line(
+      points={{315,156},{323.2,156}},
       color={0,0,127},
       pattern=LinePattern.Dash));
-  connect(senCO2Eas.ppm, reaCO2Eas.u) annotation (Line(
-      points={{315,178},{321.2,178}},
-      color={0,0,127},
-      pattern=LinePattern.Dash));
-  connect(senCO2Nor.ppm, reaCO2Nor.u) annotation (Line(
-      points={{315,154},{321.2,154}},
-      color={0,0,127},
-      pattern=LinePattern.Dash));
-  connect(senCO2220.ppm, reaCO2Wes.u) annotation (Line(
+  connect(senCO2220.ppm,reaCO2220. u) annotation (Line(
       points={{315,130},{321.2,130}},
       color={0,0,127},
       pattern=LinePattern.Dash));
-  connect(senCO2Cor.ppm, reaCO2Cor.u) annotation (Line(
+  connect(senCO22nd.ppm, reaCO2Cor.u) annotation (Line(
       points={{315,110},{321.2,110}},
-      color={0,0,127},
-      pattern=LinePattern.Dash));
-  connect(reaCO2Cor.y, multiplex5_2.u5[1]) annotation (Line(
-      points={{330.4,110},{340,110},{340,144},{348,144}},
-      color={0,0,127},
-      pattern=LinePattern.Dash));
-  connect(reaCO2Wes.y, multiplex5_2.u4[1]) annotation (Line(
-      points={{330.4,130},{336,130},{336,148},{348,148},{348,149}},
-      color={0,0,127},
-      pattern=LinePattern.Dash));
-  connect(reaCO2Nor.y, multiplex5_2.u3[1]) annotation (Line(
-      points={{330.4,154},{348,154}},
-      color={0,0,127},
-      pattern=LinePattern.Dash));
-  connect(reaCO2Eas.y, multiplex5_2.u2[1]) annotation (Line(
-      points={{330.4,178},{336,178},{336,160},{348,160},{348,159}},
-      color={0,0,127},
-      pattern=LinePattern.Dash));
-  connect(reaCO2Sou.y, multiplex5_2.u1[1]) annotation (Line(
-      points={{330.4,202},{340,202},{340,164},{348,164}},
       color={0,0,127},
       pattern=LinePattern.Dash));
   connect(oveSha219.y, room219.uSha[1]) annotation (Line(
@@ -714,33 +630,6 @@ equation
           -92,88},{-108,88}}, color={0,0,127}));
   connect(gaiArea.y, reaAuxPow.u) annotation (Line(points={{-131,88},{-142.4,88}},
                                     color={0,0,127}));
-  connect(fixedTempBoundary.port, heaPorAir3rd) annotation (Line(points={{302,-14},
-          {316,-14},{316,25},{325,25}}, color={191,0,0}));
-  connect(fixedTempBoundary.port, heaPorRad3rd)
-    annotation (Line(points={{302,-14},{327,-14},{327,17}}, color={191,0,0}));
-  connect(fixedTempBoundary.port,heaPorRad1st)  annotation (Line(points={{302,-14},
-          {308,-14},{308,113},{133,113}}, color={191,0,0}));
-  connect(fixedTempBoundary.port,heaPorAir1st)
-    annotation (Line(points={{302,-14},{302,129},{133,129}}, color={191,0,0}));
-  connect(vol1.heatPort,temAir3rd.port)  annotation (Line(points={{356,20},{356,
-          240},{214,240},{214,320},{292,320}}, color={191,0,0}));
-  connect(vol2.heatPort,temAir1st.port)  annotation (Line(points={{228,154},{224,
-          154},{224,256},{240,256},{240,290},{292,290}}, color={191,0,0}));
-  connect(ports1st[1], vol2.ports[1]) annotation (Line(points={{85,124},{85,88},
-          {236.667,88},{236.667,144}},
-                      color={0,127,255}));
-  connect(ports3rd[1], vol1.ports[1]) annotation (Line(points={{325,36},{336,36},
-          {336,-2},{364.667,-2},{364.667,10}},
-                                  color={0,127,255}));
-  connect(ports1st[2], vol2.ports[2]) annotation (Line(points={{95,124},{238,124},
-          {238,144}}, color={0,127,255}));
-  connect(ports3rd[2], vol1.ports[2]) annotation (Line(points={{335,36},{335,-38},
-          {366,-38},{366,10}}, color={0,127,255}));
-  connect(vol2.ports[3], senCO2Eas.port) annotation (Line(points={{239.333,144},
-          {248,144},{248,128},{254,128},{254,168},{304,168}}, color={0,127,255}));
-  connect(vol1.ports[3], senCO2Nor.port) annotation (Line(points={{367.333,10},
-          {376,10},{376,-18},{424,-18},{424,46},{250,46},{250,144},{304,144}},
-        color={0,127,255}));
   connect(SecFloor.surf_surBou[1], parWal219To2nd.port_b) annotation (Line(
         points={{162.2,41.75},{184,41.75},{184,40},{238,40},{238,24}}, color={
           191,0,0}));
@@ -776,10 +665,11 @@ equation
           {118,-94},{118,46.5714},{151,46.5714}},      color={0,127,255}));
   connect(door219To2nd.port_a2, SecFloor.ports[6]) annotation (Line(points={{108,
           -106},{110,-106},{110,47.1429},{151,47.1429}}, color={0,127,255}));
-  connect(const.y, door220To2nd.y) annotation (Line(points={{-107,-142},{-88,
-          -142},{-88,-140},{-90,-140},{-90,-100},{-55,-100}}, color={0,0,127}));
-  connect(const.y, door219To2nd.y) annotation (Line(points={{-107,-142},{34,
-          -142},{34,-100},{87,-100}}, color={0,0,127}));
+  connect(const.y, door220To2nd.y) annotation (Line(points={{-137,-100},{-55,-100}},
+                                                              color={0,0,127}));
+  connect(const.y, door219To2nd.y) annotation (Line(points={{-137,-100},{-64,-100},
+          {-64,-120},{80,-120},{80,-100},{87,-100}},
+                                      color={0,0,127}));
   connect(room220.surf_surBou[2], parWal220To219.port_b) annotation (Line(
         points={{36.2,-39.75},{68,-39.75},{68,-116},{186,-116},{186,-114},{202,-114}},
                   color={191,0,0}));
@@ -829,6 +719,14 @@ equation
   connect(gai.intGai, room219.qGai_flow) annotation (Line(points={{-95,114},{20,
           114},{20,40},{0,40},{0,4},{72,4},{72,0},{116,0},{116,-16},{140.4,-16}},
         color={0,0,127}));
+  connect(reaCO2Sou.y, multiplex3_2.u1[1]) annotation (Line(points={{332.4,156},
+          {340,156},{340,129},{348,129}}, color={0,0,127}));
+  connect(reaCO2220.y, multiplex3_2.u2[1]) annotation (Line(points={{330.4,130},
+          {332,130},{332,122},{348,122}}, color={0,0,127}));
+  connect(reaCO2Cor.y, multiplex3_2.u3[1]) annotation (Line(points={{330.4,110},
+          {336,110},{336,115},{348,115}}, color={0,0,127}));
+  connect(CO2Roo, multiplex3_2.y)
+    annotation (Line(points={{390,80},{390,122},{371,122}}, color={0,0,127}));
   annotation (Diagram(coordinateSystem(preserveAspectRatio=true,
         extent={{-160,-100},{380,500}},
         initialScale=0.1), graphics={

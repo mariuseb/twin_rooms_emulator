@@ -28,16 +28,6 @@ partial model PartialFloor "Interface for a model of a floor of a building"
     annotation (Placement(transformation(extent={{70,-44},{110,-28}}),
         iconTransformation(extent={{78,-32},{118,-16}})));
 
-  Modelica.Fluid.Vessels.BaseClasses.VesselFluidPorts_b ports3rd[2](
-      redeclare package Medium = Medium) "Fluid inlets and outlets"
-    annotation (Placement(transformation(extent={{310,28},{350,44}}),
-        iconTransformation(extent={{306,40},{346,56}})));
-
-  Modelica.Fluid.Vessels.BaseClasses.VesselFluidPorts_b ports1st[2](
-      redeclare package Medium = Medium) "Fluid inlets and outlets"
-    annotation (Placement(transformation(extent={{70,116},{110,132}}),
-        iconTransformation(extent={{78,108},{118,124}})));
-
   Modelica.Fluid.Vessels.BaseClasses.VesselFluidPorts_b ports220[2](
       redeclare package Medium = Medium) "Fluid inlets and outlets"
     annotation (Placement(transformation(extent={{-50,36},{-10,52}}),
@@ -48,7 +38,7 @@ partial model PartialFloor "Interface for a model of a floor of a building"
     annotation (Placement(transformation(extent={{70,38},{110,54}}),
         iconTransformation(extent={{78,40},{118,56}})));
 
-  Modelica.Blocks.Interfaces.RealOutput TRooAir[5](
+  Modelica.Blocks.Interfaces.RealOutput TRooAir[3](
     each unit="K",
     each displayUnit="degC") "Room air temperatures"
     annotation (Placement(transformation(extent={{380,150},{400,170}}),
@@ -98,20 +88,12 @@ partial model PartialFloor "Interface for a model of a floor of a building"
   Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor temAir219
     "Air temperature sensor"
     annotation (Placement(transformation(extent={{290,340},{310,360}})));
-  Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor temAir3rd
-    "Air temperature sensor"
-    annotation (Placement(transformation(extent={{292,310},{312,330}})));
-  Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor temAir1st
-    "Air temperature sensor"
-    annotation (Placement(transformation(extent={{292,280},{312,300}})));
   Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor temAir220
     "Air temperature sensor"
     annotation (Placement(transformation(extent={{292,248},{312,268}})));
   Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor temAir2nd
     "Air temperature sensor"
     annotation (Placement(transformation(extent={{294,218},{314,238}})));
-  Modelica.Blocks.Routing.Multiplex5 multiplex5_1
-    annotation (Placement(transformation(extent={{350,280},{370,300}})));
 
   Buildings.Fluid.Sensors.RelativePressure senRelPre2nd(redeclare package
       Medium = Medium) "Building pressure measurement"
@@ -126,42 +108,30 @@ partial model PartialFloor "Interface for a model of a floor of a building"
     y(unit="K"))
     annotation (Placement(transformation(extent={{320,346},{328,354}})));
 
-  Buildings.Utilities.IO.SignalExchange.Read reaTEas(
-    description="Temperature of 3rd floor",
+  Buildings.Utilities.IO.SignalExchange.Read reaT220(
+    description="Temperature of room 220",
     KPIs=Buildings.Utilities.IO.SignalExchange.SignalTypes.SignalsForKPIs.AirZoneTemperature,
     zone="2",
     y(unit="K"))
-    annotation (Placement(transformation(extent={{322,316},{330,324}})));
-
-  Buildings.Utilities.IO.SignalExchange.Read reaTNor(
-    description="Temperature of 1st floor",
-    KPIs=Buildings.Utilities.IO.SignalExchange.SignalTypes.SignalsForKPIs.AirZoneTemperature,
-    zone="3",
-    y(unit="K"))
-    annotation (Placement(transformation(extent={{320,286},{328,294}})));
-
-  Buildings.Utilities.IO.SignalExchange.Read reaTWea(
-    description="Temperature of room 220",
-    KPIs=Buildings.Utilities.IO.SignalExchange.SignalTypes.SignalsForKPIs.AirZoneTemperature,
-    zone="4",
-    y(unit="K"))
     annotation (Placement(transformation(extent={{318,254},{326,262}})));
 
-  Buildings.Utilities.IO.SignalExchange.Read reaTCor(
+  Buildings.Utilities.IO.SignalExchange.Read reaT2nd(
     description="Temperature of 2nd floor",
     KPIs=Buildings.Utilities.IO.SignalExchange.SignalTypes.SignalsForKPIs.AirZoneTemperature,
-    zone="5",
+    zone="3",
     y(unit="K"))
     annotation (Placement(transformation(extent={{322,224},{330,232}})));
 
   Buildings.Airflow.Multizone.DoorOperable door220To2nd(redeclare package
       Medium =                                                                     Medium,
-      LClo=0.1)
+      LClo=0.01)
     annotation (Placement(transformation(extent={{-54,-110},{-34,-90}})));
   Buildings.Airflow.Multizone.DoorOperable door219To2nd(redeclare package
       Medium =                                                                     Medium,
-      LClo=0.1)
+      LClo=0.01)
     annotation (Placement(transformation(extent={{88,-110},{108,-90}})));
+  Modelica.Blocks.Routing.Multiplex3 multiplex3_1
+    annotation (Placement(transformation(extent={{370,276},{390,296}})));
 equation
   connect(weaBus, lea219.weaBus) annotation (Line(
       points={{210,200},{-80,200},{-80,376},{-56,376}},
@@ -186,11 +156,6 @@ equation
       string="%second",
       index=1,
       extent={{6,3},{6,3}}));
-  connect(multiplex5_1.y, TRooAir) annotation (Line(
-      points={{371,290},{372,290},{372,160},{390,160}},
-      color={0,0,127},
-      smooth=Smooth.None,
-      pattern=LinePattern.Dash));
   connect(senRelPre2nd.p_rel, p_rel) annotation (Line(
       points={{50,241},{50,220},{-170,220}},
       color={0,0,127},
@@ -205,42 +170,23 @@ equation
       points={{310,350},{319.2,350}},
       color={0,0,127},
       pattern=LinePattern.Dash));
-  connect(reaT219.y, multiplex5_1.u1[1]) annotation (Line(
-      points={{328.4,350},{342,350},{342,300},{348,300}},
-      color={0,0,127},
-      pattern=LinePattern.Dash));
-  connect(temAir3rd.T, reaTEas.u) annotation (Line(
-      points={{312,320},{321.2,320}},
-      color={0,0,127},
-      pattern=LinePattern.Dash));
-  connect(reaTEas.y, multiplex5_1.u2[1]) annotation (Line(
-      points={{330.4,320},{336,320},{336,295},{348,295}},
-      color={0,0,127},
-      pattern=LinePattern.Dash));
-  connect(temAir1st.T, reaTNor.u) annotation (Line(
-      points={{312,290},{319.2,290}},
-      color={0,0,127},
-      pattern=LinePattern.Dash));
-  connect(reaTNor.y, multiplex5_1.u3[1]) annotation (Line(
-      points={{328.4,290},{348,290}},
-      color={0,0,127},
-      pattern=LinePattern.Dash));
-  connect(temAir220.T, reaTWea.u) annotation (Line(
+  connect(temAir220.T,reaT220. u) annotation (Line(
       points={{312,258},{317.2,258}},
       color={0,0,127},
       pattern=LinePattern.Dash));
-  connect(reaTWea.y, multiplex5_1.u4[1]) annotation (Line(
-      points={{326.4,258},{326.4,256},{336,256},{336,285},{348,285}},
-      color={0,0,127},
-      pattern=LinePattern.Dash));
-  connect(temAir2nd.T, reaTCor.u) annotation (Line(
+  connect(temAir2nd.T,reaT2nd. u) annotation (Line(
       points={{314,228},{321.2,228}},
       color={0,0,127},
       pattern=LinePattern.Dash));
-  connect(reaTCor.y, multiplex5_1.u5[1]) annotation (Line(
-      points={{330.4,228},{342,228},{342,280},{348,280}},
-      color={0,0,127},
-      pattern=LinePattern.Dash));
+  connect(reaT219.y, multiplex3_1.u1[1]) annotation (Line(points={{328.4,350},{336,
+          350},{336,320},{348,320},{348,293},{368,293}}, color={0,0,127}));
+  connect(reaT220.y, multiplex3_1.u2[1]) annotation (Line(points={{326.4,258},{342,
+          258},{342,268},{350,268},{350,286},{368,286}}, color={0,0,127}));
+  connect(reaT2nd.y, multiplex3_1.u3[1]) annotation (Line(points={{330.4,228},{344,
+          228},{344,234},{358,234},{358,279},{368,279}}, color={0,0,127}));
+  connect(multiplex3_1.y, TRooAir) annotation (Line(points={{391,286},{406,286},
+          {406,258},{416,258},{416,210},{360,210},{360,160},{390,160}}, color={0,
+          0,127}));
   annotation (Diagram(coordinateSystem(preserveAspectRatio=true,
         extent={{-160,-100},{380,500}},
         initialScale=0.1)),   Icon(coordinateSystem(extent={{-80,-80},{380,160}},

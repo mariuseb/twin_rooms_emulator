@@ -5,10 +5,8 @@ model Adrenalin2
   package MediumA = Buildings.Media.Air (extraPropertiesNames={"CO2"}) "Medium model for air";
   package MediumW = Buildings.Media.Water "Medium model for water";
 
-  Components.Floor5Zone_Shading floor5Zone_Shading(
-    lat=lat,
-    gai(data(MatEmi=8.64E-6*0.01)),
-    fixedTempBoundary(T=288.15))
+  Components.Floor5Zone_Shading floor5Zone_Shading(lat=lat, gai(data(MatEmi=
+            8.64E-6*0.01)))
     annotation (Placement(transformation(extent={{50,114},{156,174}})));
   Buildings.BoundaryConditions.WeatherData.ReaderTMY3
                                             weaDat(filNam=
@@ -42,14 +40,6 @@ model Adrenalin2
     m_flow_nominal_bypass=m_flow_nominal_water_AHU/1000,
     conPIDcoil(k=0.01, Ti=30))
     annotation (Placement(transformation(extent={{-132,80},{-152,100}})));
-  Buildings.Fluid.HeatExchangers.Radiators.RadiatorEN442_2 radEas(
-    redeclare package Medium = MediumW,
-    Q_flow_nominal(displayUnit="W") = 1,
-    T_a_nominal=328.15,
-    T_b_nominal=308.15,
-    TAir_nominal=294.15,
-    dp_nominal=0) "radiator for east facade"
-    annotation (Placement(transformation(extent={{164,112},{184,132}})));
   Buildings.Fluid.HeatExchangers.Radiators.RadiatorEN442_2 rad219(
     redeclare package Medium = MediumW,
     T_start=295.15,
@@ -69,39 +59,6 @@ model Adrenalin2
     TAir_nominal=294.15,
     dp_nominal=0) "radiator for room 2.20"
     annotation (Placement(transformation(extent={{22,114},{42,134}})));
-  Buildings.Fluid.HeatExchangers.Radiators.RadiatorEN442_2 rad2nd(
-    redeclare package Medium = MediumW,
-    Q_flow_nominal(displayUnit="W") = 60*floor5Zone_Shading.AFlo2nd,
-    T_a_nominal=320.15,
-    T_b_nominal=308.15,
-    TAir_nominal=294.15,
-    dp_nominal=0) "radiator for rest of 2nd floor"
-    annotation (Placement(transformation(extent={{68,172},{88,192}})));
-  Components.WaterTRVSplitterManifold4Zone radSupMan(
-    redeclare package Medium = MediumW,
-    m_flow_nominal={rad219.m_flow_nominal,radEas.m_flow_nominal,rad2nd.m_flow_nominal,
-        rad220.m_flow_nominal},
-    nPorts=4,
-    TRooSet(k=273.15 + 22),
-    valSou(conPID(
-        k=0.1,           yMin=0,
-        initType=Modelica.Blocks.Types.InitPID.InitialState,
-        xi_start=0,
-        xd_start=0,
-        reset=Buildings.Types.Reset.Disabled)))
-              "Radiator manifold with valves" annotation (Placement(
-        transformation(
-        extent={{-10,-10},{10,10}},
-        rotation=90,
-        origin={14,4})));
-  Components.WaterJoinerManifold4Zone radRetMan(
-    redeclare package Medium = MediumW,
-    m_flow_nominal=fill(m_flow_nominal_water_rad/4, 4),
-    nPorts=4) "Radiator circuit return manifold" annotation (Placement(
-        transformation(
-        extent={{-10,-10},{10,10}},
-        rotation=270,
-        origin={-20,4})));
   Components.DistrictHeating_dp districtHeating(
     redeclare package Medium = MediumW,
     m_flow_nominal=m_flow_nominal_water_AHU + m_flow_nominal_water_rad,
@@ -344,6 +301,32 @@ Modelica.Thermal.HeatTransfer.Sources.FixedTemperature tPipHeaLoss(T(
     y(unit="J"))
     annotation (Placement(transformation(extent={{-346,0},{-358,12}})));
 
+  Buildings.Controls.SetPoints.OccupancySchedule
+                                       occSch(occupancy=3600*{8,18})
+                                              "Occupancy schedule"
+    annotation (Placement(transformation(extent={{82,-44},{102,-24}})));
+  Modelica.Blocks.Sources.Constant TRooNig(k=273.15 + 15)
+    "Room temperature set point at night"
+    annotation (Placement(transformation(extent={{82,-70},{102,-50}})));
+  Modelica.Blocks.Sources.Constant TRooSet(k=273.15 + 22)
+    annotation (Placement(transformation(extent={{82,-14},{102,6}})));
+  Modelica.Blocks.Logical.Switch switch1
+    annotation (Placement(transformation(extent={{156,-22},{176,-2}})));
+  Components.WaterTRVSplitterManifold2Zone waterTRVSplitterManifold2Zone(
+    m_flow_nominal={rad219.Q_flow_nominal/(4200*12),rad220.Q_flow_nominal/(4200
+        *12)},                                                           nPorts=2,
+      redeclare package Medium = MediumW) annotation (Placement(transformation(
+        extent={{-17,-15},{17,15}},
+        rotation=90,
+        origin={33,33})));
+  Components.WaterJoinerManifold2Zone waterJoinerManifold2Zone(
+    m_flow_nominal={rad219.Q_flow_nominal/(4200*12),rad220.Q_flow_nominal/(4200
+        *12)},                                                 nPorts=2,
+      redeclare package Medium = MediumW)
+    annotation (Placement(transformation(
+        extent={{-16,-16},{16,16}},
+        rotation=270,
+        origin={-8,34})));
 equation
   connect(weaDat.weaBus,weaBus)  annotation (Line(
       points={{-180,192},{-170,192},{-170,180},{-154,180}},
@@ -396,35 +379,6 @@ equation
   connect(rad220.heatPortCon,floor5Zone_Shading.heaPorAir220)  annotation (Line(
         points={{30,131.2},{30,138},{61.7522,138},{61.7522,139.615}}, color={191,
           0,0}));
-  connect(floor5Zone_Shading.heaPorRad1st,rad2nd. heatPortRad) annotation (Line(
-        points={{99.0826,158.538},{99.0826,156},{94,156},{94,192},{80,192},{80,
-          189.2}},
-        color={191,0,0}));
-  connect(rad2nd.heatPortCon,floor5Zone_Shading.heaPorAir1st)  annotation (Line(
-        points={{76,189.2},{76,196},{96,196},{96,178},{99.0826,178},{99.0826,
-          162.231}},
-        color={191,0,0}));
-  connect(radSupMan.ports_b[1],rad219. port_a) annotation (Line(points={{15.5,14},
-          {15.5,100},{100,100}}, color={102,44,145}));
-  connect(radSupMan.ports_b[2], radEas.port_a) annotation (Line(points={{14.5,14},
-          {14.5,84},{164,84},{164,122}}, color={102,44,145}));
-  connect(radSupMan.ports_b[3],rad2nd. port_a) annotation (Line(points={{13.5,14},
-          {13.5,182},{68,182}}, color={102,44,145}));
-  connect(radSupMan.ports_b[4],rad220. port_a) annotation (Line(points={{12.5,14},
-          {12.5,124},{22,124}}, color={102,44,145}));
-  connect(floor5Zone_Shading.TRooAir, radSupMan.TMea) annotation (Line(
-      points={{158.304,144},{160,144},{160,70},{-4,70},{-4,-6},{4,-6}},
-      color={0,0,127},
-      pattern=LinePattern.Dash));
-  connect(rad219.port_b, radRetMan.ports_a[1]) annotation (Line(points={{120,100},
-          {122,100},{122,68},{-21.5,68},{-21.5,14}}, color={0,127,255}));
-  connect(radEas.port_b, radRetMan.ports_a[2]) annotation (Line(points={{184,122},
-          {190,122},{190,68},{-20.5,68},{-20.5,14}}, color={0,127,255}));
-  connect(rad2nd.port_b, radRetMan.ports_a[3]) annotation (Line(points={{88,182},
-          {98,182},{98,198},{10,198},{10,74},{-19.5,74},{-19.5,14}}, color={0,127,
-          255}));
-  connect(rad220.port_b, radRetMan.ports_a[4]) annotation (Line(points={{42,124},
-          {42,68},{-18.5,68},{-18.5,14}}, color={0,127,255}));
   connect(districtHeating.weaBus, weaBus) annotation (Line(
       points={{-173,-119.4},{-173,-4},{-174,-4},{-174,110},{-204,110},{-204,180},
           {-154,180}},
@@ -475,12 +429,8 @@ equation
     annotation (Line(points={{-152,80},{-152,-34}}, color={0,127,255}));
   connect(energyMeter.port_b1, pipSupRad.port_a) annotation (Line(points={{2,-58},
           {2,-54},{14,-54},{14,-44}},      color={0,127,255}));
-  connect(pipSupRad.port_b, radSupMan.port_a)
-    annotation (Line(points={{14,-24},{14,-6}}, color={0,127,255}));
   connect(energyMeter.port_a2, pipRetRad.port_b) annotation (Line(points={{-10,-58},
           {-10,-54},{-20,-54},{-20,-42}},      color={0,127,255}));
-  connect(pipRetRad.port_a, radRetMan.port_b)
-    annotation (Line(points={{-20,-22},{-20,-6}}, color={0,127,255}));
   connect(tPipHeaLoss.port, pipRetCoil219.heatPort)
     annotation (Line(points={{-80,-4},{-147,-4},{-147,-44}}, color={191,0,0}));
   connect(tPipHeaLoss.port, pipSupCoil219.heatPort) annotation (Line(points={{-80,
@@ -488,7 +438,7 @@ equation
   connect(tPipHeaLoss.port, pipRetRad.heatPort) annotation (Line(points={{-80,
           -4},{-116,-4},{-116,-50},{-4,-50},{-4,-32},{-15,-32}}, color={191,0,0}));
   connect(tPipHeaLoss.port, pipSupRad.heatPort) annotation (Line(points={{-80,-4},
-          {-116,-4},{-116,-50},{30,-50},{30,-34},{19,-34}},
+          {-196,-4},{-196,-52},{-50,-52},{-50,-34},{19,-34}},
                               color={191,0,0}));
   connect(jun2.port_1, senTemRadRet.port_b) annotation (Line(points={{-96,-146},
           {-10,-146},{-10,-104}}, color={0,127,255}));
@@ -524,9 +474,6 @@ equation
         color={0,127,255}));
   connect(CO2SetPoi.y, AHU219.CO2SetPoi) annotation (Line(points={{-333,170},{-328,
           170},{-328,129},{-162,129}}, color={0,0,127}));
-  connect(floor5Zone_Shading.CO2Roo[1], AHU219.CO2meas) annotation (Line(points={{158.304,
-          150},{158.304,184},{-72,184},{-72,166},{-144.2,166},{-144.2,129}},
-        color={0,0,127}));
   connect(jun2.port_2, jun3.port_2)
     annotation (Line(points={{-116,-146},{-134,-146}}, color={0,127,255}));
   connect(jun3.port_1, districtHeating.port_a) annotation (Line(points={{-154,-146},
@@ -563,9 +510,6 @@ equation
           60},{-276,60},{-276,33.4},{-290,33.4}}, color={0,0,127}));
   connect(TAirSupSet.y, twoWayHeatBattery220.TemSet) annotation (Line(points={{-235,
           172},{-230,172},{-230,90},{-272,90},{-272,30},{-290,30}}, color={0,0,127}));
-  connect(floor5Zone_Shading.CO2Roo[4], AHU220.CO2meas) annotation (Line(points={{158.304,
-          151.385},{158.304,198},{-32,198},{-32,158},{-284,158},{-284,100},{
-          -310.2,100},{-310.2,79}},  color={0,0,127}));
   connect(AHU220.port_a1, floor5Zone_Shading.ports220[1]) annotation (Line(
         points={{-298,72},{-192,72},{-192,22},{-36,22},{-36,143.538},{61.2913,
           143.538}},
@@ -579,6 +523,46 @@ equation
       color={255,204,51},
       thickness=0.5));
 
+  connect(tPipHeaLoss.port, pipSupCoil220.heatPort) annotation (Line(points={{-80,
+          -4},{-212,-4},{-212,-46},{-225,-46}}, color={191,0,0}));
+  connect(tPipHeaLoss.port, pipRetCoil220.heatPort) annotation (Line(points={{-80,
+          -4},{-254,-4},{-254,-48},{-261,-48}}, color={191,0,0}));
+  connect(occSch.occupied,switch1. u2) annotation (Line(points={{103,-40},{110,-40},
+          {110,-18},{154,-18},{154,-12}},        color={255,0,255}));
+  connect(TRooNig.y,switch1. u3) annotation (Line(points={{103,-60},{118,-60},{118,
+          -20},{154,-20}},        color={0,0,127}));
+  connect(TRooSet.y,switch1. u1) annotation (Line(points={{103,-4},{154,-4}},
+                                                        color={0,0,127}));
+  connect(switch1.y, waterTRVSplitterManifold2Zone.TSet) annotation (Line(
+        points={{177,-12},{177,30},{54,30},{54,-2},{18,-2},{18,16}}, color={0,0,
+          127}));
+  connect(pipSupRad.port_b, waterTRVSplitterManifold2Zone.port_a) annotation (
+      Line(points={{14,-24},{12,-24},{12,0},{33,0},{33,16}}, color={0,127,255}));
+  connect(waterTRVSplitterManifold2Zone.ports_b[1], rad219.port_a) annotation (
+      Line(points={{34.5,50},{76,50},{76,100},{100,100}}, color={0,127,255}));
+  connect(rad219.port_b, waterJoinerManifold2Zone.ports_a[1]) annotation (Line(
+        points={{120,100},{138,100},{138,62},{-12,62},{-12,50},{-9.6,50}},
+        color={0,127,255}));
+  connect(waterJoinerManifold2Zone.port_b, pipRetRad.port_a) annotation (Line(
+        points={{-8,18},{-8,-10},{-20,-10},{-20,-22}}, color={0,127,255}));
+  connect(waterTRVSplitterManifold2Zone.ports_b[2], rad220.port_a) annotation (
+      Line(points={{31.5,50},{12,50},{12,118},{-20,118},{-20,128},{22,128},{22,124}},
+        color={0,127,255}));
+  connect(rad220.port_b, waterJoinerManifold2Zone.ports_a[2]) annotation (Line(
+        points={{42,124},{42,80},{38,80},{38,82},{-16,82},{-16,56},{-6.4,56},{-6.4,
+          50}}, color={0,127,255}));
+  connect(floor5Zone_Shading.TRooAir[1], waterTRVSplitterManifold2Zone.TMea[1])
+    annotation (Line(points={{158.304,143.231},{174,143.231},{174,40},{70,40},{
+          70,-16},{18.75,-16},{18.75,16}}, color={0,0,127}));
+  connect(floor5Zone_Shading.TRooAir[2], waterTRVSplitterManifold2Zone.TMea[2])
+    annotation (Line(points={{158.304,144},{182,144},{182,-12},{60,-12},{60,-24},
+          {17.25,-24},{17.25,16}}, color={0,0,127}));
+  connect(floor5Zone_Shading.CO2Roo[1], AHU219.CO2meas) annotation (Line(points
+        ={{158.304,150},{158.304,162},{-52,162},{-52,152},{-144.2,152},{-144.2,
+          129}}, color={0,0,127}));
+  connect(floor5Zone_Shading.CO2Roo[2], AHU220.CO2meas) annotation (Line(points
+        ={{158.304,150.462},{158.304,174},{-82,174},{-82,148},{-310.2,148},{
+          -310.2,79}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-380,-200},
             {200,200}})),                                        Diagram(
         coordinateSystem(preserveAspectRatio=false, extent={{-380,-200},{200,200}}),

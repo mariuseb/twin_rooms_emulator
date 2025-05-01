@@ -8,7 +8,11 @@ InternalGains
 Sensors
 AirJoinerManifold5Zone
 WaterJoinerManifold4Zone
+WaterJoinerManifold3Zone
+WaterJoinerManifold2Zone
 WaterTRVSplitterManifold4Zone
+WaterTRVSplitterManifold3Zone
+WaterTRVSplitterManifold2Zone
 AirDCVSplitterManifold5Zone
 TwoWayTRV
 TwoWayPIDV

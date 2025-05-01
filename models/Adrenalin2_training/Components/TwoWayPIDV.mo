@@ -93,7 +93,7 @@ model TwoWayPIDV "Two way thermostatic radiator valve"
   Buildings.Controls.Continuous.LimPID conPID(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
     k=0.1,
-    Ti=1800,
+    Ti=900,
     Td=900,
     yMax=100,
     Ni=0.9,

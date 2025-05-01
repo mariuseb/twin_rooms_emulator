@@ -144,7 +144,8 @@ model AHUSpeedHHB
             extent={{-160,84},{-140,104}})));
     Buildings.Fluid.HeatExchangers.DryCoilEffectivenessNTU
                                                          coil(redeclare package
-      Medium1 =   Air,
+              Medium1 =
+                  Air,
       redeclare package Medium2 = Water,
       m1_flow_nominal=m_flow_nominal_air,
       m2_flow_nominal=m_flow_nominal_water,
@@ -298,8 +299,8 @@ model AHUSpeedHHB
         rotation=180,
         origin={38,40})));
   Modelica.Blocks.Interfaces.RealInput CO2meas
-    "Measured CO2 from zone for independent VAV system " annotation (Placement(
-        transformation(
+    "Measured CO2 from zone for independent VAV system " annotation (
+      Placement(transformation(
         extent={{-20,-20},{20,20}},
         rotation=270,
         origin={38,110})));
@@ -379,8 +380,8 @@ equation
     annotation (Line(points={{-88,40},{-96,40}}, color={0,127,255}));
   connect(fanEx.port_a, hex.port_b1) annotation (Line(points={{-68,40},{-62,40},
           {-62,14},{-70,14},{-70,6},{-66,6}}, color={0,127,255}));
-  connect(senTemIn2.T, conPIDhex.u_m) annotation (Line(points={{-26,-29},{-26,-26},
-          {-6,-26},{-6,-18},{-22,-18},{-22,-10}}, color={0,0,127}));
+  connect(senTemIn2.T, conPIDhex.u_m) annotation (Line(points={{-26,-29},{-26,
+          -26},{-6,-26},{-6,-18},{-22,-18},{-22,-10}}, color={0,0,127}));
   connect(conPIDhex.y, hex.rel_eps_contr) annotation (Line(points={{-33,2},{-38,
           2},{-38,14},{-56,14},{-56,8.8}}, color={0,0,127}));
   connect(conPIDhex.u_s, TsupSet)
@@ -391,8 +392,8 @@ equation
           -26},{-84,-26},{-84,26},{-92,26},{-92,49},{-89,49}}, color={0,0,127}));
   connect(fanSu.P, add.u2) annotation (Line(points={{11,-31},{22,-31},{22,-80},
           {-70,-80}}, color={0,0,127}));
-  connect(oveFanSupSpe.y, conPIDfans.u_s) annotation (Line(points={{-54,31.2},{
-          -54,24},{64,24},{64,0},{57.6,0}}, color={0,0,127}));
+  connect(oveFanSupSpe.y, conPIDfans.u_s) annotation (Line(points={{-54,31.2},
+          {-54,24},{64,24},{64,0},{57.6,0}},color={0,0,127}));
   connect(conPIDfans.y, oveFanSup.u)
     annotation (Line(points={{39.2,0},{33.2,0}}, color={0,0,127}));
   connect(oveFanSup.y, fanSu.y) annotation (Line(points={{19.4,0},{16,0},{16,
@@ -413,9 +414,9 @@ equation
           {40,29},{40,26},{50,26},{50,60},{56.8,60}}, color={0,0,127}));
   connect(oveFanRet.u, conPIDfans.y) annotation (Line(points={{-26,80},{18,80},
           {18,16},{36,16},{36,8},{39.2,8},{39.2,0}}, color={0,0,127}));
-  connect(CO2meas, conPIDCO2.u_m) annotation (Line(points={{38,110},{38,78},{
-          -18,78},{-18,68},{-28,68},{-28,66},{-86,66},{-86,96},{-108,96},{-108,
-          86}}, color={0,0,127}));
+  connect(CO2meas, conPIDCO2.u_m) annotation (Line(points={{38,110},{38,78},{-18,
+          78},{-18,68},{-28,68},{-28,66},{-86,66},{-86,96},{-108,96},{-108,86}},
+        color={0,0,127}));
   connect(CO2SetPoi, conPIDCO2.u_s) annotation (Line(points={{-140,110},{-140,
           74},{-120,74}}, color={0,0,127}));
   connect(conPIDCO2.y, oveFanSupSpe.u) annotation (Line(points={{-97,74},{-76,
