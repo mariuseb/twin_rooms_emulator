@@ -115,10 +115,11 @@ model AHUSpeedHHB
       annotation (Placement(transformation(extent={{150,-50},{170,-30}})));
     Modelica.Fluid.Interfaces.FluidPort_a port_a1(redeclare package Medium = Air)
       annotation (Placement(transformation(extent={{150,30},{170,50}})));
-    Modelica.Blocks.Interfaces.RealInput y annotation (Placement(transformation(
-          extent={{-20,-20},{20,20}},
-          rotation=-90,
-          origin={-60,110})));
+    Modelica.Blocks.Interfaces.RealInput CO2SetPoi annotation (Placement(
+        transformation(
+        extent={{-20,-20},{20,20}},
+        rotation=-90,
+        origin={-140,110})));
     replaceable package Air = Buildings.Media.Air(extraPropertiesNames={"CO2"}) constrainedby
     Modelica.Media.Interfaces.PartialMedium;
     replaceable package Water = Buildings.Media.Water constrainedby
@@ -199,7 +200,7 @@ model AHUSpeedHHB
       Placement(transformation(
         extent={{8,-8},{-8,8}},
         rotation=90,
-        origin={-60,52})));
+        origin={-54,40})));
   Buildings.Utilities.IO.SignalExchange.Read reaTSupAir(
     KPIs=Buildings.Utilities.IO.SignalExchange.SignalTypes.SignalsForKPIs.None,
     y(unit="K"),
@@ -248,9 +249,10 @@ model AHUSpeedHHB
         rotation=180,
         origin={8,-12})));
 
-  Buildings.Controls.Continuous.LimPID conPID(controllerType=Modelica.Blocks.Types.SimpleController.PID,
+  Buildings.Controls.Continuous.LimPID conPIDhex(
+    controllerType=Modelica.Blocks.Types.SimpleController.PID,
     k=10,
-      initType=Modelica.Blocks.Types.InitPID.InitialState)
+    initType=Modelica.Blocks.Types.InitPID.InitialState)
     annotation (Placement(transformation(extent={{-12,-8},{-32,12}})));
   Modelica.Blocks.Interfaces.RealInput TsupSet
     "Supply temperature setpoint for rotary wheel control" annotation (
@@ -295,6 +297,23 @@ model AHUSpeedHHB
         extent={{-10,-10},{10,10}},
         rotation=180,
         origin={38,40})));
+  Modelica.Blocks.Interfaces.RealInput CO2meas
+    "Measured CO2 from zone for independent VAV system " annotation (Placement(
+        transformation(
+        extent={{-20,-20},{20,20}},
+        rotation=270,
+        origin={38,110})));
+  Buildings.Controls.Continuous.LimPID conPIDCO2(
+    controllerType=Modelica.Blocks.Types.SimpleController.PID,
+    k=0.5,
+    Ti=300,
+    yMax=(1800*1.2)/3600,
+    yMin=0,
+    initType=Modelica.Blocks.Types.InitPID.InitialState,
+    reverseActing=false) annotation (Placement(transformation(
+        extent={{10,-10},{-10,10}},
+        rotation=180,
+        origin={-108,74})));
 equation
     connect(fanSu.port_a, senTemIn2.port_b)
       annotation (Line(points={{-10,-40},{-16,-40}}, color={0,127,255}));
@@ -341,8 +360,6 @@ equation
           -72},{94,-72}}, color={0,127,255}));
   connect(senTemCoilIn.port_b,coil. port_a2)
     annotation (Line(points={{74,-72},{70,-72},{70,-52}}, color={0,127,255}));
-  connect(y, oveFanSupSpe.u)
-    annotation (Line(points={{-60,110},{-60,61.6}}, color={0,0,127}));
   connect(senTemIn3.T, reaTSupAir.u) annotation (Line(points={{118,-29},{118,
           -20},{131,-20},{131,-56.6}}, color={0,0,127}));
   connect(reaTSupAir.y, Tsu) annotation (Line(points={{131,-72.7},{131,-80},{
@@ -362,11 +379,11 @@ equation
     annotation (Line(points={{-88,40},{-96,40}}, color={0,127,255}));
   connect(fanEx.port_a, hex.port_b1) annotation (Line(points={{-68,40},{-62,40},
           {-62,14},{-70,14},{-70,6},{-66,6}}, color={0,127,255}));
-  connect(senTemIn2.T, conPID.u_m) annotation (Line(points={{-26,-29},{-26,-26},
+  connect(senTemIn2.T, conPIDhex.u_m) annotation (Line(points={{-26,-29},{-26,-26},
           {-6,-26},{-6,-18},{-22,-18},{-22,-10}}, color={0,0,127}));
-  connect(conPID.y, hex.rel_eps_contr) annotation (Line(points={{-33,2},{-38,2},
-          {-38,14},{-56,14},{-56,8.8}}, color={0,0,127}));
-  connect(conPID.u_s, TsupSet)
+  connect(conPIDhex.y, hex.rel_eps_contr) annotation (Line(points={{-33,2},{-38,
+          2},{-38,14},{-56,14},{-56,8.8}}, color={0,0,127}));
+  connect(conPIDhex.u_s, TsupSet)
     annotation (Line(points={{-10,2},{-4,2},{-4,110}}, color={0,0,127}));
   connect(coil.port_a1, fanSu.port_b)
     annotation (Line(points={{50,-40},{10,-40}}, color={0,127,255}));
@@ -374,8 +391,8 @@ equation
           -26},{-84,-26},{-84,26},{-92,26},{-92,49},{-89,49}}, color={0,0,127}));
   connect(fanSu.P, add.u2) annotation (Line(points={{11,-31},{22,-31},{22,-80},
           {-70,-80}}, color={0,0,127}));
-  connect(oveFanSupSpe.y, conPIDfans.u_s) annotation (Line(points={{-60,43.2},{
-          -60,22},{68,22},{68,0},{57.6,0}}, color={0,0,127}));
+  connect(oveFanSupSpe.y, conPIDfans.u_s) annotation (Line(points={{-54,31.2},{
+          -54,24},{64,24},{64,0},{57.6,0}}, color={0,0,127}));
   connect(conPIDfans.y, oveFanSup.u)
     annotation (Line(points={{39.2,0},{33.2,0}}, color={0,0,127}));
   connect(oveFanSup.y, fanSu.y) annotation (Line(points={{19.4,0},{16,0},{16,
@@ -396,6 +413,13 @@ equation
           {40,29},{40,26},{50,26},{50,60},{56.8,60}}, color={0,0,127}));
   connect(oveFanRet.u, conPIDfans.y) annotation (Line(points={{-26,80},{18,80},
           {18,16},{36,16},{36,8},{39.2,8},{39.2,0}}, color={0,0,127}));
+  connect(CO2meas, conPIDCO2.u_m) annotation (Line(points={{38,110},{38,78},{
+          -18,78},{-18,68},{-28,68},{-28,66},{-86,66},{-86,96},{-108,96},{-108,
+          86}}, color={0,0,127}));
+  connect(CO2SetPoi, conPIDCO2.u_s) annotation (Line(points={{-140,110},{-140,
+          74},{-120,74}}, color={0,0,127}));
+  connect(conPIDCO2.y, oveFanSupSpe.u) annotation (Line(points={{-97,74},{-76,
+          74},{-76,60},{-54,60},{-54,49.6}}, color={0,0,127}));
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-160,
               -100},{160,100}}), graphics={
           Rectangle(

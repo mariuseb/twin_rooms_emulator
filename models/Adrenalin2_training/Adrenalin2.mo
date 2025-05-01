@@ -52,7 +52,7 @@ model Adrenalin2
     annotation (Placement(transformation(extent={{164,112},{184,132}})));
   Buildings.Fluid.HeatExchangers.Radiators.RadiatorEN442_2 rad219(
     redeclare package Medium = MediumW,
-    Q_flow_nominal(displayUnit="W") = 30*floor5Zone_Shading.AFlo219,
+    Q_flow_nominal(displayUnit="W") = 45*floor5Zone_Shading.AFlo219,
     T_a_nominal=320.15,
     T_b_nominal=308.15,
     TAir_nominal=294.15,
@@ -265,7 +265,7 @@ Modelica.Thermal.HeatTransfer.Sources.FixedTemperature tPipHeaLoss(T(
 
   Buildings.Utilities.IO.SignalExchange.WeatherStation weatherStation
     annotation (Placement(transformation(extent={{-102,178},{-82,198}})));
-  Modelica.Blocks.Sources.Constant SupSepSetOcc(k=(300*1.2)/3600)
+  Modelica.Blocks.Sources.Constant CO2SetPoi(k=800)
     annotation (Placement(transformation(extent={{-236,128},{-216,148}})));
 equation
   connect(weaDat.weaBus,weaBus)  annotation (Line(
@@ -447,8 +447,11 @@ equation
   connect(floor5Zone_Shading.ports219[2], AHU.port_a1) annotation (Line(points={{92.1696,
           126.923},{92.1696,104},{-42,104},{-42,122},{-132,122}},
         color={0,127,255}));
-  connect(SupSepSetOcc.y, AHU.y) annotation (Line(points={{-215,138},{-154,138},
-          {-154,129}}, color={0,0,127}));
+  connect(CO2SetPoi.y, AHU.CO2SetPoi) annotation (Line(points={{-215,138},{-162,
+          138},{-162,129}}, color={0,0,127}));
+  connect(floor5Zone_Shading.CO2Roo[1], AHU.CO2meas) annotation (Line(points={{
+          158.304,150},{158.304,184},{-54,184},{-54,152},{-144.2,152},{-144.2,
+          129}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false, extent={{-200,-200},{200,200}})),
     experiment(
