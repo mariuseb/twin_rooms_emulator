@@ -11,8 +11,8 @@ def compile_fmu():
     '''
 
     # DEFINE MODEL
-    mopath = 'Adrenalin2_training/package.mo'
-    modelpath = 'Adrenalin2_training.Adrenalin2'
+    mopath = 'TwinRooms/package.mo'
+    modelpath = 'TwinRooms.TwinRooms.TestCase'
 
     # COMPILE FMU
     fmupath = parser.export_fmu(modelpath, [mopath])
