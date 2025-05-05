@@ -5953,9 +5953,18 @@ First implementation.
         Nd=0.5,
         xi_start=0,
         reset=Buildings.Types.Reset.Disabled)
-        annotation (Placement(transformation(extent={{-62,68},{-42,88}})));
+        annotation (Placement(transformation(extent={{-84,68},{-64,88}})));
       Modelica.Blocks.Nonlinear.Limiter limiter(uMax=1, uMin=0)
-        annotation (Placement(transformation(extent={{-24,30},{-4,50}})));
+        annotation (Placement(transformation(extent={{-32,50},{-12,70}})));
+      Buildings.Utilities.IO.SignalExchange.Overwrite oveValRad(description=
+            "Radiator valve control signal [0-1]", u(
+          min=0,
+          max=1,
+          unit="1")) "Overwrite for radiator valve"                  annotation (
+          Placement(transformation(
+            extent={{9,-9},{-9,9}},
+            rotation=90,
+            origin={9,35})));
     protected
       parameter Medium.ThermodynamicState sta_default=
          Medium.setState_pTX(T=Medium.T_default, p=Medium.p_default, X=Medium.X_default);
@@ -5983,13 +5992,16 @@ First implementation.
       end if;
 
       connect(conPID.u_s, TSet_in)
-        annotation (Line(points={{-64,78},{-116,78}}, color={0,0,127}));
-      connect(conPID.y, limiter.u) annotation (Line(points={{-41,78},{-34,78},{-34,
-              40},{-26,40}}, color={0,0,127}));
-      connect(limiter.y, val.y)
-        annotation (Line(points={{-3,40},{2,40},{2,12},{0,12}}, color={0,0,127}));
-      connect(T, conPID.u_m) annotation (Line(points={{0,106},{2,106},{2,52},{-52,
-              52},{-52,66}}, color={0,0,127}));
+        annotation (Line(points={{-86,78},{-116,78}}, color={0,0,127}));
+      connect(conPID.y, limiter.u) annotation (Line(points={{-63,78},{-40,78},{
+              -40,60},{-34,60}},
+                             color={0,0,127}));
+      connect(T, conPID.u_m) annotation (Line(points={{0,106},{0,48},{-74,48},{
+              -74,66}},      color={0,0,127}));
+      connect(limiter.y, oveValRad.u)
+        annotation (Line(points={{-11,60},{9,60},{9,45.8}}, color={0,0,127}));
+      connect(oveValRad.y, val.y)
+        annotation (Line(points={{9,25.1},{9,12},{0,12}}, color={0,0,127}));
     annotation (
     defaultComponentName="val",
     Documentation(info="<html>
