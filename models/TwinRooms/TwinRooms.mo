@@ -520,7 +520,8 @@ package TwinRooms
         extent={{-6,3},{-6,3}},
         horizontalAlignment=TextAlignment.Right));
     connect(AHU219.port_b1, floor5Zone_Shading.ports219[1]) annotation (Line(
-          points={{-132,114},{-96,114},{-96,90},{89.8652,90},{89.8652,126.923}},
+          points={{-132,114.4},{-96,114.4},{-96,90},{89.8652,90},{89.8652,
+            126.923}},
           color={0,127,255}));
     connect(floor5Zone_Shading.ports219[2], AHU219.port_a1) annotation (Line(
           points={{92.1696,126.923},{92.1696,104},{-42,104},{-42,122},{-132,122}},
@@ -568,8 +569,8 @@ package TwinRooms
             143.538}},
           color={0,127,255}));
     connect(AHU220.port_b1, floor5Zone_Shading.ports220[2]) annotation (Line(
-          points={{-298,64},{-174,64},{-174,28},{-52,28},{-52,76},{63.5957,76},
-            {63.5957,143.538}},
+          points={{-298,64.4},{-174,64.4},{-174,28},{-52,28},{-52,76},{63.5957,
+            76},{63.5957,143.538}},
                        color={0,127,255}));
     connect(weaDat.weaBus, AHU220.weaBus) annotation (Line(
         points={{-180,192},{-180,144},{-250,144},{-250,104},{-329,104},{-329,77.4}},
@@ -667,9 +668,9 @@ package TwinRooms
           Rectangle(extent={{-338,86},{-224,2}}, lineColor={28,108,200})}),
       experiment(
         StopTime=1209600,
-        Interval=29.9999808,
+        Interval=30,
         Tolerance=1e-06,
-        __Dymola_Algorithm="Radau"));
+        __Dymola_Algorithm="Cvode"));
   end TestCase;
 
   package Components
@@ -1133,7 +1134,7 @@ package TwinRooms
       parameter BaseClasses.TripleArgon18Argon18Clear datGlaSys(haveExteriorShade=
             true, shade=Buildings.HeatTransfer.Data.Shades.Gray())
         annotation (Placement(transformation(extent={{240,422},{260,442}})));
-      Modelica.Blocks.Sources.Constant const(k=1)
+      Modelica.Blocks.Sources.Constant const(k=0)
         annotation (Placement(transformation(extent={{-158,-110},{-138,-90}})));
       Buildings.HeatTransfer.Conduction.MultiLayer parWal220To219(
         A=5.89*hRoo,
@@ -2557,7 +2558,7 @@ The envelope thermal properties meet ASHRAE Standard 90.1-2004.
         allowFlowReversal=true,
         energyDynamics=Modelica.Fluid.Types.Dynamics.SteadyState,
         riseTime=30,
-        y_start=0.7)
+        y_start=0.1)
           annotation (Placement(transformation(extent={{-10,-50},{10,-30}})));
         Buildings.Fluid.Sensors.TemperatureTwoPort senTemIn2(
                                                             redeclare package
@@ -2587,7 +2588,7 @@ The envelope thermal properties meet ASHRAE Standard 90.1-2004.
         allowFlowReversal=false)
           annotation (Placement(transformation(extent={{-18,30},{-38,50}})));
         Buildings.Fluid.Sensors.Pressure senPreIn(redeclare package Medium = Air)
-          annotation (Placement(transformation(extent={{132,-40},{152,-20}})));
+          annotation (Placement(transformation(extent={{136,-36},{156,-16}})));
         Buildings.Fluid.Sensors.Pressure senPreEx(redeclare package Medium = Air)
           annotation (Placement(transformation(extent={{102,40},{122,60}})));
         Buildings.Fluid.Movers.SpeedControlled_y fanEx(
@@ -2601,7 +2602,7 @@ The envelope thermal properties meet ASHRAE Standard 90.1-2004.
         allowFlowReversal=true,
         energyDynamics=Modelica.Fluid.Types.Dynamics.SteadyState,
         riseTime=30,
-        y_start=0.7)
+        y_start=0.1)
           annotation (Placement(transformation(extent={{-68,30},{-88,50}})));
         Buildings.Fluid.Sensors.TemperatureTwoPort senTemEx2(
                                                             redeclare package
@@ -2623,10 +2624,12 @@ The envelope thermal properties meet ASHRAE Standard 90.1-2004.
               Air,
           m_flow_nominal=m_flow_nominal_air,
         allowFlowReversal=false)
-          annotation (Placement(transformation(extent={{108,-50},{128,-30}})));
-        Modelica.Fluid.Interfaces.FluidPort_b port_b1(redeclare package Medium = Air)
-          annotation (Placement(transformation(extent={{150,-50},{170,-30}})));
-        Modelica.Fluid.Interfaces.FluidPort_a port_a1(redeclare package Medium = Air)
+          annotation (Placement(transformation(extent={{86,-46},{106,-26}})));
+        Modelica.Fluid.Interfaces.FluidPort_b port_b1(redeclare package Medium
+          =                                                                      Air)
+          annotation (Placement(transformation(extent={{150,-46},{170,-26}})));
+        Modelica.Fluid.Interfaces.FluidPort_a port_a1(redeclare package Medium
+          =                                                                      Air)
           annotation (Placement(transformation(extent={{150,30},{170,50}})));
         Modelica.Blocks.Interfaces.RealInput CO2SetPoi annotation (Placement(
             transformation(
@@ -2644,11 +2647,13 @@ The envelope thermal properties meet ASHRAE Standard 90.1-2004.
               origin={-100,-106})));
         Modelica.Blocks.Math.Add add
           annotation (Placement(transformation(extent={{-72,-84},{-92,-64}})));
-        Buildings.Fluid.Sources.Outside outEx(nPorts=1, redeclare package Medium =
+        Buildings.Fluid.Sources.Outside outEx(nPorts=1, redeclare package
+          Medium =
               Air,
         use_C_in=true)
           annotation (Placement(transformation(extent={{-140,30},{-120,50}})));
-        Buildings.Fluid.Sources.Outside outSu(nPorts=1, redeclare package Medium =
+        Buildings.Fluid.Sources.Outside outSu(nPorts=1, redeclare package
+          Medium =
               Air,
         use_C_in=true)
           annotation (Placement(transformation(extent={{-140,-50},{-120,-30}})));
@@ -2673,13 +2678,13 @@ The envelope thermal properties meet ASHRAE Standard 90.1-2004.
         Q_flow_nominal=-Q_flow_nominal_coil,
         T_a1_nominal=T_in_air_nominal_coil,
         T_a2_nominal=T_in_wat_nominal_coil)
-          annotation (Placement(transformation(extent={{50,-56},{70,-36}})));
+          annotation (Placement(transformation(extent={{36,-52},{56,-32}})));
 
-        Modelica.Fluid.Interfaces.FluidPort_a port_a2(redeclare package Medium =
-              Water)
+        Modelica.Fluid.Interfaces.FluidPort_a port_a2(redeclare package Medium
+          =   Water)
           annotation (Placement(transformation(extent={{90,-110},{110,-90}})));
-        Modelica.Fluid.Interfaces.FluidPort_b port_b2(redeclare package Medium =
-              Water)
+        Modelica.Fluid.Interfaces.FluidPort_b port_b2(redeclare package Medium
+          =   Water)
           annotation (Placement(transformation(extent={{30,-110},{50,-90}})));
 
         Modelica.Blocks.Interfaces.RealOutput Tsu annotation (Placement(
@@ -2765,7 +2770,8 @@ The envelope thermal properties meet ASHRAE Standard 90.1-2004.
 
       Buildings.Controls.Continuous.LimPID conPIDhex(
         controllerType=Modelica.Blocks.Types.SimpleController.PID,
-        k=10,
+        k=0.5,
+        Ti=300,
         initType=Modelica.Blocks.Types.InitPID.InitialState)
         annotation (Placement(transformation(extent={{-12,-8},{-32,12}})));
       Modelica.Blocks.Interfaces.RealInput TsupSet
@@ -2804,9 +2810,11 @@ The envelope thermal properties meet ASHRAE Standard 90.1-2004.
             extent={{6,-6},{-6,6}},
             rotation=0,
             origin={26,0})));
-      Buildings.Fluid.Sensors.MassFlowRate senMasFloSup(redeclare package Medium = Air)
-        annotation (Placement(transformation(extent={{80,-50},{100,-30}})));
-      Buildings.Fluid.Sensors.MassFlowRate senMasFloExt(redeclare package Medium = Air) annotation (Placement(
+      Buildings.Fluid.Sensors.MassFlowRate senMasFloSup(redeclare package
+          Medium =                                                                 Air)
+        annotation (Placement(transformation(extent={{62,-46},{82,-26}})));
+      Buildings.Fluid.Sensors.MassFlowRate senMasFloExt(redeclare package
+          Medium =                                                                 Air) annotation (Placement(
             transformation(
             extent={{-10,-10},{10,10}},
             rotation=180,
@@ -2828,6 +2836,14 @@ The envelope thermal properties meet ASHRAE Standard 90.1-2004.
             extent={{10,-10},{-10,10}},
             rotation=180,
             origin={-108,74})));
+      Buildings.Fluid.FixedResistances.PressureDrop resSup(
+        redeclare package Medium = Air,
+        m_flow_nominal=m_flow_nominal_air,
+        dp_nominal=150,
+        allowFlowReversal=false)
+        annotation (Placement(transformation(extent={{10,-10},{-10,10}},
+            rotation=180,
+            origin={122,-36})));
     equation
         connect(fanSu.port_a, senTemIn2.port_b)
           annotation (Line(points={{-10,-40},{-16,-40}}, color={0,127,255}));
@@ -2837,12 +2853,10 @@ The envelope thermal properties meet ASHRAE Standard 90.1-2004.
               {-44,40},{-44,6},{-46,6}},  color={0,127,255}));
         connect(hex.port_a2, senTemIn1.port_b) annotation (Line(points={{-66,-6},{-72,
                 -6},{-72,-40},{-80,-40}},     color={0,127,255}));
-        connect(senPreIn.port, senTemIn3.port_b)
-          annotation (Line(points={{142,-40},{128,-40}}, color={0,127,255}));
         connect(senPreEx.port, port_a1)
           annotation (Line(points={{112,40},{160,40}}, color={0,127,255}));
-        connect(senPreIn.port, port_b1) annotation (Line(points={{142,-40},{160,-40}},
-                                      color={0,127,255}));
+        connect(senPreIn.port, port_b1) annotation (Line(points={{146,-36},{160,
+              -36}},                  color={0,127,255}));
         connect(add.y, qel) annotation (Line(points={{-93,-74},{-100,-74},{-100,
               -106}},
               color={0,0,127}));
@@ -2873,17 +2887,20 @@ The envelope thermal properties meet ASHRAE Standard 90.1-2004.
       connect(port_a2, senTemCoilIn.port_a) annotation (Line(points={{100,-100},{100,
               -72},{94,-72}}, color={0,127,255}));
       connect(senTemCoilIn.port_b,coil. port_a2)
-        annotation (Line(points={{74,-72},{70,-72},{70,-52}}, color={0,127,255}));
-      connect(senTemIn3.T, reaTSupAir.u) annotation (Line(points={{118,-29},{118,
-              -20},{131,-20},{131,-56.6}}, color={0,0,127}));
+        annotation (Line(points={{74,-72},{62,-72},{62,-48},{56,-48}},
+                                                              color={0,127,255}));
+      connect(senTemIn3.T, reaTSupAir.u) annotation (Line(points={{96,-25},{96,
+              -22},{126,-22},{126,-52},{131,-52},{131,-56.6}},
+                                           color={0,0,127}));
       connect(reaTSupAir.y, Tsu) annotation (Line(points={{131,-72.7},{131,-80},{
               166,-80}}, color={0,0,127}));
       connect(senTemEx1.T, reaTRetAir.u) annotation (Line(points={{-28,51},{-28,58},
               {-25.2,58}},                    color={0,0,127}));
       connect(senTemCoilIn.T, reaTCoiSup.u) annotation (Line(points={{84,-61},{92,
               -61},{92,-60},{106,-60},{106,-90},{112.8,-90}}, color={0,0,127}));
-      connect(coil.port_b2, port_b2) annotation (Line(points={{50,-52},{40,-52},{40,
-              -100}},    color={0,127,255}));
+      connect(coil.port_b2, port_b2) annotation (Line(points={{36,-48},{24,-48},
+              {24,-100},{40,-100}},
+                         color={0,127,255}));
       connect(senTemIn2.T, reaTHeaRec.u) annotation (Line(points={{-26,-29},{-26,-26},
               {-6,-26},{-6,-12},{0.8,-12}},       color={0,0,127}));
       connect(oveFanRet.y, fanEx.y)
@@ -2900,7 +2917,8 @@ The envelope thermal properties meet ASHRAE Standard 90.1-2004.
       connect(conPIDhex.u_s, TsupSet)
         annotation (Line(points={{-10,2},{-4,2},{-4,110}}, color={0,0,127}));
       connect(coil.port_a1, fanSu.port_b)
-        annotation (Line(points={{50,-40},{10,-40}}, color={0,127,255}));
+        annotation (Line(points={{36,-36},{16,-36},{16,-40},{10,-40}},
+                                                     color={0,127,255}));
       connect(add.u1, fanEx.P) annotation (Line(points={{-70,-68},{-64,-68},{-64,
               -26},{-84,-26},{-84,26},{-92,26},{-92,49},{-89,49}}, color={0,0,127}));
       connect(fanSu.P, add.u2) annotation (Line(points={{11,-31},{22,-31},{22,-80},
@@ -2912,13 +2930,13 @@ The envelope thermal properties meet ASHRAE Standard 90.1-2004.
       connect(oveFanSup.y, fanSu.y) annotation (Line(points={{19.4,0},{16,0},{16,
               -26},{6,-26},{6,-28},{0,-28}}, color={0,0,127}));
       connect(coil.port_b1, senMasFloSup.port_a)
-        annotation (Line(points={{70,-40},{80,-40}}, color={0,127,255}));
+        annotation (Line(points={{56,-36},{62,-36}}, color={0,127,255}));
       connect(senMasFloSup.port_b, senTemIn3.port_a)
-        annotation (Line(points={{100,-40},{108,-40}}, color={0,127,255}));
-      connect(senMasFloSup.m_flow, reaFloSupAir.u) annotation (Line(points={{90,-29},
-              {92,-29},{92,16},{108,16},{108,8},{122.8,8}}, color={0,0,127}));
-      connect(senMasFloSup.m_flow, conPIDfans.u_m) annotation (Line(points={{90,-29},
-              {74,-29},{74,-26},{48,-26},{48,-9.6}}, color={0,0,127}));
+        annotation (Line(points={{82,-36},{86,-36}},   color={0,127,255}));
+      connect(senMasFloSup.m_flow, reaFloSupAir.u) annotation (Line(points={{72,-25},
+              {72,8},{122.8,8}},                            color={0,0,127}));
+      connect(senMasFloSup.m_flow, conPIDfans.u_m) annotation (Line(points={{72,-25},
+              {72,-16},{48,-16},{48,-9.6}},          color={0,0,127}));
       connect(resEx.port_b, senMasFloExt.port_a) annotation (Line(points={{70,40},{62,
               40},{62,42},{48,42},{48,40}}, color={0,127,255}));
       connect(senMasFloExt.port_b, senTemEx1.port_a) annotation (Line(points={{28,40},
@@ -2934,6 +2952,10 @@ The envelope thermal properties meet ASHRAE Standard 90.1-2004.
               74},{-120,74}}, color={0,0,127}));
       connect(conPIDCO2.y, oveFanSupSpe.u) annotation (Line(points={{-97,74},{-76,
               74},{-76,60},{-54,60},{-54,49.6}}, color={0,0,127}));
+      connect(senTemIn3.port_b, resSup.port_a)
+        annotation (Line(points={{106,-36},{112,-36}}, color={0,127,255}));
+      connect(senPreIn.port, resSup.port_b)
+        annotation (Line(points={{146,-36},{132,-36}}, color={0,127,255}));
         annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-160,
                   -100},{160,100}}), graphics={
               Rectangle(
@@ -5875,7 +5897,7 @@ First implementation.
       Modelica.Blocks.Interfaces.RealInput TSet_in(final unit="K",
                                                 displayUnit="degC") if use_TSet_in
         "Prescribed temperature setpoint"
-        annotation (Placement(transformation(extent={{-136,58},{-96,98}})));
+        annotation (Placement(transformation(extent={{-160,58},{-120,98}})));
 
       parameter Modelica.SIunits.Temperature P(displayUnit="K") = 2 "Proportional band of valve";
 
@@ -5992,7 +6014,7 @@ First implementation.
       end if;
 
       connect(conPID.u_s, TSet_in)
-        annotation (Line(points={{-86,78},{-116,78}}, color={0,0,127}));
+        annotation (Line(points={{-86,78},{-140,78}}, color={0,0,127}));
       connect(conPID.y, limiter.u) annotation (Line(points={{-63,78},{-40,78},{
               -40,60},{-34,60}},
                              color={0,0,127}));
