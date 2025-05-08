@@ -526,8 +526,9 @@ package TwinRooms
     connect(floor5Zone_Shading.ports219[2], AHU219.port_a1) annotation (Line(
           points={{92.1696,126.923},{92.1696,104},{-42,104},{-42,122},{-132,122}},
           color={0,127,255}));
-    connect(CO2SetPoi.y, AHU219.CO2SetPoi) annotation (Line(points={{-333,170},{-328,
-            170},{-328,129},{-162,129}}, color={0,0,127}));
+    connect(CO2SetPoi.y, AHU219.CO2SetPoi) annotation (Line(points={{-333,170},
+            {-328,170},{-328,128.8},{-161,128.8}},
+                                         color={0,0,127}));
     connect(jun2.port_2, jun3.port_2)
       annotation (Line(points={{-116,-146},{-134,-146}}, color={0,127,255}));
     connect(jun3.port_1, districtHeating.port_a) annotation (Line(points={{-154,-146},
@@ -550,8 +551,9 @@ package TwinRooms
             {-290,42},{-290,52},{-304,52},{-304,58}}, color={0,127,255}));
     connect(twoWayHeatBattery220.secRet, AHU220.port_b2) annotation (Line(points={
             {-309.8,42},{-309.8,52},{-310,52},{-310,58}}, color={0,127,255}));
-    connect(CO2SetPoi.y, AHU220.CO2SetPoi) annotation (Line(points={{-333,170},{-328,
-            170},{-328,79}}, color={0,0,127}));
+    connect(CO2SetPoi.y, AHU220.CO2SetPoi) annotation (Line(points={{-333,170},
+            {-327,170},{-327,78.8}},
+                             color={0,0,127}));
     connect(TAirSupSet.y, AHU220.TsupSet) annotation (Line(points={{-235,172},{-230,
             172},{-230,90},{-314.4,90},{-314.4,79}}, color={0,0,127}));
     connect(AHU220.qel, reaFanPow220.u) annotation (Line(points={{-324,57.4},{-324,
@@ -2635,7 +2637,7 @@ The envelope thermal properties meet ASHRAE Standard 90.1-2004.
             transformation(
             extent={{-20,-20},{20,20}},
             rotation=-90,
-            origin={-140,110})));
+            origin={-130,108})));
         replaceable package Air = Buildings.Media.Air(extraPropertiesNames={"CO2"}) constrainedby
         Modelica.Media.Interfaces.PartialMedium;
         replaceable package Water = Buildings.Media.Water constrainedby
@@ -2844,6 +2846,23 @@ The envelope thermal properties meet ASHRAE Standard 90.1-2004.
         annotation (Placement(transformation(extent={{10,-10},{-10,10}},
             rotation=180,
             origin={122,-36})));
+      Buildings.Controls.SetPoints.OccupancySchedule
+                                           occSch(occupancy=3600*{8,18})
+                                                  "Occupancy schedule"
+        annotation (Placement(transformation(extent={{-394,80},{-374,100}})));
+      Modelica.Blocks.Logical.Switch switch
+        annotation (Placement(transformation(extent={{-246,74},{-226,94}})));
+      Buildings.Controls.Continuous.LimPID conPIDCO2UnOcc(
+        controllerType=Modelica.Blocks.Types.SimpleController.PID,
+        k=0.5,
+        Ti=300,
+        yMax=(1800*1.2)/3600,
+        yMin=0,
+        initType=Modelica.Blocks.Types.InitPID.InitialState,
+        reverseActing=false) annotation (Placement(transformation(
+            extent={{10,-10},{-10,10}},
+            rotation=180,
+            origin={-380,42})));
     equation
         connect(fanSu.port_a, senTemIn2.port_b)
           annotation (Line(points={{-10,-40},{-16,-40}}, color={0,127,255}));
@@ -2948,14 +2967,27 @@ The envelope thermal properties meet ASHRAE Standard 90.1-2004.
       connect(CO2meas, conPIDCO2.u_m) annotation (Line(points={{38,110},{38,78},{-18,
               78},{-18,68},{-28,68},{-28,66},{-86,66},{-86,96},{-108,96},{-108,86}},
             color={0,0,127}));
-      connect(CO2SetPoi, conPIDCO2.u_s) annotation (Line(points={{-140,110},{-140,
-              74},{-120,74}}, color={0,0,127}));
-      connect(conPIDCO2.y, oveFanSupSpe.u) annotation (Line(points={{-97,74},{-76,
-              74},{-76,60},{-54,60},{-54,49.6}}, color={0,0,127}));
+      connect(CO2SetPoi, conPIDCO2.u_s) annotation (Line(points={{-130,108},{
+              -130,74},{-120,74}},
+                              color={0,0,127}));
       connect(senTemIn3.port_b, resSup.port_a)
         annotation (Line(points={{106,-36},{112,-36}}, color={0,127,255}));
       connect(senPreIn.port, resSup.port_b)
         annotation (Line(points={{146,-36},{132,-36}}, color={0,127,255}));
+      connect(occSch.occupied, switch.u2)
+        annotation (Line(points={{-373,84},{-248,84}}, color={255,0,255}));
+      connect(CO2SetPoi, conPIDCO2UnOcc.u_s) annotation (Line(points={{-130,108},
+              {-212,108},{-212,62},{-418,62},{-418,42},{-392,42}}, color={0,0,
+              127}));
+      connect(CO2meas, conPIDCO2UnOcc.u_m) annotation (Line(points={{38,110},{
+              -12,110},{-12,88},{-166,88},{-166,72},{-380,72},{-380,54}}, color
+            ={0,0,127}));
+      connect(conPIDCO2UnOcc.y, switch.u3) annotation (Line(points={{-369,42},{
+              -330,42},{-330,38},{-286,38},{-286,76},{-248,76}}, color={0,0,127}));
+      connect(conPIDCO2.y, switch.u1) annotation (Line(points={{-97,74},{-90,74},
+              {-90,162},{-288,162},{-288,92},{-248,92}}, color={0,0,127}));
+      connect(switch.y, oveFanSupSpe.u) annotation (Line(points={{-225,84},{
+              -202,84},{-202,54},{-54,54},{-54,49.6}}, color={0,0,127}));
         annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-160,
                   -100},{160,100}}), graphics={
               Rectangle(
