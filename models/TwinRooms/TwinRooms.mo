@@ -526,8 +526,9 @@ package TwinRooms
     connect(floor5Zone_Shading.ports219[2], AHU219.port_a1) annotation (Line(
           points={{92.1696,126.923},{92.1696,104},{-42,104},{-42,122},{-132,122}},
           color={0,127,255}));
-    connect(CO2SetPoi.y, AHU219.CO2SetPoi) annotation (Line(points={{-333,170},{-328,
-            170},{-328,129},{-162,129}}, color={0,0,127}));
+    connect(CO2SetPoi.y, AHU219.CO2SetPoi) annotation (Line(points={{-333,170},
+            {-328,170},{-328,128.8},{-161,128.8}},
+                                         color={0,0,127}));
     connect(jun2.port_2, jun3.port_2)
       annotation (Line(points={{-116,-146},{-134,-146}}, color={0,127,255}));
     connect(jun3.port_1, districtHeating.port_a) annotation (Line(points={{-154,-146},
@@ -550,8 +551,9 @@ package TwinRooms
             {-290,42},{-290,52},{-304,52},{-304,58}}, color={0,127,255}));
     connect(twoWayHeatBattery220.secRet, AHU220.port_b2) annotation (Line(points={
             {-309.8,42},{-309.8,52},{-310,52},{-310,58}}, color={0,127,255}));
-    connect(CO2SetPoi.y, AHU220.CO2SetPoi) annotation (Line(points={{-333,170},{-328,
-            170},{-328,79}}, color={0,0,127}));
+    connect(CO2SetPoi.y, AHU220.CO2SetPoi) annotation (Line(points={{-333,170},
+            {-327,170},{-327,78.8}},
+                             color={0,0,127}));
     connect(TAirSupSet.y, AHU220.TsupSet) annotation (Line(points={{-235,172},{-230,
             172},{-230,90},{-314.4,90},{-314.4,79}}, color={0,0,127}));
     connect(AHU220.qel, reaFanPow220.u) annotation (Line(points={{-324,57.4},{-324,
@@ -677,7 +679,7 @@ package TwinRooms
 
     model Floor5Zone_Shading
       "Model of a floor of the building with automatic solar shading"
-      extends .TwinRooms.Components.BaseClasses.PartialFloor(
+      extends Components.BaseClasses.PartialFloor(
         redeclare final package Medium = MediumA,
         final VRoo2nd=SecFloor.AFlo*hRoo,
         final VRoo219=room219.AFlo*hRoo,
@@ -975,7 +977,7 @@ package TwinRooms
 
       InternalGains.InternalGains                           gai(
         Area=1,                                                               redeclare
-          .TwinRooms.Components.InternalGains.Data.SNTS3031_Office          data(
+          Components.InternalGains.Data.SNTS3031_Office          data(
             equSenPowNom=0.5, ligSenPowNom=0.5),
         combiTimeTable(
           tableOnFile=true,
@@ -2625,17 +2627,15 @@ The envelope thermal properties meet ASHRAE Standard 90.1-2004.
           m_flow_nominal=m_flow_nominal_air,
         allowFlowReversal=false)
           annotation (Placement(transformation(extent={{86,-46},{106,-26}})));
-        Modelica.Fluid.Interfaces.FluidPort_b port_b1(redeclare package Medium
-          =                                                                      Air)
+        Modelica.Fluid.Interfaces.FluidPort_b port_b1(redeclare package Medium = Air)
           annotation (Placement(transformation(extent={{150,-46},{170,-26}})));
-        Modelica.Fluid.Interfaces.FluidPort_a port_a1(redeclare package Medium
-          =                                                                      Air)
+        Modelica.Fluid.Interfaces.FluidPort_a port_a1(redeclare package Medium = Air)
           annotation (Placement(transformation(extent={{150,30},{170,50}})));
         Modelica.Blocks.Interfaces.RealInput CO2SetPoi annotation (Placement(
             transformation(
             extent={{-20,-20},{20,20}},
             rotation=-90,
-            origin={-140,110})));
+            origin={-130,108})));
         replaceable package Air = Buildings.Media.Air(extraPropertiesNames={"CO2"}) constrainedby
         Modelica.Media.Interfaces.PartialMedium;
         replaceable package Water = Buildings.Media.Water constrainedby
@@ -2680,11 +2680,11 @@ The envelope thermal properties meet ASHRAE Standard 90.1-2004.
         T_a2_nominal=T_in_wat_nominal_coil)
           annotation (Placement(transformation(extent={{36,-52},{56,-32}})));
 
-        Modelica.Fluid.Interfaces.FluidPort_a port_a2(redeclare package Medium
-          =   Water)
+        Modelica.Fluid.Interfaces.FluidPort_a port_a2(redeclare package Medium =
+              Water)
           annotation (Placement(transformation(extent={{90,-110},{110,-90}})));
-        Modelica.Fluid.Interfaces.FluidPort_b port_b2(redeclare package Medium
-          =   Water)
+        Modelica.Fluid.Interfaces.FluidPort_b port_b2(redeclare package Medium =
+              Water)
           annotation (Placement(transformation(extent={{30,-110},{50,-90}})));
 
         Modelica.Blocks.Interfaces.RealOutput Tsu annotation (Placement(
@@ -2948,14 +2948,15 @@ The envelope thermal properties meet ASHRAE Standard 90.1-2004.
       connect(CO2meas, conPIDCO2.u_m) annotation (Line(points={{38,110},{38,78},{-18,
               78},{-18,68},{-28,68},{-28,66},{-86,66},{-86,96},{-108,96},{-108,86}},
             color={0,0,127}));
-      connect(CO2SetPoi, conPIDCO2.u_s) annotation (Line(points={{-140,110},{-140,
-              74},{-120,74}}, color={0,0,127}));
-      connect(conPIDCO2.y, oveFanSupSpe.u) annotation (Line(points={{-97,74},{-76,
-              74},{-76,60},{-54,60},{-54,49.6}}, color={0,0,127}));
+      connect(CO2SetPoi, conPIDCO2.u_s) annotation (Line(points={{-130,108},{
+              -130,74},{-120,74}},
+                              color={0,0,127}));
       connect(senTemIn3.port_b, resSup.port_a)
         annotation (Line(points={{106,-36},{112,-36}}, color={0,127,255}));
       connect(senPreIn.port, resSup.port_b)
         annotation (Line(points={{146,-36},{132,-36}}, color={0,127,255}));
+      connect(conPIDCO2.y, oveFanSupSpe.u) annotation (Line(points={{-97,74},{
+              -86,74},{-86,72},{-54,72},{-54,49.6}}, color={0,0,127}));
         annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-160,
                   -100},{160,100}}), graphics={
               Rectangle(
@@ -3624,12 +3625,13 @@ First implementation.
         Modelica.Blocks.Math.Add add
           annotation (Placement(transformation(extent={{30,-68},{50,-48}})));
       equation
-        connect(occ.rad, sumRad.u[1]) annotation (Line(points={{-63,46},{-60,46},{-60,
-                43.3667},{4,43.3667}},   color={0,0,127}));
+        connect(occ.rad, sumRad.u[1]) annotation (Line(points={{-63,46},{-60,46},
+                {-60,43.3667},{4,43.3667}},
+                                         color={0,0,127}));
         connect(equ.rad, sumRad.u[2]) annotation (Line(points={{-63,4},{-34,4},{-34,45},
                 {4,45}},   color={0,0,127}));
-        connect(Lig.rad, sumRad.u[3]) annotation (Line(points={{-63,-36},{-34,-36},{
-                -34,46.6333},{4,46.6333}},
+        connect(Lig.rad, sumRad.u[3]) annotation (Line(points={{-63,-36},{-34,
+                -36},{-34,46.6333},{4,46.6333}},
                                          color={0,0,127}));
         connect(occ.con, sumCon.u[1]) annotation (Line(points={{-63,42},{-22,42},{-22,
                 -0.633333},{4,-0.633333}},   color={0,0,127}));
@@ -3637,13 +3639,14 @@ First implementation.
                 {4,1}},   color={0,0,127}));
         connect(Lig.con, sumCon.u[3]) annotation (Line(points={{-63,-40},{-22,-40},{-22,
                 2.63333},{4,2.63333}},   color={0,0,127}));
-        connect(sumLat.u[1], occ.lat) annotation (Line(points={{4,-36.6333},{-38,
-                -36.6333},{-38,38},{-63,38}},
+        connect(sumLat.u[1], occ.lat) annotation (Line(points={{4,-36.6333},{
+                -38,-36.6333},{-38,38},{-63,38}},
                                     color={0,0,127}));
         connect(equ.lat, sumLat.u[2]) annotation (Line(points={{-63,-4},{-38,-4},{-38,
                 -35},{4,-35}},   color={0,0,127}));
-        connect(Lig.lat, sumLat.u[3]) annotation (Line(points={{-63,-44},{-6,-44},{-6,
-                -33.3667},{4,-33.3667}},   color={0,0,127}));
+        connect(Lig.lat, sumLat.u[3]) annotation (Line(points={{-63,-44},{-6,
+                -44},{-6,-33.3667},{4,-33.3667}},
+                                           color={0,0,127}));
         connect(sumRad.y, multiplex3_1.u1[1]) annotation (Line(points={{19.19,45},{19.19,
                 44},{46,44},{46,7},{54,7}}, color={0,0,127}));
         connect(sumCon.y, multiplex3_1.u2[1])
@@ -4066,7 +4069,7 @@ First implementation.
 
     model AirJoinerManifold5Zone
       extends
-        .TwinRooms.Components.BaseClasses.Interfaces.PartialTwoPortVectorRev(
+        Components.BaseClasses.Interfaces.PartialTwoPortVectorRev(
           nPorts=5);
 
       parameter Modelica.SIunits.MassFlowRate[5] m_flow_nominal
@@ -4190,7 +4193,7 @@ First implementation.
 
     model WaterJoinerManifold4Zone
       extends
-        .TwinRooms.Components.BaseClasses.Interfaces.PartialTwoPortVectorRev(
+        Components.BaseClasses.Interfaces.PartialTwoPortVectorRev(
           nPorts=4);
 
       parameter Modelica.SIunits.MassFlowRate[4] m_flow_nominal
@@ -4284,7 +4287,7 @@ First implementation.
 
     model WaterJoinerManifold3Zone
       extends
-        .TwinRooms.Components.BaseClasses.Interfaces.PartialTwoPortVectorRev(
+        Components.BaseClasses.Interfaces.PartialTwoPortVectorRev(
           nPorts=3);
 
       parameter Modelica.SIunits.MassFlowRate[3] m_flow_nominal
@@ -4310,16 +4313,17 @@ First implementation.
     equation
       connect(jun1.port_2, port_b) annotation (Line(points={{0,-52},{0,-74},{84,-74},
               {84,0},{100,0}},                              color={0,127,255}));
-      connect(jun1.port_3, ports_a[1]) annotation (Line(points={{-10,-42},{-46,-42},
-              {-46,-13.3333},{-100,-13.3333}},
+      connect(jun1.port_3, ports_a[1]) annotation (Line(points={{-10,-42},{-46,
+              -42},{-46,-13.3333},{-100,-13.3333}},
                                      color={0,127,255}));
       connect(jun1.port_1, jun2.port_2) annotation (Line(points={{0,-32},{0,-10}},
                                                                         color={0,
               127,255}));
       connect(jun2.port_3, ports_a[2]) annotation (Line(points={{-10,0},{-100,0}},
                                   color={0,127,255}));
-      connect(ports_a[3], jun2.port_1) annotation (Line(points={{-100,13.3333},{-100,
-              12},{0,12},{0,10}},color={0,127,255}));
+      connect(ports_a[3], jun2.port_1) annotation (Line(points={{-100,13.3333},
+              {-100,12},{0,12},{0,10}},
+                                 color={0,127,255}));
       annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
             Rectangle(
               extent={{-100,100},{100,-100}},
@@ -4365,7 +4369,7 @@ First implementation.
 
     model WaterJoinerManifold2Zone
        extends
-        .TwinRooms.Components.BaseClasses.Interfaces.PartialTwoPortVectorRev(
+        Components.BaseClasses.Interfaces.PartialTwoPortVectorRev(
           nPorts=2);
 
        parameter Modelica.SIunits.MassFlowRate[2] m_flow_nominal
