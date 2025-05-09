@@ -982,8 +982,8 @@ package TwinRooms
         combiTimeTable(
           tableOnFile=true,
           tableName="tab1",
-          fileName=ModelicaServices.ExternalReferences.loadResource(
-              "Resources/intGains.txt")))
+          fileName=
+              "/home/marius/Desktop/bacsaas/docker/project1-boptest/testcases/twin_rooms_emulator/models/Resources/intGains_first_week_zero.txt"))
         "Matrix gain to split up heat gain in radiant, convective and latent gain"
         annotation (Placement(transformation(extent={{-116,104},{-96,124}})));
 
@@ -2830,7 +2830,7 @@ The envelope thermal properties meet ASHRAE Standard 90.1-2004.
         k=0.5,
         Ti=300,
         yMax=(1800*1.2)/3600,
-        yMin=(300*1.2)/3600,
+        yMin=(30*1.2)/3600,
         initType=Modelica.Blocks.Types.InitPID.InitialState,
         reverseActing=false) annotation (Placement(transformation(
             extent={{10,-10},{-10,10}},

@@ -1,5 +1,5 @@
 Using CC=cc -Wl,--no-as-needed
-/usr/bin/ld: /tmp/ccNK38Rg.o: in function `ModelicaInternal_temporaryFileName':
+/usr/bin/ld: /tmp/ccosBwVI.o: in function `ModelicaInternal_temporaryFileName':
 dsmodel.c:(.text+0x27fb2): warning: the use of `tmpnam' is dangerous, better use `mkstemp'
 /usr/bin/ld: /usr/local/Modelica/Library/Modelica/Resources/Library/linux64/libModelicaMatIO.a(ModelicaMatIO.o): in function `Mat_VarDelete':
 ModelicaMatIO.c:(.text+0x9c6ee): warning: the use of `mktemp' is dangerous, better use `mkstemp' or `mkdtemp'
