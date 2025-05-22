@@ -19,3 +19,9 @@ gen = Data_Generator(resources_dir, period=900)
 
 # Generate weather data from .mos in Resources folder with default values
 gen.generate_weather()
+gen.generate_prices(
+    start_day_time = '08:00:00',
+    end_day_time = '16:00:00',
+    price_day = 1,
+    price_night = 0.05
+)

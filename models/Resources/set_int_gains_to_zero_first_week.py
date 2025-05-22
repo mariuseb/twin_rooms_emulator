@@ -1,7 +1,7 @@
 import pandas as pd
 
 int_gains = pd.read_csv("intGains.txt", sep="\t", header=1, names=['1','2','3','4','5'], index_col=0)
-int_gains.loc[:167] = 0
+int_gains.loc[0:167] = 0
 
 filename = "intGains_first_week_zero.txt"
 int_gains.to_csv(filename, sep="\t", header=False, float_format='%.4f')
