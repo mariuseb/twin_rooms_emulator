@@ -366,8 +366,6 @@ package TwinRooms
       use_TSet_in=true,
       dpFixed_nominal=10000)
       annotation (Placement(transformation(extent={{98,-116},{118,-96}})));
-    Modelica.Thermal.HeatTransfer.Components.HeatCapacitor Cconv219(C=3e6)
-      annotation (Placement(transformation(extent={{108,98},{128,118}})));
     Components.Sensors.EnergyMeter energyMeter219(
       redeclare package Medium1 = MediumW,
       redeclare package Medium2 = MediumW,
@@ -427,6 +425,14 @@ package TwinRooms
       KPIs=Buildings.Utilities.IO.SignalExchange.SignalTypes.SignalsForKPIs.None,
       y(unit="W"))
       annotation (Placement(transformation(extent={{194,188},{206,200}})));
+
+    Modelica.Blocks.Continuous.Integrator integrator
+      annotation (Placement(transformation(extent={{154,204},{174,224}})));
+    Buildings.Utilities.IO.SignalExchange.Read reaRadAccFlo219(
+      description="Radiator mass flow 2.19",
+      KPIs=Buildings.Utilities.IO.SignalExchange.SignalTypes.SignalsForKPIs.None,
+      y(unit="W"))
+      annotation (Placement(transformation(extent={{194,210},{206,222}})));
 
   equation
     connect(weaDat.weaBus,weaBus)  annotation (Line(
@@ -664,11 +670,6 @@ package TwinRooms
           color={0,0,127}));
     connect(switch1.y, val.TSet_in) annotation (Line(points={{177,-12},{178,-12},{
             178,-88},{80,-88},{80,-98},{96,-98}}, color={0,0,127}));
-    connect(rad219.heatPortCon, Cconv219.port) annotation (Line(points={{104,
-            81.2},{104,92},{118,92},{118,98}}, color={191,0,0}));
-    connect(Cconv219.port, floor5Zone_Shading.heaPorAir219) annotation (Line(
-          points={{118,98},{118,128},{100,128},{100,128.538},{99.0826,128.538}},
-          color={191,0,0}));
     connect(rad219.heatPortRad, floor5Zone_Shading.heaPorRad219) annotation (
         Line(points={{108,81.2},{116,81.2},{116,86},{126,86},{126,124.846},{
             99.0826,124.846}}, color={191,0,0}));
@@ -708,13 +709,20 @@ package TwinRooms
     connect(energyMeter219.port_a1, waterTRVSplitterManifold2Zone.ports_b[1])
       annotation (Line(points={{68,68},{54,68},{54,58},{40,58},{40,50},{34.5,50}},
           color={0,127,255}));
-    connect(energyMeter219.Flow, reaRadFlow219.u) annotation (Line(points={{
-            87.6,63.4},{232,63.4},{232,228},{170,228},{170,194},{192.8,194}},
-          color={0,0,127}));
     connect(energyMeter219.TempSup, reaRadTSup219.u) annotation (Line(points={{
             85.6,63.4},{85.6,154},{192.8,154}}, color={0,0,127}));
     connect(energyMeter219.TempRet, reaRadTRet219.u) annotation (Line(points={{
             83.8,63.4},{83.8,174},{192.8,174}}, color={0,0,127}));
+    connect(rad219.heatPortCon, floor5Zone_Shading.heaPorAir219) annotation (
+        Line(points={{104,81.2},{104,128.538},{99.0826,128.538}}, color={191,0,
+            0}));
+    connect(energyMeter219.Flow, integrator.u) annotation (Line(points={{87.6,
+            63.4},{168,63.4},{168,190},{140,190},{140,214},{152,214}}, color={0,
+            0,127}));
+    connect(energyMeter219.Flow, reaRadFlow219.u) annotation (Line(points={{
+            87.6,63.4},{182,63.4},{182,194},{192.8,194}}, color={0,0,127}));
+    connect(integrator.y, reaRadAccFlo219.u) annotation (Line(points={{175,214},
+            {182,214},{182,218},{192.8,218},{192.8,216}}, color={0,0,127}));
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-380,-200},
               {200,200}})),                                        Diagram(
           coordinateSystem(preserveAspectRatio=false, extent={{-380,-200},{200,200}}),
@@ -730,10 +738,10 @@ package TwinRooms
             textString="VAV system 2.20"),
           Rectangle(extent={{-338,86},{-224,2}}, lineColor={28,108,200})}),
       experiment(
-        StopTime=1209600,
-        Interval=29.9999808,
+        StopTime=172800,
+        Interval=30,
         Tolerance=1e-06,
-        __Dymola_Algorithm="Cvode"));
+        __Dymola_Algorithm="Rkfix3"));
   end TestCase;
 
   package Components
@@ -939,7 +947,7 @@ package TwinRooms
         nConBou=0,
         nSurBou=2,
         use_C_flow=true,
-        T_start=293.15,
+        T_start=295.15,
         C_start=fill(400e-6*Modelica.Media.IdealGases.Common.SingleGasesData.CO2.MM/
             Modelica.Media.IdealGases.Common.SingleGasesData.Air.MM, Medium.nC),
         nPorts=5,
@@ -983,7 +991,7 @@ package TwinRooms
         nConBou=0,
         nSurBou=2,
         use_C_flow=true,
-        T_start=293.15,
+        T_start=295.15,
         C_start=fill(400e-6*Modelica.Media.IdealGases.Common.SingleGasesData.CO2.MM/
             Modelica.Media.IdealGases.Common.SingleGasesData.Air.MM, Medium.nC),
         nPorts=5,
@@ -1021,6 +1029,7 @@ package TwinRooms
         nConBou=0,
         nSurBou=2,
         use_C_flow=true,
+        T_start=295.15,
         C_start=fill(400e-6*Modelica.Media.IdealGases.Common.SingleGasesData.CO2.MM/
             Modelica.Media.IdealGases.Common.SingleGasesData.Air.MM, Medium.nC),
         nPorts=6,
@@ -3991,18 +4000,20 @@ First implementation.
               extent={{-10,-10},{10,10}},
               rotation=90,
               origin={76,106})));
-        Modelica.Blocks.Interfaces.RealOutput Flow(final unit="kg/s") "Mass flow"
+        Modelica.Blocks.Interfaces.RealOutput Flow(final unit="kg/s")
+          "Mass flow"
           annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=90,
               origin={96,106})));
-        Modelica.Fluid.Sensors.MassFlowRate massFlowRate(redeclare package Medium = Medium1)
+        Modelica.Fluid.Sensors.MassFlowRate massFlowRate(redeclare package
+            Medium =                                                                Medium1)
           annotation (Placement(transformation(extent={{6,52},{24,70}})));
         Modelica.Fluid.Sensors.TemperatureTwoPort temperatureSup(redeclare
-            package                                                                Medium = Medium1)
+            package Medium =                                                                Medium1)
           annotation (Placement(transformation(extent={{46,50},{66,70}})));
         Modelica.Fluid.Sensors.TemperatureTwoPort temperature1(redeclare
-            package                                                              Medium = Medium2) annotation (Placement(
+            package Medium =                                                              Medium2) annotation (Placement(
               transformation(
               extent={{-10,-10},{10,10}},
               rotation=180,
@@ -5091,11 +5102,11 @@ First implementation.
       connect(val220.port_a, jun3.port_2)
         annotation (Line(points={{-10,40},{-60,40},{-60,10}}, color={0,127,255}));
       connect(TSetRadWes.y,val220. TSet_in) annotation (Line(
-          points={{-19.4,48},{-16,48},{-16,47.8},{-11.6,47.8}},
+          points={{-19.4,48},{-16,48},{-16,47.8},{-14,47.8}},
           color={0,0,127},
           pattern=LinePattern.Dash));
       connect(TSetRadNor.y,val219. TSet_in) annotation (Line(
-          points={{-19.4,8},{-16,8},{-16,7.8},{-11.6,7.8}},
+          points={{-19.4,8},{-16,8},{-16,7.8},{-14,7.8}},
           color={0,0,127},
           pattern=LinePattern.Dash));
       connect(port_a, jun3.port_1) annotation (Line(points={{-100,0},{-100,-56},{-60,
@@ -5435,7 +5446,7 @@ First implementation.
       parameter Boolean use_inputFilter=true
         "= true, if opening is filtered with a 2nd order CriticalDamping filter"
         annotation(Dialog(tab="Dynamics", group="Filtered opening"));
-      parameter Modelica.SIunits.Time riseTime=1200
+      parameter Modelica.SIunits.Time riseTime=900
         "Rise time of the filter (time to reach 99.6 % of an opening step)"
         annotation(Dialog(tab="Dynamics", group="Filtered opening",enable=use_inputFilter));
       parameter Modelica.Blocks.Types.Init init=Modelica.Blocks.Types.Init.InitialOutput
@@ -5920,7 +5931,7 @@ First implementation.
       parameter Boolean use_inputFilter=true
         "= true, if opening is filtered with a 2nd order CriticalDamping filter"
         annotation(Dialog(tab="Dynamics", group="Filtered opening"));
-      parameter Modelica.SIunits.Time riseTime=1200
+      parameter Modelica.SIunits.Time riseTime=900
         "Rise time of the filter (time to reach 99.6 % of an opening step)"
         annotation(Dialog(tab="Dynamics", group="Filtered opening",enable=use_inputFilter));
       parameter Modelica.Blocks.Types.Init init=Modelica.Blocks.Types.Init.InitialOutput
@@ -5963,7 +5974,7 @@ First implementation.
         linearized=linearized,
         deltaM=deltaM,
         rhoStd=rhoStd,
-        use_inputFilter=use_inputFilter,
+        use_inputFilter=false,
         riseTime=riseTime,
         init=init,
         y_start=y_start,

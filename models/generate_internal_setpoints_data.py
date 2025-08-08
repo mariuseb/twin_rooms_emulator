@@ -15,20 +15,21 @@ import pandas as pd
 mapper_names = {'qGai_flow[1]':'InternalGainsRad',
                 'qGai_flow[2]':'InternalGainsCon',
                 'qGai_flow[3]':'InternalGainsLat'}
-mapper_zones = {'nor.':'nor',
-                'sou.':'sou',
-                'eas.':'eas',
-                'wes.':'wes',
-                'cor.':'cor'}
+mapper_zones = {"1": "1", "2": "2", "3": "3"}
 
-area = {'nor':207.58, # m^2
-        'sou':207.58,
-        'eas':131.416,
-        'wes':131.416,
-        'cor':984.672}
+area = {
+    "1":66.7,
+    "2":66.7,
+    "3":200
+}
 
 df = pd.read_csv('sim.csv',index_col='Time')
-
+datetime_start = pd.Timestamp("2022-01-01 00:00")
+dt_index = pd.to_datetime(df.index, origin=datetime_start, unit="s")
+df["dt_index"] = dt_index
+df["day"] = df["dt_index"].apply(lambda x: x.dayofweek)
+# set unoccupied on weekends:
+df["hvac.occSch.occupied"].loc[(df.day == 6) | (df.day == 5)] = 0
 # Internal Loads
 mapper = {}
 for key in df.columns:
@@ -43,9 +44,10 @@ df = df.rename(columns=mapper)
 df.index.name = 'time'
 
 # Set points
-for zone in mapper_zones.keys():
-    df['LowerSetp[{0}]'.format(mapper_zones[zone])] = 12+273.15
-    df['LowerSetp[{0}]'.format(mapper_zones[zone])][df['hvac.occSch.occupied']>0] = 20+273.15
+for _zone in range(1,4):
+    zone = str(_zone)
+    df['LowerSetp[{0}]'.format(mapper_zones[zone])] = 15+273.15
+    df['LowerSetp[{0}]'.format(mapper_zones[zone])][df['hvac.occSch.occupied']>0] = 22+273.15
     df['UpperSetp[{0}]'.format(mapper_zones[zone])] = 30+273.15
     df['UpperSetp[{0}]'.format(mapper_zones[zone])][df['hvac.occSch.occupied']>0] = 24+273.15
     df['UpperCO2[{0}]'.format(mapper_zones[zone])] = 894
@@ -59,4 +61,7 @@ for key in df.columns:
 
 df = df.drop(columns=['hvac.occSch.occupied'])
 df = df.drop(columns=['flo.intGaiFra.y[1]'])
+df = df.drop(columns=['dt_index'])
+df = df.drop(columns=['day'])
+df = df.loc[:,~df.columns.duplicated()].copy()
 df.to_csv('Resources/internal_setpoints_occupancy.csv')

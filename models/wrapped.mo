@@ -90,6 +90,7 @@ model wrapped "Wrapped model"
 	Modelica.Blocks.Interfaces.RealOutput weatherStation_reaWeaHHorIR_y(unit="W/m2") = mod.weatherStation.reaWeaHHorIR.y "Horizontal infrared irradiation measurement";
 	Modelica.Blocks.Interfaces.RealOutput weatherStation_reaWeaPAtm_y(unit="Pa") = mod.weatherStation.reaWeaPAtm.y "Atmospheric pressure measurement";
 	Modelica.Blocks.Interfaces.RealOutput weatherStation_reaWeaSolAlt_y(unit="rad") = mod.weatherStation.reaWeaSolAlt.y "Solar altitude angle measurement";
+	Modelica.Blocks.Interfaces.RealOutput reaRadAccFlo219_y(unit="W") = mod.reaRadAccFlo219.y "Radiator mass flow 2.19";
 	Modelica.Blocks.Interfaces.RealOutput floor5Zone_Shading_reaT219_y(unit="K") = mod.floor5Zone_Shading.reaT219.y "Temperature of room 219";
 	Modelica.Blocks.Interfaces.RealOutput weatherStation_reaWeaWinSpe_y(unit="m/s") = mod.weatherStation.reaWeaWinSpe.y "Wind speed measurement";
 	Modelica.Blocks.Interfaces.RealOutput weatherStation_reaWeaRelHum_y(unit="1") = mod.weatherStation.reaWeaRelHum.y "Outside relative humidity measurement";
