@@ -45,7 +45,7 @@ package TwinRooms
     Buildings.Fluid.HeatExchangers.Radiators.RadiatorEN442_2 rad219(
       redeclare package Medium = MediumW,
       T_start=295.15,
-      Q_flow_nominal(displayUnit="W") = 60*floor5Zone_Shading.AFlo219,
+      Q_flow_nominal(displayUnit="W") = 30*floor5Zone_Shading.AFlo219,
       T_a_nominal=320.15,
       T_b_nominal=308.15,
       TAir_nominal=294.15,
@@ -55,7 +55,7 @@ package TwinRooms
       annotation (Placement(transformation(extent={{96,64},{116,84}})));
     Buildings.Fluid.HeatExchangers.Radiators.RadiatorEN442_2 rad220(
       redeclare package Medium = MediumW,
-      Q_flow_nominal(displayUnit="W") = 60*floor5Zone_Shading.AFlo220,
+      Q_flow_nominal(displayUnit="W") = 30*floor5Zone_Shading.AFlo220,
       T_a_nominal=320.15,
       T_b_nominal=308.15,
       TAir_nominal=294.15,
@@ -88,7 +88,7 @@ package TwinRooms
     parameter Modelica.SIunits.MassFlowRate m_flow_nominal_water_AHU=0.1
       "Nominal mass flow rate - water in AHU"
       annotation (Dialog(group="Nominal condition"));
-    parameter Modelica.SIunits.MassFlowRate m_flow_nominal_water_rad=0.6
+    parameter Modelica.SIunits.MassFlowRate m_flow_nominal_water_rad=0.04
       "Nominal mass flow rate - water in rad"
       annotation (Dialog(group="Nominal condition"));
     Modelica.Blocks.Sources.Constant pumDP(k=15000 + 20000)
@@ -297,10 +297,12 @@ package TwinRooms
       m_flow_nominal={rad219.Q_flow_nominal/(4200*12),rad220.Q_flow_nominal/(4200
           *12)},
         redeclare package Medium = MediumW,
-      nPorts=2)                             annotation (Placement(transformation(
+      nPorts=2,
+      val219(pIDWithEnable(conPID(reset=Buildings.Types.Reset.Parameter,
+              y_reset=0))))                 annotation (Placement(transformation(
           extent={{-17,-15},{17,15}},
           rotation=90,
-          origin={33,33})));
+          origin={33,31})));
     Components.WaterJoinerManifold2Zone waterJoinerManifold2Zone(
       m_flow_nominal={rad219.Q_flow_nominal/(4200*12),rad220.Q_flow_nominal/(4200
           *12)},
@@ -619,18 +621,18 @@ package TwinRooms
     connect(TRooSet.y,switch1. u1) annotation (Line(points={{103,-4},{154,-4}},
                                                           color={0,0,127}));
     connect(switch1.y, waterTRVSplitterManifold2Zone.TSet) annotation (Line(
-          points={{177,-12},{177,32},{32,32},{32,0},{18,0},{18,16}},   color={0,0,
+          points={{177,-12},{177,32},{32,32},{32,0},{18,0},{18,14}},   color={0,0,
             127}));
     connect(pipSupRad.port_b, waterTRVSplitterManifold2Zone.port_a) annotation (
-        Line(points={{14,-24},{12,-24},{12,0},{33,0},{33,16}}, color={0,127,255}));
+        Line(points={{14,-24},{12,-24},{12,0},{33,0},{33,14}}, color={0,127,255}));
     connect(waterJoinerManifold2Zone.port_b, pipRetRad.port_a) annotation (Line(
           points={{-8,18},{-8,-10},{-20,-10},{-20,-22}}, color={0,127,255}));
     connect(floor5Zone_Shading.TRooAir[1], waterTRVSplitterManifold2Zone.TMea[1])
       annotation (Line(points={{158.304,143.231},{174,143.231},{174,40},{70,40},
-            {70,-16},{18.75,-16},{18.75,16}},color={0,0,127}));
+            {70,-16},{18.75,-16},{18.75,14}},color={0,0,127}));
     connect(floor5Zone_Shading.TRooAir[2], waterTRVSplitterManifold2Zone.TMea[2])
       annotation (Line(points={{158.304,144},{182,144},{182,-12},{60,-12},{60,
-            -24},{17.25,-24},{17.25,16}},
+            -24},{17.25,-24},{17.25,14}},
                                      color={0,0,127}));
     connect(floor5Zone_Shading.CO2Roo[1], AHU219.CO2meas) annotation (Line(points={{158.304,
             150.154},{158.304,162},{-52,162},{-52,152},{-144.2,152},{-144.2,129}},
@@ -689,11 +691,11 @@ package TwinRooms
     connect(senTemRadRet.port_a, pipRetRad.port_b) annotation (Line(points={{
             -10,-84},{-10,-68},{-20,-68},{-20,-42}}, color={0,127,255}));
     connect(jun4.port_2, pipSupRad.port_a) annotation (Line(points={{-40,-112},
-            {-8,-112},{-8,-118},{14,-118},{14,-44}}, color={0,127,255}));
+            {-6,-112},{-6,-118},{14,-118},{14,-44}}, color={0,127,255}));
     connect(energyMeter219.port_b2, waterJoinerManifold2Zone.ports_a[1])
       annotation (Line(points={{68,80},{-9.6,80},{-9.6,50}}, color={0,127,255}));
     connect(waterTRVSplitterManifold2Zone.ports_b[2], energyMeter220.port_a1)
-      annotation (Line(points={{31.5,50},{14,50},{14,56},{0,56},{0,66},{8,66}},
+      annotation (Line(points={{31.5,48},{14,48},{14,56},{0,56},{0,66},{8,66}},
           color={0,127,255}));
     connect(energyMeter220.port_b1, rad220.port_a) annotation (Line(points={{28,
             66},{36,66},{36,84},{2,84},{2,100},{16,100}}, color={0,127,255}));
@@ -707,7 +709,7 @@ package TwinRooms
     connect(reaRadHeaPow220.u, energyMeter220.Power) annotation (Line(points={{
             194.8,0},{102,0},{102,54},{20,54},{20,61.4}}, color={0,0,127}));
     connect(energyMeter219.port_a1, waterTRVSplitterManifold2Zone.ports_b[1])
-      annotation (Line(points={{68,68},{54,68},{54,58},{40,58},{40,50},{34.5,50}},
+      annotation (Line(points={{68,68},{54,68},{54,58},{40,58},{40,48},{34.5,48}},
           color={0,127,255}));
     connect(energyMeter219.TempSup, reaRadTSup219.u) annotation (Line(points={{
             85.6,63.4},{85.6,154},{192.8,154}}, color={0,0,127}));
@@ -723,6 +725,9 @@ package TwinRooms
             87.6,63.4},{182,63.4},{182,194},{192.8,194}}, color={0,0,127}));
     connect(integrator.y, reaRadAccFlo219.u) annotation (Line(points={{175,214},
             {182,214},{182,218},{192.8,218},{192.8,216}}, color={0,0,127}));
+    connect(occSch.occupied, waterTRVSplitterManifold2Zone.uEna1) annotation (
+        Line(points={{103,-40},{106,-40},{106,-52},{36,-52},{36,25.56},{15,
+            25.56}}, color={255,0,255}));
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-380,-200},
               {200,200}})),                                        Diagram(
           coordinateSystem(preserveAspectRatio=false, extent={{-380,-200},{200,200}}),
@@ -738,10 +743,11 @@ package TwinRooms
             textString="VAV system 2.20"),
           Rectangle(extent={{-338,86},{-224,2}}, lineColor={28,108,200})}),
       experiment(
-        StopTime=172800,
-        Interval=30,
+        StartTime=1036800,
+        StopTime=1209600,
+        Interval=29.9999808,
         Tolerance=1e-06,
-        __Dymola_Algorithm="Rkfix3"));
+        __Dymola_Algorithm="Cvode"));
   end TestCase;
 
   package Components
@@ -1228,6 +1234,8 @@ package TwinRooms
         annotation (Placement(transformation(extent={{-124,12},{-104,32}})));
       Modelica.Blocks.Routing.Multiplex3 multiplex3_2
         annotation (Placement(transformation(extent={{350,112},{370,132}})));
+      Modelica.Blocks.Nonlinear.FixedDelay fixedDelay
+        annotation (Placement(transformation(extent={{-332,-80},{-312,-60}})));
     equation
       connect(room219.weaBus, weaBus) annotation (Line(
           points={{179.9,-6.1},{179.9,8},{210,8},{210,200}},
@@ -1599,7 +1607,10 @@ There are four perimeter zones and one core zone.
 The envelope thermal properties meet ASHRAE Standard 90.1-2004.
 </p>
 </html>"),
-        experiment(StopTime=604800, __Dymola_Algorithm="Dassl"));
+        experiment(
+          StartTime=864000,
+          StopTime=1728000,
+          __Dymola_Algorithm="Dassl"));
     end Floor5Zone_Shading;
 
     model DistrictHeating_dp "District heating substation with fixed pressure pump"
@@ -5050,7 +5061,7 @@ First implementation.
             rotation=270,
             origin={30,130}),iconTransformation(extent={{-120,80},{-80,120}})));
 
-      TwoWayPIDV val219(
+      TwoWayPIDVV val219(
         redeclare package Medium = Medium,
         allowFlowReversal=allowFlowReversal,
         m_flow_nominal=m_flow_nominal[1],
@@ -5091,6 +5102,8 @@ First implementation.
             extent={{-10,-10},{10,10}},
             rotation=270,
             origin={38,80})));
+      Modelica.Blocks.Interfaces.BooleanInput uEna1
+        annotation (Placement(transformation(extent={{-52,100},{-12,140}})));
     equation
       connect(jun3.port_3,val219. port_a) annotation (Line(points={{-50,-6.10623e-16},
               {-30,-6.10623e-16},{-30,0},{-10,0}}, color={0,127,255}));
@@ -5121,6 +5134,8 @@ First implementation.
               {0,14},{0,10.6}}, color={0,0,127}));
       connect(deMultiplex2_1.u, TMea) annotation (Line(points={{38,92},{38,106},{30,
               106},{30,130}}, color={0,0,127}));
+      connect(val219.uEna1, uEna1) annotation (Line(points={{-14.6,3},{-88,3},{
+              -88,84},{-32,84},{-32,120}}, color={255,0,255}));
       annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
             Rectangle(
               extent={{-100,100},{100,-100}},
@@ -5994,17 +6009,16 @@ First implementation.
 
       Buildings.Controls.Continuous.LimPID conPID(
         controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=0.1,
-        Ti=900,
+        k=20,
+        Ti=3600,
         Td=900,
         yMax=100,
-        Ni=0.9,
+        Ni=0.1,
         Nd=0.5,
+        initType=Modelica.Blocks.Types.InitPID.NoInit,
         xi_start=0,
         reset=Buildings.Types.Reset.Disabled)
         annotation (Placement(transformation(extent={{-84,68},{-64,88}})));
-      Modelica.Blocks.Nonlinear.Limiter limiter(uMax=1, uMin=0)
-        annotation (Placement(transformation(extent={{-32,50},{-12,70}})));
       Buildings.Utilities.IO.SignalExchange.Overwrite oveValRad(description=
             "Radiator valve control signal [0-1]", u(
           min=0,
@@ -6014,6 +6028,10 @@ First implementation.
             extent={{9,-9},{-9,9}},
             rotation=90,
             origin={9,35})));
+      Modelica.Blocks.Math.Division division
+        annotation (Placement(transformation(extent={{-34,64},{-14,84}})));
+      Modelica.Blocks.Sources.Constant const(k=100)
+        annotation (Placement(transformation(extent={{-100,28},{-80,48}})));
     protected
       parameter Medium.ThermodynamicState sta_default=
          Medium.setState_pTX(T=Medium.T_default, p=Medium.p_default, X=Medium.X_default);
@@ -6042,15 +6060,16 @@ First implementation.
 
       connect(conPID.u_s, TSet_in)
         annotation (Line(points={{-86,78},{-140,78}}, color={0,0,127}));
-      connect(conPID.y, limiter.u) annotation (Line(points={{-63,78},{-40,78},{
-              -40,60},{-34,60}},
-                             color={0,0,127}));
       connect(T, conPID.u_m) annotation (Line(points={{0,106},{0,48},{-74,48},{
               -74,66}},      color={0,0,127}));
-      connect(limiter.y, oveValRad.u)
-        annotation (Line(points={{-11,60},{9,60},{9,45.8}}, color={0,0,127}));
       connect(oveValRad.y, val.y)
         annotation (Line(points={{9,25.1},{9,12},{0,12}}, color={0,0,127}));
+      connect(conPID.y, division.u1) annotation (Line(points={{-63,78},{-56,78},
+              {-56,80},{-36,80}}, color={0,0,127}));
+      connect(const.y, division.u2) annotation (Line(points={{-79,38},{-52,38},
+              {-52,68},{-36,68}}, color={0,0,127}));
+      connect(division.y, oveValRad.u)
+        annotation (Line(points={{-13,74},{9,74},{9,45.8}}, color={0,0,127}));
     annotation (
     defaultComponentName="val",
     Documentation(info="<html>
@@ -6444,6 +6463,335 @@ First implementation.
 </ul>
 </html>"));
     end ControlledEffectivenessNTU;
+
+    block PIDWithEnable
+      "PID controller with enable signal"
+      extends Modelica.Blocks.Icons.Block;
+
+      Buildings.Controls.Continuous.LimPID conPID(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=1,
+        Ti=5000,
+        Td=900,
+        yMax=100,
+        Ni=0.5,
+        Nd=0.5,
+        initType=Modelica.Blocks.Types.InitPID.NoInit,
+        xi_start=0,
+        reset=Buildings.Types.Reset.Parameter,
+        y_reset=0)
+        annotation (Placement(transformation(extent={{-8,30},{12,50}})));
+      Modelica.Blocks.Logical.Switch switch1
+        annotation (Placement(transformation(extent={{-58,30},{-38,50}})));
+      Modelica.Blocks.Logical.Switch switch2
+        annotation (Placement(transformation(extent={{50,30},{70,50}})));
+      Modelica.Blocks.Interfaces.BooleanInput uEna
+        annotation (Placement(transformation(extent={{-122,-98},{-82,-58}})));
+      Modelica.Blocks.Interfaces.RealInput u_m
+        "Connector of measurement input signal" annotation (Placement(
+            transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=180,
+            origin={28,-100})));
+      Modelica.Blocks.Interfaces.RealOutput y1
+                                     "Connector of Real output signal"
+        annotation (Placement(transformation(extent={{92,30},{112,50}})));
+      Modelica.Blocks.Interfaces.RealInput u_s
+        "Connector of first Real input signal"
+        annotation (Placement(transformation(extent={{-126,32},{-86,72}})));
+      Modelica.Blocks.Sources.Constant const(k=0)
+        annotation (Placement(transformation(extent={{40,-18},{60,2}})));
+      Modelica.Blocks.Sources.BooleanPulse booleanPulse(width=0.001, period=
+            86400)
+        annotation (Placement(transformation(extent={{-122,-26},{-102,-6}})));
+    equation
+      connect(conPID.u_m, u_m) annotation (Line(points={{2,28},{2,-76},{28,-76},
+              {28,-100}}, color={0,0,127}));
+      connect(switch1.y, conPID.u_s) annotation (Line(points={{-37,40},{-30,40},
+              {-30,38},{-10,38},{-10,40}}, color={0,0,127}));
+      connect(uEna, switch1.u2) annotation (Line(points={{-102,-78},{-66,-78},{
+              -66,-44},{-36,-44},{-36,-24},{-80,-24},{-80,40},{-60,40}}, color=
+              {255,0,255}));
+      connect(uEna, switch2.u2) annotation (Line(points={{-102,-78},{-10,-78},{
+              -10,8},{30,8},{30,40},{48,40}}, color={255,0,255}));
+      connect(switch2.y, y1)
+        annotation (Line(points={{71,40},{102,40}}, color={0,0,127}));
+      connect(switch1.u1, u_s) annotation (Line(points={{-60,48},{-78,48},{-78,
+              52},{-106,52}}, color={0,0,127}));
+      connect(u_m, switch1.u3) annotation (Line(points={{28,-100},{-6,-100},{-6,
+              -26},{-52,-26},{-52,16},{-68,16},{-68,32},{-60,32}}, color={0,0,
+              127}));
+      connect(conPID.y, switch2.u1) annotation (Line(points={{13,40},{18,40},{
+              18,44},{48,44},{48,48}}, color={0,0,127}));
+      connect(const.y, switch2.u3) annotation (Line(points={{61,-8},{88,-8},{88,
+              16},{38,16},{38,32},{48,32}}, color={0,0,127}));
+      connect(booleanPulse.y, conPID.trigger) annotation (Line(points={{-101,
+              -16},{-66,-16},{-66,0},{-22,0},{-22,28},{-6,28}}, color={255,0,
+              255}));
+    end PIDWithEnable;
+
+    model TwoWayPIDVV "Two way thermostatic radiator valve"
+      extends Buildings.Fluid.Interfaces.PartialTwoPortInterface(
+         show_T=false,
+         dp(start=0,
+            nominal=6000),
+         m_flow(
+            nominal=if m_flow_nominal_pos > Modelica.Constants.eps
+              then m_flow_nominal_pos else 1),
+         final m_flow_small = 1E-4*abs(m_flow_nominal));
+
+      extends Buildings.Fluid.Actuators.BaseClasses.ValveParameters(
+        rhoStd=Medium.density_pTX(101325, 273.15+4, Medium.X_default));
+
+      parameter Boolean use_TSet_in= false
+        "Get the temperature setpoint from the input connector"
+        annotation(Evaluate=true, HideResult=true,Dialog(group="Conditional inputs"));
+      parameter Modelica.SIunits.Temperature TSet = 294.15
+        "Fixed value of temperature"
+        annotation (Dialog(enable = not use_TSet_in,group="Fixed inputs"));
+
+      Modelica.Blocks.Interfaces.RealInput TSet_in(final unit="K",
+                                                displayUnit="degC") if use_TSet_in
+        "Prescribed temperature setpoint"
+        annotation (Placement(transformation(extent={{-160,58},{-120,98}})));
+
+      parameter Modelica.SIunits.Temperature P(displayUnit="K") = 2 "Proportional band of valve";
+
+      parameter Boolean use_inputFilter=true
+        "= true, if opening is filtered with a 2nd order CriticalDamping filter"
+        annotation(Dialog(tab="Dynamics", group="Filtered opening"));
+      parameter Modelica.SIunits.Time riseTime=900
+        "Rise time of the filter (time to reach 99.6 % of an opening step)"
+        annotation(Dialog(tab="Dynamics", group="Filtered opening",enable=use_inputFilter));
+      parameter Modelica.Blocks.Types.Init init=Modelica.Blocks.Types.Init.InitialOutput
+        "Type of initialization (no init/steady state/initial state/initial output)"
+        annotation(Dialog(tab="Dynamics", group="Filtered opening",enable=use_inputFilter));
+      parameter Real y_start=1 "Initial value of control signal"
+        annotation(Dialog(tab="Dynamics", group="Filtered opening",enable=use_inputFilter));
+      parameter Modelica.SIunits.PressureDifference dpFixed_nominal(displayUnit="Pa", min=0) = 0
+        "Pressure drop of pipe and other resistances that are in series"
+         annotation(Dialog(group = "Nominal condition"));
+
+      parameter Real l(min=1e-10, max=1) = 0.0001
+        "Valve leakage, l=Kv(y=0)/Kv(y=1)";
+
+      parameter Boolean from_dp = false
+        "= true, use m_flow = f(dp) else dp = f(m_flow)"
+        annotation (Evaluate=true, Dialog(tab="Advanced"));
+
+      final parameter Modelica.SIunits.PressureDifference dp_nominal(displayUnit="Pa")=dpValve_nominal + dpFixed_nominal
+        "Pressure drop at nominal mass flow rate"
+        annotation(Dialog(group = "Nominal condition"));
+      constant Boolean homotopyInitialization = true "= true, use homotopy method"
+        annotation(Evaluate=true, Dialog(tab="Advanced"));
+      parameter Boolean linearized = false
+        "= true, use linear relation between m_flow and dp for any flow rate"
+        annotation(Evaluate=true, Dialog(tab="Advanced"));
+
+      final parameter Modelica.SIunits.MassFlowRate m_flow_turbulent(min=0)=deltaM * abs(m_flow_nominal)
+        "Turbulent flow if |m_flow| >= m_flow_turbulent";
+
+      Buildings.Fluid.Actuators.Valves.TwoWayLinear
+                                                val(
+        redeclare package Medium = Medium,
+        m_flow_nominal=m_flow_nominal,
+        dpValve_nominal=dpValve_nominal,
+        allowFlowReversal=allowFlowReversal,
+        show_T=show_T,
+        from_dp=from_dp,
+        homotopyInitialization=homotopyInitialization,
+        linearized=linearized,
+        deltaM=deltaM,
+        rhoStd=rhoStd,
+        use_inputFilter=false,
+        riseTime=riseTime,
+        init=init,
+        y_start=y_start,
+        dpFixed_nominal=dpFixed_nominal,
+        l=l,
+        CvData=Buildings.Fluid.Types.CvTypes.OpPoint) "Linear valve"
+        annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
+
+      Modelica.Blocks.Interfaces.RealInput T(unit="K") "Temperature measurement" annotation (
+          Placement(transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,106})));
+      Modelica.Blocks.Interfaces.RealOutput y "Valve set point"
+        annotation (Placement(transformation(extent={{40,60},{60,80}}),
+            iconTransformation(extent={{40,60},{60,80}})));
+
+      Buildings.Utilities.IO.SignalExchange.Overwrite oveValRad(description=
+            "Radiator valve control signal [0-1]", u(
+          min=0,
+          max=1,
+          unit="1")) "Overwrite for radiator valve"                  annotation (
+          Placement(transformation(
+            extent={{9,-9},{-9,9}},
+            rotation=90,
+            origin={9,35})));
+      Modelica.Blocks.Interfaces.BooleanInput uEna1
+        annotation (Placement(transformation(extent={{-166,10},{-126,50}})));
+      PIDWithEnable pIDWithEnable
+        annotation (Placement(transformation(extent={{-94,66},{-74,86}})));
+      Modelica.Blocks.Nonlinear.Limiter limiter(uMax=1, uMin=0)
+        annotation (Placement(transformation(extent={{-26,58},{-6,78}})));
+    protected
+      parameter Medium.ThermodynamicState sta_default=
+         Medium.setState_pTX(T=Medium.T_default, p=Medium.p_default, X=Medium.X_default);
+      parameter Modelica.SIunits.DynamicViscosity eta_default=Medium.dynamicViscosity(sta_default)
+        "Dynamic viscosity, used to compute transition to turbulent flow regime";
+
+      final parameter Modelica.SIunits.MassFlowRate m_flow_nominal_pos = abs(m_flow_nominal)
+        "Absolute value of nominal flow rate";
+      final parameter Modelica.SIunits.PressureDifference dp_nominal_pos(displayUnit="Pa") = abs(dp_nominal)
+        "Absolute value of nominal pressure difference";
+        Modelica.Blocks.Interfaces.RealInput TSet_in_internal(final unit="K",
+                                                         displayUnit="degC")
+                                                                            "Needed to connect to conditional connector";
+
+    equation
+      connect(val.y_actual, y)
+        annotation (Line(points={{5,7},{20,7},{20,70},{50,70}}, color={0,0,127}));
+      connect(port_a, val.port_a)
+        annotation (Line(points={{-100,0},{-56,0},{-10,0}}, color={0,127,255}));
+      connect(val.port_b, port_b)
+        annotation (Line(points={{10,0},{56,0},{100,0}}, color={0,127,255}));
+      connect(TSet_in, TSet_in_internal);
+      if not use_TSet_in then
+        TSet_in_internal = TSet;
+      end if;
+
+      connect(oveValRad.y, val.y)
+        annotation (Line(points={{9,25.1},{9,12},{0,12}}, color={0,0,127}));
+      connect(T, pIDWithEnable.u_m) annotation (Line(points={{0,106},{0,12},{
+              -72,12},{-72,58},{-81.2,58},{-81.2,66}}, color={0,0,127}));
+      connect(uEna1, pIDWithEnable.uEna) annotation (Line(points={{-146,30},{
+              -114,30},{-114,68.2},{-94.2,68.2}}, color={255,0,255}));
+      connect(TSet_in, pIDWithEnable.u_s) annotation (Line(points={{-140,78},{
+              -94.6,78},{-94.6,81.2}}, color={0,0,127}));
+      connect(pIDWithEnable.y1, limiter.u) annotation (Line(points={{-73.8,80},
+              {-60,80},{-60,74},{-50,74},{-50,68},{-28,68}}, color={0,0,127}));
+      connect(limiter.y, oveValRad.u) annotation (Line(points={{-5,68},{0,68},{
+              0,62},{9,62},{9,45.8}}, color={0,0,127}));
+    annotation (
+    defaultComponentName="val",
+    Documentation(info="<html>
+<p>
+Two way valve with thermostatic radiator knob. 
+This model assumes no hysteresis and an 
+ideal opening characteristic with a proportional band of <code>P</code> K.
+The default value of <code>riseTime</code> has been set
+to reflect the typical delay of radiator knobs.
+</p>
+</html>",
+    revisions="<html>
+<ul>
+<li>
+March 31, 2020 by Filip Jorissen:<br/>
+Revised implementation using <code>smoothHeaviside</code>.
+See <a href=\"https://github.com/open-ideas/IDEAS/issues/1022\">#1022</a>.
+</li>
+<li>
+October 26, 2018 by Filip Jorissen:<br/>
+Using <code>smoothLimit</code> for P controller.
+See <a href=\"https://github.com/open-ideas/IDEAS/issues/948\">#948</a>.
+</li>
+<li>
+September 24, 2018 by Filip Jorissen:<br/>
+Modified displayUnit of proportional band P to Kelvin to avoid displaying -271.15C.
+See <a href=\"https://github.com/open-ideas/IDEAS/issues/919\">#919</a>.
+</li>
+<li>
+November 15, 2016 by Filip Jorissen:<br/>
+First implementation.
+</li>
+</ul>
+</html>"),
+        Icon(graphics={
+            Rectangle(
+              extent={{-100,40},{100,-42}},
+              lineColor={0,0,0},
+              fillPattern=FillPattern.HorizontalCylinder,
+              fillColor={192,192,192}),
+            Rectangle(
+              extent={{-100,22},{100,-24}},
+              lineColor={0,0,0},
+              fillPattern=FillPattern.HorizontalCylinder,
+              fillColor={0,127,255}),
+            Polygon(
+              points={{2,-2},{-76,60},{-76,-60},{2,-2}},
+              lineColor={0,0,0},
+              fillColor={0,0,0},
+              fillPattern=FillPattern.Solid),
+            Polygon(
+              points={{-50,40},{0,-2},{54,40},{54,40},{-50,40}},
+              lineColor={0,0,255},
+              pattern=LinePattern.None,
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),
+            Polygon(
+              points={{-52,-42},{0,-4},{60,40},{60,-42},{-52,-42}},
+              lineColor={0,0,255},
+              pattern=LinePattern.None,
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),
+            Polygon(
+              points={{0,-2},{82,60},{82,-60},{0,-2}},
+              lineColor={0,0,0},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),
+            Line(
+              points={{0,40},{0,-4}}),
+            Polygon(
+              points={{-60,44},{0,-2},{60,40},{-60,44}},
+              lineColor={0,0,255},
+              pattern=LinePattern.None,
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),
+            Polygon(
+              points={{0,-2},{-76,60},{-76,-60},{0,-2}},
+              lineColor={0,0,0},
+              fillColor={0,0,0},
+              fillPattern=FillPattern.Solid),
+            Polygon(
+              points={{-52,-42},{0,-4},{60,40},{60,-42},{-52,-42}},
+              lineColor={0,0,255},
+              pattern=LinePattern.None,
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),
+            Polygon(
+              points={{0,-2},{82,60},{82,-60},{0,-2}},
+              lineColor={0,0,0},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),
+            Line(
+              points={{0,88},{0,-4}}),
+            Line(
+              points={{0,40},{0,100}}),
+            Line(
+              points={{0,70},{40,70}}),
+            Rectangle(
+              visible=use_inputFilter,
+              extent={{-32,40},{32,100}},
+              lineColor={0,0,0},
+              fillColor={135,135,135},
+              fillPattern=FillPattern.Solid),
+            Ellipse(
+              visible=use_inputFilter,
+              extent={{-32,100},{32,40}},
+              lineColor={0,0,0},
+              fillColor={135,135,135},
+              fillPattern=FillPattern.Solid),
+            Text(
+              visible=use_inputFilter,
+              extent={{-20,92},{20,48}},
+              lineColor={0,0,0},
+              fillColor={135,135,135},
+              fillPattern=FillPattern.Solid,
+              textString="M",
+              textStyle={TextStyle.Bold})}));
+    end TwoWayPIDVV;
   end Components;
 annotation (uses(
     Modelica(version="3.2.3"),
