@@ -583,9 +583,6 @@ package TwinRooms
     connect(floor5Zone_Shading.CO2Roo[2], AHU220.CO2meas) annotation (Line(points={{158.304,
             151.5},{158.304,174},{-82,174},{-82,148},{-310.2,148},{-310.2,79}},
                          color={0,0,127}));
-    connect(rad219.heatPortRad, floor5Zone_Shading.heaPorRad219) annotation (
-        Line(points={{108,81.2},{116,81.2},{116,86},{126,86},{126,124.846},{
-            99.0826,124.846}}, color={191,0,0}));
     connect(energyMeter219.Energy, reaRadHeaEne219.u) annotation (Line(
         points={{82,63.4},{80,63.4},{80,58},{188,58},{188,68},{194.8,68}},
         color={0,0,127},
@@ -638,6 +635,9 @@ package TwinRooms
             -110},{14,-44}}, color={0,127,255}));
     connect(jun2.port_1, senTemRadRet.port_b) annotation (Line(points={{-96,-146},
             {-10,-146},{-10,-104}}, color={0,127,255}));
+    connect(rad219.heatPortRad, floor5Zone_Shading.heaPorRad219) annotation (
+        Line(points={{108,81.2},{112,81.2},{112,124.846},{99.0826,124.846}},
+          color={191,0,0}));
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-380,-200},
               {200,200}})),                                        Diagram(
           coordinateSystem(preserveAspectRatio=false, extent={{-380,-200},{200,200}}),
@@ -1045,6 +1045,9 @@ package TwinRooms
         annotation (Placement(transformation(extent={{-124,12},{-104,32}})));
       Modelica.Blocks.Routing.Multiplex2 multiplex3_2
         annotation (Placement(transformation(extent={{350,112},{370,132}})));
+      Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C=
+            2e6)
+        annotation (Placement(transformation(extent={{148,16},{168,36}})));
     equation
       connect(room219.weaBus, weaBus) annotation (Line(
           points={{179.9,-6.1},{179.9,8},{210,8},{210,200}},
@@ -1165,6 +1168,9 @@ package TwinRooms
         annotation (Line(points={{390,80},{390,122},{371,122}}, color={0,0,127}));
       connect(parWal220To219.port_b, room220.surf_surBou[1]) annotation (Line(
             points={{202,-116},{36.2,-116},{36.2,-40}}, color={191,0,0}));
+      connect(heaPorAir219, heatCapacitor.port) annotation (Line(points={{133,
+              -17},{132,-17},{132,44},{176,44},{176,8},{158,8},{158,16}}, color
+            ={191,0,0}));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=true,
             extent={{-160,-100},{380,500}},
             initialScale=0.1), graphics={
@@ -2388,11 +2394,9 @@ The envelope thermal properties meet ASHRAE Standard 90.1-2004.
           m_flow_nominal=m_flow_nominal_air,
         allowFlowReversal=false)
           annotation (Placement(transformation(extent={{86,-46},{106,-26}})));
-        Modelica.Fluid.Interfaces.FluidPort_b port_b1(redeclare package Medium
-          =                                                                      Air)
+        Modelica.Fluid.Interfaces.FluidPort_b port_b1(redeclare package Medium = Air)
           annotation (Placement(transformation(extent={{150,-46},{170,-26}})));
-        Modelica.Fluid.Interfaces.FluidPort_a port_a1(redeclare package Medium
-          =                                                                      Air)
+        Modelica.Fluid.Interfaces.FluidPort_a port_a1(redeclare package Medium = Air)
           annotation (Placement(transformation(extent={{150,30},{170,50}})));
         Modelica.Blocks.Interfaces.RealInput CO2SetPoi annotation (Placement(
             transformation(
@@ -2443,11 +2447,11 @@ The envelope thermal properties meet ASHRAE Standard 90.1-2004.
         T_a2_nominal=T_in_wat_nominal_coil)
           annotation (Placement(transformation(extent={{36,-52},{56,-32}})));
 
-        Modelica.Fluid.Interfaces.FluidPort_a port_a2(redeclare package Medium
-          =   Water)
+        Modelica.Fluid.Interfaces.FluidPort_a port_a2(redeclare package Medium =
+              Water)
           annotation (Placement(transformation(extent={{90,-110},{110,-90}})));
-        Modelica.Fluid.Interfaces.FluidPort_b port_b2(redeclare package Medium
-          =   Water)
+        Modelica.Fluid.Interfaces.FluidPort_b port_b2(redeclare package Medium =
+              Water)
           annotation (Placement(transformation(extent={{30,-110},{50,-90}})));
 
         Modelica.Blocks.Interfaces.RealOutput Tsu annotation (Placement(
