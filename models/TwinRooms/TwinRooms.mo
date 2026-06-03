@@ -1046,7 +1046,7 @@ package TwinRooms
       Modelica.Blocks.Routing.Multiplex2 multiplex3_2
         annotation (Placement(transformation(extent={{350,112},{370,132}})));
       Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C=
-            2e6)
+            1e6)
         annotation (Placement(transformation(extent={{148,16},{168,36}})));
     equation
       connect(room219.weaBus, weaBus) annotation (Line(
