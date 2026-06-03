@@ -15,12 +15,11 @@ import pandas as pd
 mapper_names = {'qGai_flow[1]':'InternalGainsRad',
                 'qGai_flow[2]':'InternalGainsCon',
                 'qGai_flow[3]':'InternalGainsLat'}
-mapper_zones = {"1": "1", "2": "2", "3": "3"}
+mapper_zones = {"flo.sou": "1", "flo.eas": "2"}
 
 area = {
     "1":66.7,
-    "2":66.7,
-    "3":200
+    "2":66.7
 }
 
 df = pd.read_csv('sim.csv',index_col='Time')
@@ -44,13 +43,20 @@ df = df.rename(columns=mapper)
 df.index.name = 'time'
 
 # Set points
-for _zone in range(1,4):
+for _zone in range(1,3):
     zone = str(_zone)
+    """
     df['LowerSetp[{0}]'.format(mapper_zones[zone])] = 15+273.15
     df['LowerSetp[{0}]'.format(mapper_zones[zone])][df['hvac.occSch.occupied']>0] = 22+273.15
     df['UpperSetp[{0}]'.format(mapper_zones[zone])] = 30+273.15
     df['UpperSetp[{0}]'.format(mapper_zones[zone])][df['hvac.occSch.occupied']>0] = 24+273.15
     df['UpperCO2[{0}]'.format(mapper_zones[zone])] = 894
+    """
+    df['LowerSetp[{0}]'.format(zone)] = 15+273.15
+    df['LowerSetp[{0}]'.format(zone)][df['hvac.occSch.occupied']>0] = 22+273.15
+    df['UpperSetp[{0}]'.format(zone)] = 30+273.15
+    df['UpperSetp[{0}]'.format(zone)][df['hvac.occSch.occupied']>0] = 24+273.15
+    df['UpperCO2[{0}]'.format(zone)] = 894
 
 # Occupancy
 density = 0.05
@@ -59,8 +65,11 @@ for key in df.columns:
         for zone in area.keys():
             df['Occupancy[{0}]'.format(zone)] = (df[key].values*area[zone]*density).astype(int)
 
+to_drop = [col for col in df.columns if col.startswith("flo.")]
+
 df = df.drop(columns=['hvac.occSch.occupied'])
-df = df.drop(columns=['flo.intGaiFra.y[1]'])
+df = df.drop(columns=to_drop)
+#df = df.drop(columns=['flo.intGaiFra.y[1]'])
 df = df.drop(columns=['dt_index'])
 df = df.drop(columns=['day'])
 df = df.loc[:,~df.columns.duplicated()].copy()
