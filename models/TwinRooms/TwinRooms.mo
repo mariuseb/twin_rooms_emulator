@@ -638,11 +638,6 @@ package TwinRooms
             -110},{14,-44}}, color={0,127,255}));
     connect(jun2.port_1, senTemRadRet.port_b) annotation (Line(points={{-96,-146},
             {-10,-146},{-10,-104}}, color={0,127,255}));
-    connect(occSch.occupied, AHU219.occ) annotation (Line(points={{103,-40},{
-            108,-40},{108,140},{-163.2,140},{-163.2,128.8}}, color={255,0,255}));
-    connect(occSch.occupied, AHU220.occ) annotation (Line(points={{103,-40},{96,
-            -40},{96,-54},{-386,-54},{-386,108},{-329.2,108},{-329.2,78.8}},
-          color={255,0,255}));
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-380,-200},
               {200,200}})),                                        Diagram(
           coordinateSystem(preserveAspectRatio=false, extent={{-380,-200},{200,200}}),
@@ -2612,25 +2607,6 @@ The envelope thermal properties meet ASHRAE Standard 90.1-2004.
         annotation (Placement(transformation(extent={{10,-10},{-10,10}},
             rotation=180,
             origin={122,-36})));
-      Modelica.Blocks.Logical.Switch switch1
-        annotation (Placement(transformation(extent={{-152,52},{-132,72}})));
-      Modelica.Blocks.Interfaces.BooleanInput occ
-        "Connector of Boolean input signal" annotation (Placement(
-            transformation(
-            extent={{-20,-20},{20,20}},
-            rotation=270,
-            origin={-152,108})));
-      Buildings.Controls.Continuous.LimPID conPIDCO1(
-        controllerType=Modelica.Blocks.Types.SimpleController.PID,
-        k=0.5,
-        Ti=300,
-        yMax=(1800*1.2)/3600,
-        yMin=0,
-        initType=Modelica.Blocks.Types.InitPID.InitialState,
-        reverseActing=false) annotation (Placement(transformation(
-            extent={{10,-10},{-10,10}},
-            rotation=180,
-            origin={-182,52})));
     equation
         connect(fanSu.port_a, senTemIn2.port_b)
           annotation (Line(points={{-10,-40},{-16,-40}}, color={0,127,255}));
@@ -2745,19 +2721,8 @@ The envelope thermal properties meet ASHRAE Standard 90.1-2004.
         annotation (Line(points={{106,-36},{112,-36}}, color={0,127,255}));
       connect(senPreIn.port, resSup.port_b)
         annotation (Line(points={{146,-36},{132,-36}}, color={0,127,255}));
-      connect(switch1.u2, occ) annotation (Line(points={{-154,62},{-162,62},{
-              -162,82},{-152,82},{-152,108}}, color={255,0,255}));
-      connect(conPIDCO2.y, switch1.u1) annotation (Line(points={{-97,74},{-94,
-              74},{-94,78},{-194,78},{-194,70},{-154,70}}, color={0,0,127}));
-      connect(switch1.y, oveFanSupSpe.u) annotation (Line(points={{-131,62},{
-              -120,62},{-120,64},{-54,64},{-54,49.6}}, color={0,0,127}));
-      connect(CO2meas, conPIDCO1.u_m) annotation (Line(points={{38,110},{30,110},
-              {30,86},{-216,86},{-216,64},{-182,64}}, color={0,0,127}));
-      connect(CO2SetPoi, conPIDCO1.u_s) annotation (Line(points={{-130,108},{
-              -246,108},{-246,58},{-222,58},{-222,52},{-194,52}}, color={0,0,
-              127}));
-      connect(conPIDCO1.y, switch1.u3) annotation (Line(points={{-171,52},{-166,
-              52},{-166,54},{-154,54}}, color={0,0,127}));
+      connect(conPIDCO2.y, oveFanSupSpe.u) annotation (Line(points={{-97,74},{
+              -78,74},{-78,68},{-54,68},{-54,49.6}}, color={0,0,127}));
         annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-160,
                   -100},{160,100}}), graphics={
               Rectangle(
