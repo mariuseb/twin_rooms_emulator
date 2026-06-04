@@ -283,8 +283,9 @@ package TwinRooms
       annotation (Placement(transformation(extent={{-346,0},{-358,12}})));
 
     Buildings.Controls.SetPoints.OccupancySchedule
-                                         occSch(occupancy=3600*{8,18})
-                                                "Occupancy schedule"
+                                         occSch(occupancy=3600*{8,18,8 + 24,18
+           + 24,8 + 24*2,18 + 24*2,8 + 24*3,18 + 24*3,8 + 24*4,18 + 24*4},
+        period=604800)                          "Occupancy schedule"
       annotation (Placement(transformation(extent={{82,-44},{102,-24}})));
     Modelica.Blocks.Sources.Constant TRooNig(k=273.15 + 15)
       "Room temperature set point at night"
