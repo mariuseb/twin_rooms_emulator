@@ -656,7 +656,7 @@ package TwinRooms
         StopTime=1728000,
         Interval=29.9999808,
         Tolerance=1e-06,
-        __Dymola_Algorithm="Cvode"));
+        __Dymola_Algorithm="Radau"));
   end TestCase;
 
   package Components
@@ -919,7 +919,8 @@ package TwinRooms
         combiTimeTable(
           tableOnFile=true,
           tableName="tab1",
-          fileName=ModelicaServices.ExternalReferences.loadResource("Resources/intGains_first_week_zero.txt")))
+          fileName=ModelicaServices.ExternalReferences.loadResource(
+              "Resources/intGains_zero.txt")))
         annotation (Placement(transformation(extent={{-116,104},{-96,124}})));
 
         Modelica.Blocks.Sources.RealExpression CO2Gen220(y=gai.CO2*AFlo220)
