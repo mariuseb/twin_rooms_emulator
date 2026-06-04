@@ -28,8 +28,11 @@ datetime_start = pd.Timestamp("2024-01-01 00:00")
 dt_index = pd.to_datetime(df.index, origin=datetime_start, unit="s")
 df["dt_index"] = dt_index
 df["day"] = df["dt_index"].apply(lambda x: x.dayofweek)
+df["hour"] = df["dt_index"].apply(lambda x: x.hour)
 # set unoccupied on weekends:
 df["hvac.occSch.occupied"].loc[(df.day == 6) | (df.day == 5)] = 0
+# try to set hour 7 and hour 18 to 0:
+df["hvac.occSch.occupied"].loc[(df.hour == 6) | (df.hour == 7) | (df.hour == 18)] = 0
 # Internal Loads
 mapper = {}
 for key in df.columns:
@@ -73,5 +76,6 @@ df = df.drop(columns=to_drop)
 #df = df.drop(columns=['flo.intGaiFra.y[1]'])
 df = df.drop(columns=['dt_index'])
 df = df.drop(columns=['day'])
+df = df.drop(columns=['hour'])
 df = df.loc[:,~df.columns.duplicated()].copy()
 df.to_csv('Resources/internal_setpoints_occupancy.csv')

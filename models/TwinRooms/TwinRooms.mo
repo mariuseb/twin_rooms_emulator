@@ -653,10 +653,10 @@ package TwinRooms
             textString="VAV system 2.20"),
           Rectangle(extent={{-338,86},{-224,2}}, lineColor={28,108,200})}),
       experiment(
-        StopTime=259200,
+        StopTime=604800,
         Interval=29.9999808,
         Tolerance=1e-06,
-        __Dymola_Algorithm="Cvode"));
+        __Dymola_Algorithm="Radau"));
   end TestCase;
 
   package Components
