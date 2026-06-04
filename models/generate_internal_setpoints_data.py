@@ -11,6 +11,7 @@ Simulate the test case and output in sim.csv the following variables:
 """
 
 import pandas as pd
+import matplotlib.pyplot as plt
 
 mapper_names = {'qGai_flow[1]':'InternalGainsRad',
                 'qGai_flow[2]':'InternalGainsCon',
@@ -23,7 +24,7 @@ area = {
 }
 
 df = pd.read_csv('sim.csv',index_col='Time')
-datetime_start = pd.Timestamp("2022-01-01 00:00")
+datetime_start = pd.Timestamp("2024-01-01 00:00")
 dt_index = pd.to_datetime(df.index, origin=datetime_start, unit="s")
 df["dt_index"] = dt_index
 df["day"] = df["dt_index"].apply(lambda x: x.dayofweek)

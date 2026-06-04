@@ -653,7 +653,7 @@ package TwinRooms
             textString="VAV system 2.20"),
           Rectangle(extent={{-338,86},{-224,2}}, lineColor={28,108,200})}),
       experiment(
-        StopTime=1728000,
+        StopTime=259200,
         Interval=29.9999808,
         Tolerance=1e-06,
         __Dymola_Algorithm="Cvode"));
@@ -919,7 +919,8 @@ package TwinRooms
         combiTimeTable(
           tableOnFile=true,
           tableName="tab1",
-          fileName=ModelicaServices.ExternalReferences.loadResource("Resources/intGains_first_week_zero.txt")))
+          fileName=ModelicaServices.ExternalReferences.loadResource(
+              "Resources/intGains.txt")))
         annotation (Placement(transformation(extent={{-116,104},{-96,124}})));
 
         Modelica.Blocks.Sources.RealExpression CO2Gen220(y=gai.CO2*AFlo220)
