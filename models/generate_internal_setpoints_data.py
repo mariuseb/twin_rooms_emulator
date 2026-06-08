@@ -60,6 +60,10 @@ for _zone in range(1,3):
     df['LowerSetp[{0}]'.format(zone)][df['hvac.occSch.occupied']>0] = 22+273.15
     df['UpperSetp[{0}]'.format(zone)] = 30+273.15
     df['UpperSetp[{0}]'.format(zone)][df['hvac.occSch.occupied']>0] = 24+273.15
+    df['InternalGainsRad[{0}]'.format(zone)][df['hvac.occSch.occupied'] == 0] = df['InternalGainsRad[{0}]'.format(zone)].iloc[0]
+    df['InternalGainsCon[{0}]'.format(zone)][df['hvac.occSch.occupied'] == 0] = df['InternalGainsCon[{0}]'.format(zone)].iloc[0]
+    df['InternalGainsLat[{0}]'.format(zone)][df['hvac.occSch.occupied'] == 0] = df['InternalGainsLat[{0}]'.format(zone)].iloc[0]
+    df['UpperSetp[{0}]'.format(zone)][df['hvac.occSch.occupied']>0] = 24+273.15
     df['UpperCO2[{0}]'.format(zone)] = 894
 
 # Occupancy
