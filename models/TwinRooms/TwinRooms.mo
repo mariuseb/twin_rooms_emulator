@@ -20,7 +20,7 @@ package TwinRooms
       annotation (Placement(transformation(extent={{-164,170},{-144,190}}),
           iconTransformation(extent={{-360,170},{-340,190}})));
     parameter Modelica.SIunits.Angle lat=1.0454522219446 "Latitude";
-    Components.AHUSpeedHHB AHU219(
+    Components.AHUSpeedHHBCooling AHU219(
       m_flow_nominal_air=m_flow_nominal_air,
       m_flow_nominal_water=m_flow_nominal_water_AHU,
       dp_nominal_ext=200,
@@ -639,6 +639,9 @@ package TwinRooms
     connect(rad219.heatPortRad, floor5Zone_Shading.heaPorRad219) annotation (
         Line(points={{108,81.2},{112,81.2},{112,124.846},{99.0826,124.846}},
           color={191,0,0}));
+    connect(floor5Zone_Shading.TRooAir[1], AHU219.Tmeas) annotation (Line(
+          points={{158.304,143.423},{166,143.423},{166,184},{-138.8,184},{
+            -138.8,129}}, color={0,0,127}));
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-380,-200},
               {200,200}})),                                        Diagram(
           coordinateSystem(preserveAspectRatio=false, extent={{-380,-200},{200,200}}),
@@ -6574,7 +6577,7 @@ First implementation.
               Air,
           m_flow_nominal=m_flow_nominal_air,
         allowFlowReversal=false)
-          annotation (Placement(transformation(extent={{86,-46},{106,-26}})));
+          annotation (Placement(transformation(extent={{78,-46},{98,-26}})));
         Modelica.Fluid.Interfaces.FluidPort_b port_b1(redeclare package Medium
           =                                                                      Air)
           annotation (Placement(transformation(extent={{150,-46},{170,-26}})));
@@ -6628,7 +6631,7 @@ First implementation.
         Q_flow_nominal=-Q_flow_nominal_coil,
         T_a1_nominal=T_in_air_nominal_coil,
         T_a2_nominal=T_in_wat_nominal_coil)
-          annotation (Placement(transformation(extent={{36,-52},{56,-32}})));
+          annotation (Placement(transformation(extent={{28,-52},{48,-32}})));
 
         Modelica.Fluid.Interfaces.FluidPort_a port_a2(redeclare package Medium
           =   Water)
@@ -6762,7 +6765,7 @@ First implementation.
             origin={26,0})));
       Buildings.Fluid.Sensors.MassFlowRate senMasFloSup(redeclare package
           Medium =                                                                 Air)
-        annotation (Placement(transformation(extent={{62,-46},{82,-26}})));
+        annotation (Placement(transformation(extent={{52,-46},{72,-26}})));
       Buildings.Fluid.Sensors.MassFlowRate senMasFloExt(redeclare package
           Medium =                                                                 Air) annotation (Placement(
             transformation(
@@ -6793,34 +6796,35 @@ First implementation.
         allowFlowReversal=false)
         annotation (Placement(transformation(extent={{10,-10},{-10,10}},
             rotation=180,
-            origin={122,-36})));
-      Modelica.Blocks.Interfaces.RealInput TMeas
-        "Supply temperature setpoint for rotary wheel control" annotation (
+            origin={114,-36})));
+      Buildings.Fluid.HeatExchangers.HeaterCooler_u hea(
+        redeclare package Medium = Air,
+        allowFlowReversal=false,
+        m_flow_nominal=m_flow_nominal_air,
+        m_flow_small=1E-5,
+        dp_nominal=150,
+        tau=900,
+        Q_flow_nominal=-5000)
+        annotation (Placement(transformation(extent={{120,-18},{140,2}})));
+      Modelica.Blocks.Interfaces.RealInput Tmeas
+        "Measured CO2 from zone for independent VAV system " annotation (
           Placement(transformation(
             extent={{-20,-20},{20,20}},
             rotation=270,
-            origin={78,110})));
-      Buildings.Fluid.HeatExchangers.HeaterCooler_u coo(
-        redeclare package Medium = Buildings.Media.Air,
-        m_flow_nominal=m_flow_air_nominal,
-        dp_nominal=150,
-        Q_flow_nominal=5000)
-        annotation (Placement(transformation(extent={{118,-22},{138,-2}})));
-      Modelica.Blocks.Interfaces.RealOutput CooPow "Heat added to the fluid"
-        annotation (Placement(transformation(extent={{156,6},{176,26}})));
+            origin={92,110})));
       Buildings.Controls.Continuous.LimPID conPIDCoo(
         controllerType=Modelica.Blocks.Types.SimpleController.PID,
-        k=0.001,
+        k=0.1,
         Ti=900,
-        yMax=0,
-        yMin=-5000,
+        yMax=1,
+        yMin=0,
         initType=Modelica.Blocks.Types.InitPID.InitialState,
-        reverseActing=true)  annotation (Placement(transformation(
+        reverseActing=false) annotation (Placement(transformation(
             extent={{10,-10},{-10,10}},
             rotation=180,
-            origin={142,88})));
+            origin={130,76})));
       Modelica.Blocks.Sources.Constant TsetCoo(k=297.15)
-        annotation (Placement(transformation(extent={{48,78},{68,98}})));
+        annotation (Placement(transformation(extent={{76,64},{96,84}})));
     equation
         connect(fanSu.port_a, senTemIn2.port_b)
           annotation (Line(points={{-10,-40},{-16,-40}}, color={0,127,255}));
@@ -6864,10 +6868,10 @@ First implementation.
       connect(port_a2, senTemCoilIn.port_a) annotation (Line(points={{100,-100},{100,
               -72},{94,-72}}, color={0,127,255}));
       connect(senTemCoilIn.port_b,coil. port_a2)
-        annotation (Line(points={{74,-72},{62,-72},{62,-48},{56,-48}},
+        annotation (Line(points={{74,-72},{62,-72},{62,-48},{48,-48}},
                                                               color={0,127,255}));
-      connect(senTemIn3.T, reaTSupAir.u) annotation (Line(points={{96,-25},{96,
-              -22},{126,-22},{126,-52},{131,-52},{131,-56.6}},
+      connect(senTemIn3.T, reaTSupAir.u) annotation (Line(points={{88,-25},{88,-22},
+              {126,-22},{126,-52},{131,-52},{131,-56.6}},
                                            color={0,0,127}));
       connect(reaTSupAir.y, Tsu) annotation (Line(points={{131,-72.7},{131,-80},{
               166,-80}}, color={0,0,127}));
@@ -6875,8 +6879,8 @@ First implementation.
               {-25.2,58}},                    color={0,0,127}));
       connect(senTemCoilIn.T, reaTCoiSup.u) annotation (Line(points={{84,-61},{92,
               -61},{92,-60},{106,-60},{106,-90},{112.8,-90}}, color={0,0,127}));
-      connect(coil.port_b2, port_b2) annotation (Line(points={{36,-48},{24,-48},
-              {24,-100},{40,-100}},
+      connect(coil.port_b2, port_b2) annotation (Line(points={{28,-48},{24,-48},{24,
+              -100},{40,-100}},
                          color={0,127,255}));
       connect(senTemIn2.T, reaTHeaRec.u) annotation (Line(points={{-26,-29},{-26,-26},
               {-6,-26},{-6,-12},{0.8,-12}},       color={0,0,127}));
@@ -6894,7 +6898,7 @@ First implementation.
       connect(conPIDhex.u_s, TsupSet)
         annotation (Line(points={{-10,2},{-4,2},{-4,110}}, color={0,0,127}));
       connect(coil.port_a1, fanSu.port_b)
-        annotation (Line(points={{36,-36},{16,-36},{16,-40},{10,-40}},
+        annotation (Line(points={{28,-36},{16,-36},{16,-40},{10,-40}},
                                                      color={0,127,255}));
       connect(add.u1, fanEx.P) annotation (Line(points={{-70,-68},{-64,-68},{-64,
               -26},{-84,-26},{-84,26},{-92,26},{-92,49},{-89,49}}, color={0,0,127}));
@@ -6908,13 +6912,13 @@ First implementation.
       connect(oveFanSup.y, fanSu.y) annotation (Line(points={{19.4,0},{16,0},{16,
               -26},{6,-26},{6,-28},{0,-28}}, color={0,0,127}));
       connect(coil.port_b1, senMasFloSup.port_a)
-        annotation (Line(points={{56,-36},{62,-36}}, color={0,127,255}));
+        annotation (Line(points={{48,-36},{52,-36}}, color={0,127,255}));
       connect(senMasFloSup.port_b, senTemIn3.port_a)
-        annotation (Line(points={{82,-36},{86,-36}},   color={0,127,255}));
-      connect(senMasFloSup.m_flow, reaFloSupAir.u) annotation (Line(points={{72,-25},
-              {72,8},{122.8,8}},                            color={0,0,127}));
-      connect(senMasFloSup.m_flow, conPIDfans.u_m) annotation (Line(points={{72,-25},
-              {72,-16},{46,-16},{46,-9.6}},          color={0,0,127}));
+        annotation (Line(points={{72,-36},{78,-36}},   color={0,127,255}));
+      connect(senMasFloSup.m_flow, reaFloSupAir.u) annotation (Line(points={{62,-25},
+              {62,8},{122.8,8}},                            color={0,0,127}));
+      connect(senMasFloSup.m_flow, conPIDfans.u_m) annotation (Line(points={{62,-25},
+              {62,-16},{46,-16},{46,-9.6}},          color={0,0,127}));
       connect(resEx.port_b, senMasFloExt.port_a) annotation (Line(points={{70,40},{62,
               40},{62,42},{48,42},{48,40}}, color={0,127,255}));
       connect(senMasFloExt.port_b, senTemEx1.port_a) annotation (Line(points={{28,40},
@@ -6932,23 +6936,19 @@ First implementation.
               -130,74},{-120,74}},
                               color={0,0,127}));
       connect(senTemIn3.port_b, resSup.port_a)
-        annotation (Line(points={{106,-36},{112,-36}}, color={0,127,255}));
+        annotation (Line(points={{98,-36},{104,-36}},  color={0,127,255}));
       connect(conPIDCO2.y, oveFanSupSpe.u) annotation (Line(points={{-97,74},{
               -78,74},{-78,68},{-54,68},{-54,49.6}}, color={0,0,127}));
-      connect(resSup.port_b, coo.port_a) annotation (Line(points={{132,-36},{
-              110,-36},{110,-18},{84,-18},{84,-14},{118,-14},{118,-12}}, color=
-              {0,127,255}));
-      connect(coo.port_b, senPreIn.port) annotation (Line(points={{138,-12},{
-              148,-12},{148,-22},{138,-22},{138,-36},{146,-36}}, color={0,127,
-              255}));
-      connect(coo.Q_flow, CooPow) annotation (Line(points={{139,-6},{152,-6},{
-              152,16},{166,16}}, color={0,0,127}));
-      connect(TMeas, conPIDCoo.u_m) annotation (Line(points={{78,110},{78,102},
-              {142,102},{142,100}}, color={0,0,127}));
+      connect(hea.port_a, resSup.port_b) annotation (Line(points={{120,-8},{118,-8},
+              {118,-32},{134,-32},{134,-36},{124,-36}}, color={0,127,255}));
+      connect(hea.port_b, senPreIn.port) annotation (Line(points={{140,-8},{146,-8},
+              {146,-18},{138,-18},{138,-36},{146,-36}}, color={0,127,255}));
       connect(TsetCoo.y, conPIDCoo.u_s)
-        annotation (Line(points={{69,88},{130,88}}, color={0,0,127}));
-      connect(conPIDCoo.y, coo.u) annotation (Line(points={{153,88},{164,88},{
-              164,74},{98,74},{98,-6},{116,-6}}, color={0,0,127}));
+        annotation (Line(points={{97,74},{118,74},{118,76}}, color={0,0,127}));
+      connect(Tmeas, conPIDCoo.u_m) annotation (Line(points={{92,110},{130,110},
+              {130,88}}, color={0,0,127}));
+      connect(conPIDCoo.y, hea.u) annotation (Line(points={{141,76},{156,76},{
+              156,24},{98,24},{98,-2},{118,-2}}, color={0,0,127}));
         annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-160,
                   -100},{160,100}}), graphics={
               Rectangle(
