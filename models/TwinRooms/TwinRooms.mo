@@ -389,6 +389,12 @@ package TwinRooms
           extent={{6,-6},{-6,6}},
           rotation=180,
           origin={-192,162})));
+    Buildings.Utilities.IO.SignalExchange.Read reaAHUCoo219(
+      description="AHU cooling power 219",
+      KPIs=Buildings.Utilities.IO.SignalExchange.SignalTypes.SignalsForKPIs.None,
+
+      y(unit="W"))
+      annotation (Placement(transformation(extent={{194,106},{206,118}})));
   equation
     connect(weaDat.weaBus,weaBus)  annotation (Line(
         points={{-180,192},{-170,192},{-170,180},{-154,180}},
@@ -650,6 +656,9 @@ package TwinRooms
     connect(oveTsupSet219.y, twoWayHeatBattery219.TemSet) annotation (Line(
           points={{-185.4,162},{-170,162},{-170,142},{-114,142},{-114,88},{-132,
             88}}, color={0,0,127}));
+    connect(AHU219.Qcoo, reaAHUCoo219.u) annotation (Line(points={{-131.2,118.2},
+            {-10,118.2},{-10,110},{48,110},{48,88},{152,88},{152,112},{192.8,
+            112}}, color={0,0,127}));
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-380,-200},
               {200,200}})),                                        Diagram(
           coordinateSystem(preserveAspectRatio=false, extent={{-380,-200},{200,200}}),
@@ -2413,11 +2422,9 @@ The envelope thermal properties meet ASHRAE Standard 90.1-2004.
           m_flow_nominal=m_flow_nominal_air,
         allowFlowReversal=false)
           annotation (Placement(transformation(extent={{86,-46},{106,-26}})));
-        Modelica.Fluid.Interfaces.FluidPort_b port_b1(redeclare package Medium
-          =                                                                      Air)
+        Modelica.Fluid.Interfaces.FluidPort_b port_b1(redeclare package Medium = Air)
           annotation (Placement(transformation(extent={{150,-46},{170,-26}})));
-        Modelica.Fluid.Interfaces.FluidPort_a port_a1(redeclare package Medium
-          =                                                                      Air)
+        Modelica.Fluid.Interfaces.FluidPort_a port_a1(redeclare package Medium = Air)
           annotation (Placement(transformation(extent={{150,30},{170,50}})));
         Modelica.Blocks.Interfaces.RealInput CO2SetPoi annotation (Placement(
             transformation(
@@ -2468,11 +2475,11 @@ The envelope thermal properties meet ASHRAE Standard 90.1-2004.
         T_a2_nominal=T_in_wat_nominal_coil)
           annotation (Placement(transformation(extent={{36,-52},{56,-32}})));
 
-        Modelica.Fluid.Interfaces.FluidPort_a port_a2(redeclare package Medium
-          =   Water)
+        Modelica.Fluid.Interfaces.FluidPort_a port_a2(redeclare package Medium =
+              Water)
           annotation (Placement(transformation(extent={{90,-110},{110,-90}})));
-        Modelica.Fluid.Interfaces.FluidPort_b port_b2(redeclare package Medium
-          =   Water)
+        Modelica.Fluid.Interfaces.FluidPort_b port_b2(redeclare package Medium =
+              Water)
           annotation (Placement(transformation(extent={{30,-110},{50,-90}})));
 
         Modelica.Blocks.Interfaces.RealOutput Tsu annotation (Placement(
@@ -6838,6 +6845,8 @@ First implementation.
             origin={130,76})));
       Modelica.Blocks.Sources.Constant TsetCoo(k=297.15)
         annotation (Placement(transformation(extent={{76,64},{96,84}})));
+      Modelica.Blocks.Interfaces.RealOutput Qcoo "Heat added to the fluid"
+        annotation (Placement(transformation(extent={{158,-8},{178,12}})));
     equation
         connect(fanSu.port_a, senTemIn2.port_b)
           annotation (Line(points={{-10,-40},{-16,-40}}, color={0,127,255}));
@@ -6962,6 +6971,8 @@ First implementation.
               {130,88}}, color={0,0,127}));
       connect(conPIDCoo.y, hea.u) annotation (Line(points={{141,76},{156,76},{
               156,24},{98,24},{98,-2},{118,-2}}, color={0,0,127}));
+      connect(hea.Q_flow, Qcoo) annotation (Line(points={{141,-2},{148,-2},{148,
+              2},{168,2}}, color={0,0,127}));
         annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-160,
                   -100},{160,100}}), graphics={
               Rectangle(

@@ -38,6 +38,7 @@ model wrapped "Wrapped model"
 	Modelica.Blocks.Interfaces.RealOutput reaVenHeaPow220_y(unit="W") = mod.reaVenHeaPow220.y "Ventilation heating power 2.20";
 	Modelica.Blocks.Interfaces.RealOutput weatherStation_reaWeaNOpa_y(unit="1") = mod.weatherStation.reaWeaNOpa.y "Opaque sky cover measurement";
 	Modelica.Blocks.Interfaces.RealOutput AHU220_reaTRetAir_y(unit="K") = mod.AHU220.reaTRetAir.y "AHU return air temperature";
+	Modelica.Blocks.Interfaces.RealOutput weatherStation_reaWeaHDirNor_y(unit="W/m2") = mod.weatherStation.reaWeaHDirNor.y "Direct normal radiation measurement";
 	Modelica.Blocks.Interfaces.RealOutput weatherStation_reaWeaLon_y(unit="rad") = mod.weatherStation.reaWeaLon.y "Longitude of the location";
 	Modelica.Blocks.Interfaces.RealOutput AHU219_reaFloExtAir_y(unit="m3/s") = mod.AHU219.reaFloExtAir.y "AHU extract air volume flowrate";
 	Modelica.Blocks.Interfaces.RealOutput weatherStation_reaWeaCloTim_y(unit="s") = mod.weatherStation.reaWeaCloTim.y "Day number with units of seconds";
@@ -54,7 +55,7 @@ model wrapped "Wrapped model"
 	Modelica.Blocks.Interfaces.RealOutput floor5Zone_Shading_reaAuxPow_y(unit="W") = mod.floor5Zone_Shading.reaAuxPow.y "Aux power consumption";
 	Modelica.Blocks.Interfaces.RealOutput reaRadTSup219_y(unit="W") = mod.reaRadTSup219.y "Radiator supply temp 2.19";
 	Modelica.Blocks.Interfaces.RealOutput AHU219_reaTCoiSup_y(unit="K") = mod.AHU219.reaTCoiSup.y "AHU heating coil supply water temperature";
-	Modelica.Blocks.Interfaces.RealOutput weatherStation_reaWeaHDirNor_y(unit="W/m2") = mod.weatherStation.reaWeaHDirNor.y "Direct normal radiation measurement";
+	Modelica.Blocks.Interfaces.RealOutput reaAHUCoo219_y(unit="W") = mod.reaAHUCoo219.y "AHU cooling power 219";
 	Modelica.Blocks.Interfaces.RealOutput floor5Zone_Shading_reaT220_y(unit="K") = mod.floor5Zone_Shading.reaT220.y "Temperature of room 220";
 	Modelica.Blocks.Interfaces.RealOutput weatherStation_reaWeaSolTim_y(unit="s") = mod.weatherStation.reaWeaSolTim.y "Solar time";
 	Modelica.Blocks.Interfaces.RealOutput weatherStation_reaWeaTDewPoi_y(unit="K") = mod.weatherStation.reaWeaTDewPoi.y "Dew point temperature measurement";
