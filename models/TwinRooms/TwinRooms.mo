@@ -6847,6 +6847,16 @@ First implementation.
         annotation (Placement(transformation(extent={{76,64},{96,84}})));
       Modelica.Blocks.Interfaces.RealOutput Qcoo "Heat added to the fluid"
         annotation (Placement(transformation(extent={{158,-8},{178,12}})));
+      Buildings.Utilities.IO.SignalExchange.Overwrite oveCoo(description=
+            "AHU mechanical cooling control signal (0-1, where 1 --> -5000W)",
+          u(
+          min=0,
+          max=1,
+          unit="1")) "Overwrite for supply fan speed control signal"
+        annotation (Placement(transformation(
+            extent={{6,-6},{-6,6}},
+            rotation=180,
+            origin={86,-6})));
     equation
         connect(fanSu.port_a, senTemIn2.port_b)
           annotation (Line(points={{-10,-40},{-16,-40}}, color={0,127,255}));
@@ -6969,10 +6979,13 @@ First implementation.
         annotation (Line(points={{97,74},{118,74},{118,76}}, color={0,0,127}));
       connect(Tmeas, conPIDCoo.u_m) annotation (Line(points={{92,110},{130,110},
               {130,88}}, color={0,0,127}));
-      connect(conPIDCoo.y, hea.u) annotation (Line(points={{141,76},{156,76},{
-              156,24},{98,24},{98,-2},{118,-2}}, color={0,0,127}));
       connect(hea.Q_flow, Qcoo) annotation (Line(points={{141,-2},{148,-2},{148,
               2},{168,2}}, color={0,0,127}));
+      connect(conPIDCoo.y, oveCoo.u) annotation (Line(points={{141,76},{174,76},
+              {174,30},{102,30},{102,16},{70,16},{70,-6},{78.8,-6}}, color={0,0,
+              127}));
+      connect(oveCoo.y, hea.u) annotation (Line(points={{92.6,-6},{106,-6},{106,
+              -2},{118,-2}}, color={0,0,127}));
         annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-160,
                   -100},{160,100}}), graphics={
               Rectangle(

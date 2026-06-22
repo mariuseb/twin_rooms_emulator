@@ -6,6 +6,8 @@ model wrapped "Wrapped model"
 	Modelica.Blocks.Interfaces.BooleanInput waterTRVSplitterManifold2Zone_val219_oveValRad_activate "Activation for Radiator valve control signal [0-1]";
 	Modelica.Blocks.Interfaces.RealInput oveTsupSet219_u(unit="1", min=0.0, max=1.0) "AHU supply temperature setpoint signal";
 	Modelica.Blocks.Interfaces.BooleanInput oveTsupSet219_activate "Activation for AHU supply temperature setpoint signal";
+	Modelica.Blocks.Interfaces.RealInput AHU219_oveCoo_u(unit="1", min=0.0, max=1.0) "AHU mechanical cooling control signal (0-1, where 1 --> -5000W)";
+	Modelica.Blocks.Interfaces.BooleanInput AHU219_oveCoo_activate "Activation for AHU mechanical cooling control signal (0-1, where 1 --> -5000W)";
 	Modelica.Blocks.Interfaces.RealInput AHU219_oveFanSup_u(unit="1", min=0.0, max=1.0) "AHU supply fan speed control signal";
 	Modelica.Blocks.Interfaces.BooleanInput AHU219_oveFanSup_activate "Activation for AHU supply fan speed control signal";
 	Modelica.Blocks.Interfaces.RealInput waterTRVSplitterManifold2Zone_TSetRadNor_u(unit="K", min=285.15, max=313.15) "Radiator setpoint for zone north";
@@ -93,6 +95,7 @@ model wrapped "Wrapped model"
 	Modelica.Blocks.Interfaces.RealOutput AHU219_oveFanSupSpe_y(unit="1") = mod.AHU219.oveFanSupSpe.y "AHU supply fan speed control signal";
 	Modelica.Blocks.Interfaces.RealOutput waterTRVSplitterManifold2Zone_val219_oveValRad_y(unit="1") = mod.waterTRVSplitterManifold2Zone.val219.oveValRad.y "Radiator valve control signal [0-1]";
 	Modelica.Blocks.Interfaces.RealOutput oveTsupSet219_y(unit="1") = mod.oveTsupSet219.y "AHU supply temperature setpoint signal";
+	Modelica.Blocks.Interfaces.RealOutput AHU219_oveCoo_y(unit="1") = mod.AHU219.oveCoo.y "AHU mechanical cooling control signal (0-1, where 1 --> -5000W)";
 	Modelica.Blocks.Interfaces.RealOutput AHU219_oveFanSup_y(unit="1") = mod.AHU219.oveFanSup.y "AHU supply fan speed control signal";
 	Modelica.Blocks.Interfaces.RealOutput waterTRVSplitterManifold2Zone_TSetRadNor_y(unit="K") = mod.waterTRVSplitterManifold2Zone.TSetRadNor.y "Radiator setpoint for zone north";
 	Modelica.Blocks.Interfaces.RealOutput districtHeating_oveTSupSetHea_y(unit="K") = mod.districtHeating.oveTSupSetHea.y "Supply temperature set point for heating";
@@ -109,6 +112,7 @@ model wrapped "Wrapped model"
 		AHU219.oveFanSupSpe(uExt(y=AHU219_oveFanSupSpe_u),activate(y=AHU219_oveFanSupSpe_activate)),
 		waterTRVSplitterManifold2Zone.val219.oveValRad(uExt(y=waterTRVSplitterManifold2Zone_val219_oveValRad_u),activate(y=waterTRVSplitterManifold2Zone_val219_oveValRad_activate)),
 		oveTsupSet219(uExt(y=oveTsupSet219_u),activate(y=oveTsupSet219_activate)),
+		AHU219.oveCoo(uExt(y=AHU219_oveCoo_u),activate(y=AHU219_oveCoo_activate)),
 		AHU219.oveFanSup(uExt(y=AHU219_oveFanSup_u),activate(y=AHU219_oveFanSup_activate)),
 		waterTRVSplitterManifold2Zone.TSetRadNor(uExt(y=waterTRVSplitterManifold2Zone_TSetRadNor_u),activate(y=waterTRVSplitterManifold2Zone_TSetRadNor_activate)),
 		districtHeating.oveTSupSetHea(uExt(y=districtHeating_oveTSupSetHea_u),activate(y=districtHeating_oveTSupSetHea_activate)),
