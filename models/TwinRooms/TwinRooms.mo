@@ -380,6 +380,15 @@ package TwinRooms
       y(unit="W"))
       annotation (Placement(transformation(extent={{194,210},{206,222}})));
 
+    Buildings.Utilities.IO.SignalExchange.Overwrite oveTsupSet219(description=
+          "AHU supply temperature setpoint signal", u(
+        min=0,
+        max=1,
+        unit="1")) "Overwrite for supply fan speed control signal" annotation (
+        Placement(transformation(
+          extent={{6,-6},{-6,6}},
+          rotation=180,
+          origin={-192,162})));
   equation
     connect(weaDat.weaBus,weaBus)  annotation (Line(
         points={{-180,192},{-170,192},{-170,180},{-154,180}},
@@ -404,17 +413,8 @@ package TwinRooms
         extent={{-3,6},{-3,6}},
         horizontalAlignment=TextAlignment.Right));
 
-    connect(TAirSupSet.y, AHU219.TsupSet) annotation (Line(
-        points={{-235,172},{-170,172},{-170,146},{-148.4,146},{-148.4,129}},
-        color={0,0,127},
-        pattern=LinePattern.Dash));
     connect(AHU219.Tsu, twoWayHeatBattery219.TemMea) annotation (Line(
         points={{-131.4,110},{-124,110},{-124,91.4},{-132,91.4}},
-        color={0,0,127},
-        pattern=LinePattern.Dash));
-    connect(TAirSupSet.y, twoWayHeatBattery219.TemSet) annotation (Line(
-        points={{-235,172},{-170,172},{-170,146},{-148,146},{-148,138},{-126,138},
-            {-126,112},{-122,112},{-122,88},{-132,88}},
         color={0,0,127},
         pattern=LinePattern.Dash));
     connect(twoWayHeatBattery219.secSup, AHU219.port_a2) annotation (Line(points={
@@ -642,6 +642,14 @@ package TwinRooms
     connect(floor5Zone_Shading.TRooAir[1], AHU219.Tmeas) annotation (Line(
           points={{158.304,143.423},{166,143.423},{166,184},{-138.8,184},{
             -138.8,129}}, color={0,0,127}));
+    connect(TAirSupSet.y, oveTsupSet219.u) annotation (Line(points={{-235,172},
+            {-220,172},{-220,162},{-199.2,162}}, color={0,0,127}));
+    connect(oveTsupSet219.y, AHU219.TsupSet) annotation (Line(points={{-185.4,
+            162},{-164,162},{-164,156},{-148.4,156},{-148.4,129}}, color={0,0,
+            127}));
+    connect(oveTsupSet219.y, twoWayHeatBattery219.TemSet) annotation (Line(
+          points={{-185.4,162},{-170,162},{-170,142},{-114,142},{-114,88},{-132,
+            88}}, color={0,0,127}));
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-380,-200},
               {200,200}})),                                        Diagram(
           coordinateSystem(preserveAspectRatio=false, extent={{-380,-200},{200,200}}),
@@ -657,8 +665,8 @@ package TwinRooms
             textString="VAV system 2.20"),
           Rectangle(extent={{-338,86},{-224,2}}, lineColor={28,108,200})}),
       experiment(
-        StartTime=7776000,
-        StopTime=10368000,
+        StartTime=10368000,
+        StopTime=18144000,
         Interval=29.9999808,
         Tolerance=1e-06,
         __Dymola_Algorithm="Radau"));
@@ -1053,7 +1061,9 @@ package TwinRooms
         annotation (Placement(transformation(extent={{350,112},{370,132}})));
       Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C=
             1e6)
-        annotation (Placement(transformation(extent={{148,16},{168,36}})));
+        annotation (Placement(transformation(extent={{154,28},{174,48}})));
+      Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor1(C=1e6)
+        annotation (Placement(transformation(extent={{68,30},{88,50}})));
     equation
       connect(room219.weaBus, weaBus) annotation (Line(
           points={{179.9,-6.1},{179.9,8},{210,8},{210,200}},
@@ -1174,9 +1184,12 @@ package TwinRooms
         annotation (Line(points={{390,80},{390,122},{371,122}}, color={0,0,127}));
       connect(parWal220To219.port_b, room220.surf_surBou[1]) annotation (Line(
             points={{202,-116},{36.2,-116},{36.2,-40}}, color={191,0,0}));
-      connect(heaPorAir219, heatCapacitor.port) annotation (Line(points={{133,
-              -17},{132,-17},{132,44},{176,44},{176,8},{158,8},{158,16}}, color
+      connect(heaPorAir219, heatCapacitor.port) annotation (Line(points={{133,-17},
+              {132,-17},{132,20},{164,20},{164,28}},                      color
             ={191,0,0}));
+      connect(heatCapacitor1.port, heaPorAir220) annotation (Line(points={{78,
+              30},{80,30},{80,24},{40,24},{40,96},{-72,96},{-72,31},{-29,31}},
+            color={191,0,0}));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=true,
             extent={{-160,-100},{380,500}},
             initialScale=0.1), graphics={
