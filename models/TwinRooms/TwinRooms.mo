@@ -382,9 +382,9 @@ package TwinRooms
 
     Buildings.Utilities.IO.SignalExchange.Overwrite oveTsupSet219(description=
           "AHU supply temperature setpoint signal", u(
-        min=0,
-        max=1,
-        unit="1")) "Overwrite for supply fan speed control signal" annotation (
+        min=250,
+        max=310,
+        unit="K")) "Overwrite for ventilation supply temperature"  annotation (
         Placement(transformation(
           extent={{6,-6},{-6,6}},
           rotation=180,
@@ -392,9 +392,9 @@ package TwinRooms
     Buildings.Utilities.IO.SignalExchange.Read reaAHUCoo219(
       description="AHU cooling power 219",
       KPIs=Buildings.Utilities.IO.SignalExchange.SignalTypes.SignalsForKPIs.None,
-
       y(unit="W"))
       annotation (Placement(transformation(extent={{194,106},{206,118}})));
+
   equation
     connect(weaDat.weaBus,weaBus)  annotation (Line(
         points={{-180,192},{-170,192},{-170,180},{-154,180}},
@@ -664,7 +664,7 @@ package TwinRooms
           coordinateSystem(preserveAspectRatio=false, extent={{-380,-200},{200,200}}),
           graphics={
           Text(
-            extent={{-124,90},{-70,52}},
+            extent={{-112,96},{-58,58}},
             lineColor={28,108,200},
             textString="VAV system 2.19"),
           Rectangle(extent={{-178,134},{-64,50}}, lineColor={28,108,200}),
@@ -675,7 +675,7 @@ package TwinRooms
           Rectangle(extent={{-338,86},{-224,2}}, lineColor={28,108,200})}),
       experiment(
         StartTime=10368000,
-        StopTime=18144000,
+        StopTime=12960000,
         Interval=29.9999808,
         Tolerance=1e-06,
         __Dymola_Algorithm="Radau"));
@@ -6598,11 +6598,9 @@ First implementation.
           m_flow_nominal=m_flow_nominal_air,
         allowFlowReversal=false)
           annotation (Placement(transformation(extent={{78,-46},{98,-26}})));
-        Modelica.Fluid.Interfaces.FluidPort_b port_b1(redeclare package Medium
-          =                                                                      Air)
+        Modelica.Fluid.Interfaces.FluidPort_b port_b1(redeclare package Medium = Air)
           annotation (Placement(transformation(extent={{150,-46},{170,-26}})));
-        Modelica.Fluid.Interfaces.FluidPort_a port_a1(redeclare package Medium
-          =                                                                      Air)
+        Modelica.Fluid.Interfaces.FluidPort_a port_a1(redeclare package Medium = Air)
           annotation (Placement(transformation(extent={{150,30},{170,50}})));
         Modelica.Blocks.Interfaces.RealInput CO2SetPoi annotation (Placement(
             transformation(
@@ -6653,11 +6651,11 @@ First implementation.
         T_a2_nominal=T_in_wat_nominal_coil)
           annotation (Placement(transformation(extent={{28,-52},{48,-32}})));
 
-        Modelica.Fluid.Interfaces.FluidPort_a port_a2(redeclare package Medium
-          =   Water)
+        Modelica.Fluid.Interfaces.FluidPort_a port_a2(redeclare package Medium =
+              Water)
           annotation (Placement(transformation(extent={{90,-110},{110,-90}})));
-        Modelica.Fluid.Interfaces.FluidPort_b port_b2(redeclare package Medium
-          =   Water)
+        Modelica.Fluid.Interfaces.FluidPort_b port_b2(redeclare package Medium =
+              Water)
           annotation (Placement(transformation(extent={{30,-110},{50,-90}})));
 
         Modelica.Blocks.Interfaces.RealOutput Tsu annotation (Placement(

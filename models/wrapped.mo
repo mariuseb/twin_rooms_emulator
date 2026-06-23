@@ -4,7 +4,7 @@ model wrapped "Wrapped model"
 	Modelica.Blocks.Interfaces.BooleanInput AHU219_oveFanSupSpe_activate "Activation for AHU supply fan speed control signal";
 	Modelica.Blocks.Interfaces.RealInput waterTRVSplitterManifold2Zone_val219_oveValRad_u(unit="1", min=0.0, max=1.0) "Radiator valve control signal [0-1]";
 	Modelica.Blocks.Interfaces.BooleanInput waterTRVSplitterManifold2Zone_val219_oveValRad_activate "Activation for Radiator valve control signal [0-1]";
-	Modelica.Blocks.Interfaces.RealInput oveTsupSet219_u(unit="1", min=0.0, max=1.0) "AHU supply temperature setpoint signal";
+	Modelica.Blocks.Interfaces.RealInput oveTsupSet219_u(unit="K", min=250.0, max=310.0) "AHU supply temperature setpoint signal";
 	Modelica.Blocks.Interfaces.BooleanInput oveTsupSet219_activate "Activation for AHU supply temperature setpoint signal";
 	Modelica.Blocks.Interfaces.RealInput AHU219_oveCoo_u(unit="1", min=0.0, max=1.0) "AHU mechanical cooling control signal (0-1, where 1 --> -5000W)";
 	Modelica.Blocks.Interfaces.BooleanInput AHU219_oveCoo_activate "Activation for AHU mechanical cooling control signal (0-1, where 1 --> -5000W)";
@@ -94,7 +94,7 @@ model wrapped "Wrapped model"
 	Modelica.Blocks.Interfaces.RealOutput reaRadFlow219_y(unit="W") = mod.reaRadFlow219.y "Radiator mass flow 2.19";
 	Modelica.Blocks.Interfaces.RealOutput AHU219_oveFanSupSpe_y(unit="1") = mod.AHU219.oveFanSupSpe.y "AHU supply fan speed control signal";
 	Modelica.Blocks.Interfaces.RealOutput waterTRVSplitterManifold2Zone_val219_oveValRad_y(unit="1") = mod.waterTRVSplitterManifold2Zone.val219.oveValRad.y "Radiator valve control signal [0-1]";
-	Modelica.Blocks.Interfaces.RealOutput oveTsupSet219_y(unit="1") = mod.oveTsupSet219.y "AHU supply temperature setpoint signal";
+	Modelica.Blocks.Interfaces.RealOutput oveTsupSet219_y(unit="K") = mod.oveTsupSet219.y "AHU supply temperature setpoint signal";
 	Modelica.Blocks.Interfaces.RealOutput AHU219_oveCoo_y(unit="1") = mod.AHU219.oveCoo.y "AHU mechanical cooling control signal (0-1, where 1 --> -5000W)";
 	Modelica.Blocks.Interfaces.RealOutput AHU219_oveFanSup_y(unit="1") = mod.AHU219.oveFanSup.y "AHU supply fan speed control signal";
 	Modelica.Blocks.Interfaces.RealOutput waterTRVSplitterManifold2Zone_TSetRadNor_y(unit="K") = mod.waterTRVSplitterManifold2Zone.TSetRadNor.y "Radiator setpoint for zone north";
