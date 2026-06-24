@@ -391,7 +391,7 @@ package TwinRooms
           origin={-192,162})));
     Buildings.Utilities.IO.SignalExchange.Read reaAHUCoo219(
       description="AHU cooling power 219",
-      KPIs=Buildings.Utilities.IO.SignalExchange.SignalTypes.SignalsForKPIs.None,
+      KPIs=Buildings.Utilities.IO.SignalExchange.SignalTypes.SignalsForKPIs.ElectricPower,
       y(unit="W"))
       annotation (Placement(transformation(extent={{194,106},{206,118}})));
 
@@ -600,8 +600,8 @@ package TwinRooms
         pattern=LinePattern.Dash));
     connect(energyMeter219.port_b1, rad219.port_a) annotation (Line(points={{88,
             68},{90,68},{90,72},{96,72},{96,74}}, color={0,127,255}));
-    connect(rad219.port_b, energyMeter219.port_a2) annotation (Line(points={{
-            116,74},{120,74},{120,60},{94,60},{94,80},{88,80}}, color={0,127,
+    connect(rad219.port_b, energyMeter219.port_a2) annotation (Line(points={{116,74},
+            {122,74},{122,56},{94,56},{94,80},{88,80}},         color={0,127,
             255}));
     connect(senTemRadRet.port_a, pipRetRad.port_b) annotation (Line(points={{
             -10,-84},{-10,-68},{-20,-68},{-20,-42}}, color={0,127,255}));
@@ -977,7 +977,7 @@ package TwinRooms
               extent={{380,70},{400,90}}), iconTransformation(extent={{380,70},{400,
                 90}})));
       BaseClasses.shading              shading_control[2](
-        each threshold=150,
+        each threshold=300,
         each til=Buildings.Types.Tilt.Wall,
         each lat=lat,
         azi={Buildings.Types.Azimuth.S,Buildings.Types.Azimuth.S})
@@ -1073,6 +1073,8 @@ package TwinRooms
         annotation (Placement(transformation(extent={{154,28},{174,48}})));
       Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor1(C=1e6)
         annotation (Placement(transformation(extent={{68,30},{88,50}})));
+      Modelica.Blocks.Sources.Constant const(k=0)
+        annotation (Placement(transformation(extent={{68,114},{88,134}})));
     equation
       connect(room219.weaBus, weaBus) annotation (Line(
           points={{179.9,-6.1},{179.9,8},{210,8},{210,200}},
@@ -1178,8 +1180,6 @@ package TwinRooms
       connect(shading_control[1].y, oveSha220.u) annotation (Line(points={{-37,184},
               {-20,184},{-20,138},{-16,138},{-16,-10},{-11,-10},{-11,75}}, color={0,
               0,127}));
-      connect(shading_control[2].y, oveSha219.u) annotation (Line(points={{-37,184},
-              {-4,184},{-4,122},{42,122},{42,-5},{125,-5}}, color={0,0,127}));
       connect(gai.intGai, room220.qGai_flow) annotation (Line(points={{-95,114},{20,
               114},{20,40},{0,40},{0,-18},{18.4,-18}}, color={0,0,127}));
       connect(gai.intGai, room219.qGai_flow) annotation (Line(points={{-95,114},{20,
@@ -1199,6 +1199,8 @@ package TwinRooms
       connect(heatCapacitor1.port, heaPorAir220) annotation (Line(points={{78,
               30},{80,30},{80,24},{40,24},{40,96},{-72,96},{-72,31},{-29,31}},
             color={191,0,0}));
+      connect(const.y, oveSha219.u) annotation (Line(points={{89,124},{96,124},
+              {96,-5},{125,-5}}, color={0,0,127}));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=true,
             extent={{-160,-100},{380,500}},
             initialScale=0.1), graphics={
