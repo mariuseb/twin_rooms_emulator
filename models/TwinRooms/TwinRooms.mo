@@ -1073,8 +1073,6 @@ package TwinRooms
         annotation (Placement(transformation(extent={{154,28},{174,48}})));
       Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor1(C=1e6)
         annotation (Placement(transformation(extent={{68,30},{88,50}})));
-      Modelica.Blocks.Sources.Constant const(k=0)
-        annotation (Placement(transformation(extent={{68,114},{88,134}})));
     equation
       connect(room219.weaBus, weaBus) annotation (Line(
           points={{179.9,-6.1},{179.9,8},{210,8},{210,200}},
@@ -1199,8 +1197,9 @@ package TwinRooms
       connect(heatCapacitor1.port, heaPorAir220) annotation (Line(points={{78,
               30},{80,30},{80,24},{40,24},{40,96},{-72,96},{-72,31},{-29,31}},
             color={191,0,0}));
-      connect(const.y, oveSha219.u) annotation (Line(points={{89,124},{96,124},
-              {96,-5},{125,-5}}, color={0,0,127}));
+      connect(shading_control[2].y, oveSha219.u) annotation (Line(points={{-37,
+              184},{26,184},{26,172},{108,172},{108,-5},{125,-5}}, color={0,0,
+              127}));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=true,
             extent={{-160,-100},{380,500}},
             initialScale=0.1), graphics={
@@ -2937,7 +2936,7 @@ First implementation.
       end PartialFloor;
 
       model shading "Control signal for shading"
-        parameter Modelica.SIunits.Irradiance threshold=150
+        parameter Modelica.SIunits.Irradiance threshold=300
           "Shading closed when total external sola irradation is above this threshold";
         parameter Modelica.SIunits.Angle til "Surface tilt";
         parameter Modelica.SIunits.Angle lat "Latitude";
