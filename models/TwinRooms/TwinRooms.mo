@@ -124,6 +124,22 @@ package TwinRooms
       Placement(transformation(extent = {{6, -6}, {-6, 6}}, rotation = 180, origin = {-192, 162})));
     Buildings.Utilities.IO.SignalExchange.Read reaAHUCoo219(description = "AHU cooling power 219", KPIs = Buildings.Utilities.IO.SignalExchange.SignalTypes.SignalsForKPIs.ElectricPower, y(unit = "W")) annotation(
       Placement(transformation(extent = {{194, 106}, {206, 118}})));
+    Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = 1E7) annotation(
+      Placement(transformation(origin = {104, 102}, extent = {{-10, -10}, {10, 10}})));
+    Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor1(C = 1E7) annotation(
+      Placement(transformation(origin = {134, 102}, extent = {{-10, -10}, {10, 10}})));
+    Modelica.Blocks.Math.Tanh tanh annotation(
+      Placement(transformation(origin = {258, 106}, extent = {{-10, -10}, {10, 10}})));
+    Modelica.Blocks.Math.Feedback feedback annotation(
+      Placement(transformation(origin = {224, 106}, extent = {{-10, -10}, {10, 10}})));
+    Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow radHea219 annotation(
+      Placement(transformation(origin = {330, 126}, extent = {{-10, -10}, {10, 10}})));
+    Buildings.Utilities.IO.SignalExchange.Overwrite oveHea(description = "Radiator valve control signal [0-1]", u(max = 1, min = 0, unit = "1")) "Overwrite for heating input" annotation(
+      Placement(transformation(origin = {285, 107}, extent = {{9, -9}, {-9, 9}}, rotation = 180)));
+    Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow conHea219 annotation(
+      Placement(transformation(origin = {330, 90}, extent = {{-10, -10}, {10, 10}})));
+    Modelica.Blocks.Math.Product product annotation(
+      Placement(transformation(origin = {298, 140}, extent = {{-10, -10}, {10, 10}})));
   equation
     connect(weaDat.weaBus, weaBus) annotation(
       Line(points = {{-180, 192}, {-170, 192}, {-170, 180}, {-154, 180}}, color = {255, 204, 51}, thickness = 0.5, smooth = Smooth.None));
@@ -283,8 +299,6 @@ package TwinRooms
       Line(points = {{85.6, 63.4}, {85.6, 154}, {192.8, 154}}, color = {0, 0, 127}));
     connect(energyMeter219.TempRet, reaRadTRet219.u) annotation(
       Line(points = {{83.8, 63.4}, {83.8, 174}, {192.8, 174}}, color = {0, 0, 127}));
-    connect(rad219.heatPortCon, floor5Zone_Shading.heaPorAir219) annotation(
-      Line(points = {{104, 81.2}, {104, 128.538}, {99.0826, 128.538}}, color = {191, 0, 0}));
     connect(energyMeter219.Flow, integrator.u) annotation(
       Line(points = {{87.6, 63.4}, {168, 63.4}, {168, 190}, {140, 190}, {140, 214}, {152, 214}}, color = {0, 0, 127}));
     connect(energyMeter219.Flow, reaRadFlow219.u) annotation(
@@ -295,8 +309,6 @@ package TwinRooms
       Line(points = {{-86, -110}, {14, -110}, {14, -44}}, color = {0, 127, 255}));
     connect(jun2.port_1, senTemRadRet.port_b) annotation(
       Line(points = {{-96, -146}, {-10, -146}, {-10, -104}}, color = {0, 127, 255}));
-    connect(rad219.heatPortRad, floor5Zone_Shading.heaPorRad219) annotation(
-      Line(points = {{108, 81.2}, {112, 81.2}, {112, 124.846}, {99.0826, 124.846}}, color = {191, 0, 0}));
     connect(floor5Zone_Shading.TRooAir[1], AHU219.Tmeas) annotation(
       Line(points = {{158.304, 143.423}, {166, 143.423}, {166, 184}, {-138.8, 184}, {-138.8, 129}}, color = {0, 0, 127}));
     connect(TAirSupSet.y, oveTsupSet219.u) annotation(
@@ -307,6 +319,18 @@ package TwinRooms
       Line(points = {{-185.4, 162}, {-170, 162}, {-170, 142}, {-114, 142}, {-114, 88}, {-132, 88}}, color = {0, 0, 127}));
     connect(AHU219.Qcoo, reaAHUCoo219.u) annotation(
       Line(points = {{-131.2, 118.2}, {-10, 118.2}, {-10, 110}, {48, 110}, {48, 88}, {152, 88}, {152, 112}, {192.8, 112}}, color = {0, 0, 127}));
+    connect(rad219.heatPortCon, heatCapacitor.port) annotation(
+      Line(points = {{104, 82}, {104, 92}}, color = {191, 0, 0}));
+    connect(rad219.heatPortRad, heatCapacitor1.port) annotation(
+      Line(points = {{108, 82}, {134, 82}, {134, 92}}, color = {191, 0, 0}));
+    connect(floor5Zone_Shading.TRooAir, feedback.u2) annotation(
+      Line(points = {{158, 144}, {212, 144}, {212, 86}, {224, 86}, {224, 98}}, color = {0, 0, 127}));
+    connect(switch1.y, feedback.u1) annotation(
+      Line(points = {{178, -12}, {226, -12}, {226, 84}, {194, 84}, {194, 106}, {216, 106}}, color = {0, 0, 127}));
+    connect(feedback.y, tanh.u) annotation(
+      Line(points = {{234, 106}, {246, 106}}, color = {0, 0, 127}));
+    connect(tanh.y, oveHea.u) annotation(
+      Line(points = {{270, 106}, {274, 106}, {274, 108}}, color = {0, 0, 127}));
     annotation(
       Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-380, -200}, {200, 200}})),
       Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-380, -200}, {200, 200}}), graphics = {Text(extent = {{-112, 96}, {-58, 58}}, lineColor = {28, 108, 200}, textString = "VAV system 2.19"), Rectangle(extent = {{-178, 134}, {-64, 50}}, lineColor = {28, 108, 200}), Text(extent = {{-280, 44}, {-226, 6}}, lineColor = {28, 108, 200}, textString = "VAV system 2.20"), Rectangle(extent = {{-338, 86}, {-224, 2}}, lineColor = {28, 108, 200})}),
@@ -610,8 +634,8 @@ The envelope thermal properties meet ASHRAE Standard 90.1-2004.
       Modelica.Blocks.Interfaces.RealOutput qdh "Accumulated energy" annotation(
         Placement(transformation(extent = {{100, -48}, {120, -28}})));
       parameter Modelica.SIunits.PressureDifference dp_nominal = 50000 "Nominal pressure raise, used to normalized the filter if use_inputFilter=true,
-                          to set default values of constantHead and heads, and
-                          and for default pressure curve if not specified in record per" annotation(
+                                                                                                                                                                                                                                                                                                                                                                                                                                            to set default values of constantHead and heads, and
+                                                                                                                                                                                                                                                                                                                                                                                                                                            and for default pressure curve if not specified in record per" annotation(
         Dialog(group = "Nominal condition"));
     equation
       connect(dhHX.port_b2, tDHRe.port_a) annotation(
