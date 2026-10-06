@@ -5,7 +5,7 @@ package TwinRooms
     extends Modelica.Icons.Example;
     package MediumA = Buildings.Media.Air(extraPropertiesNames = {"CO2"}) "Medium model for air";
     package MediumW = Buildings.Media.Water "Medium model for water";
-    Components.Floor5Zone_Shading floor5Zone_Shading(lat = lat, gai(data(MatEmi = 8.64E-6*0.01))) annotation(
+    Components.Floor5Zone_Shading floor5Zone_Shading(lat = lat, gai(data(MatEmi = 8.64E-6*0.01)), shading_control(each threshold = 1000)) annotation(
       Placement(transformation(extent = {{50, 114}, {156, 174}})));
     Buildings.BoundaryConditions.WeatherData.ReaderTMY3 weaDat(filNam = ModelicaServices.ExternalReferences.loadResource("Resources/NOR_TD_Trondheim-Zeblab_2023_fixed.mos"), computeWetBulbTemperature = true) annotation(
       Placement(transformation(extent = {{-200, 182}, {-180, 202}})));
@@ -453,7 +453,7 @@ package TwinRooms
         Placement(transformation(extent = {{294, 120}, {314, 140}})));
       Modelica.Blocks.Interfaces.RealOutput CO2Roo[2] "Connector of Real output signals" annotation(
         Placement(transformation(extent = {{380, 70}, {400, 90}}), iconTransformation(extent = {{380, 70}, {400, 90}})));
-      BaseClasses.shading shading_control[2](each threshold = 300, each til = Buildings.Types.Tilt.Wall, each lat = lat, azi = {Buildings.Types.Azimuth.S, Buildings.Types.Azimuth.S}) annotation(
+      BaseClasses.shading shading_control[2](each threshold = 1000, each til = Buildings.Types.Tilt.Wall, each lat = lat, azi = {Buildings.Types.Azimuth.S, Buildings.Types.Azimuth.S}) annotation(
         Placement(transformation(extent = {{-58, 174}, {-38, 194}})));
       Buildings.Utilities.IO.SignalExchange.Read reaCO2220(description = "CO2 concentration of 2.20", KPIs = Buildings.Utilities.IO.SignalExchange.SignalTypes.SignalsForKPIs.CO2Concentration, zone = "2", y(unit = "ppm")) annotation(
         Placement(transformation(extent = {{322, 126}, {330, 134}})));
@@ -660,8 +660,8 @@ The envelope thermal properties meet ASHRAE Standard 90.1-2004.
       Modelica.Blocks.Interfaces.RealOutput qdh "Accumulated energy" annotation(
         Placement(transformation(extent = {{100, -48}, {120, -28}})));
       parameter Modelica.SIunits.PressureDifference dp_nominal = 50000 "Nominal pressure raise, used to normalized the filter if use_inputFilter=true,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    to set default values of constantHead and heads, and
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    and for default pressure curve if not specified in record per" annotation(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            to set default values of constantHead and heads, and
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            and for default pressure curve if not specified in record per" annotation(
         Dialog(group = "Nominal condition"));
     equation
       connect(dhHX.port_b2, tDHRe.port_a) annotation(
