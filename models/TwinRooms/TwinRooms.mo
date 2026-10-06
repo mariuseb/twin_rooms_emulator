@@ -129,17 +129,25 @@ package TwinRooms
     Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor1(C = 1E7) annotation(
       Placement(transformation(origin = {134, 102}, extent = {{-10, -10}, {10, 10}})));
     Modelica.Blocks.Math.Tanh tanh annotation(
-      Placement(transformation(origin = {258, 106}, extent = {{-10, -10}, {10, 10}})));
+      Placement(transformation(origin = {248, 106}, extent = {{-10, -10}, {10, 10}})));
     Modelica.Blocks.Math.Feedback feedback annotation(
       Placement(transformation(origin = {224, 106}, extent = {{-10, -10}, {10, 10}})));
     Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow radHea219 annotation(
       Placement(transformation(origin = {330, 126}, extent = {{-10, -10}, {10, 10}})));
     Buildings.Utilities.IO.SignalExchange.Overwrite oveHea(description = "Radiator valve control signal [0-1]", u(max = 1, min = 0, unit = "1")) "Overwrite for heating input" annotation(
-      Placement(transformation(origin = {285, 107}, extent = {{9, -9}, {-9, 9}}, rotation = 180)));
+      Placement(transformation(origin = {290, 106}, extent = {{6, -6}, {-6, 6}}, rotation = 180)));
     Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow conHea219 annotation(
       Placement(transformation(origin = {330, 90}, extent = {{-10, -10}, {10, 10}})));
     Modelica.Blocks.Math.Product product annotation(
       Placement(transformation(origin = {298, 140}, extent = {{-10, -10}, {10, 10}})));
+    Modelica.Blocks.Math.Product product1 annotation(
+      Placement(transformation(origin = {300, 72}, extent = {{-10, -10}, {10, 10}})));
+    Modelica.Blocks.Sources.RealExpression realExpression(y = 0.35) annotation(
+      Placement(transformation(origin = {264, 162}, extent = {{-10, -10}, {10, 10}})));
+    Modelica.Blocks.Sources.RealExpression realExpression1(y = 0.65) annotation(
+      Placement(transformation(origin = {260, 60}, extent = {{-10, -10}, {10, 10}})));
+    Modelica.Blocks.Math.Gain ratedPower(k = 2000) annotation(
+      Placement(transformation(origin = {270, 106}, extent = {{-4, -4}, {4, 4}})));
   equation
     connect(weaDat.weaBus, weaBus) annotation(
       Line(points = {{-180, 192}, {-170, 192}, {-170, 180}, {-154, 180}}, color = {255, 204, 51}, thickness = 0.5, smooth = Smooth.None));
@@ -323,14 +331,32 @@ package TwinRooms
       Line(points = {{104, 82}, {104, 92}}, color = {191, 0, 0}));
     connect(rad219.heatPortRad, heatCapacitor1.port) annotation(
       Line(points = {{108, 82}, {134, 82}, {134, 92}}, color = {191, 0, 0}));
-    connect(floor5Zone_Shading.TRooAir, feedback.u2) annotation(
+    connect(floor5Zone_Shading.TRooAir[1], feedback.u2) annotation(
       Line(points = {{158, 144}, {212, 144}, {212, 86}, {224, 86}, {224, 98}}, color = {0, 0, 127}));
     connect(switch1.y, feedback.u1) annotation(
       Line(points = {{178, -12}, {226, -12}, {226, 84}, {194, 84}, {194, 106}, {216, 106}}, color = {0, 0, 127}));
     connect(feedback.y, tanh.u) annotation(
-      Line(points = {{234, 106}, {246, 106}}, color = {0, 0, 127}));
-    connect(tanh.y, oveHea.u) annotation(
-      Line(points = {{270, 106}, {274, 106}, {274, 108}}, color = {0, 0, 127}));
+      Line(points = {{234, 106}, {236, 106}}, color = {0, 0, 127}));
+    connect(product1.u1, oveHea.y) annotation(
+      Line(points = {{288, 78}, {276, 78}, {276, 92}, {306, 92}, {306, 106}, {297, 106}}, color = {0, 0, 127}));
+    connect(oveHea.y, product.u2) annotation(
+      Line(points = {{297, 106}, {300, 106}, {300, 126}, {272, 126}, {272, 134}, {286, 134}}, color = {0, 0, 127}));
+    connect(radHea219.Q_flow, product.y) annotation(
+      Line(points = {{320, 126}, {314, 126}, {314, 140}, {310, 140}}, color = {0, 0, 127}));
+    connect(product1.y, conHea219.Q_flow) annotation(
+      Line(points = {{312, 72}, {320, 72}, {320, 90}}, color = {0, 0, 127}));
+    connect(realExpression1.y, product1.u2) annotation(
+      Line(points = {{272, 60}, {288, 60}, {288, 66}}, color = {0, 0, 127}));
+    connect(realExpression.y, product.u1) annotation(
+      Line(points = {{276, 162}, {278, 162}, {278, 146}, {286, 146}}, color = {0, 0, 127}));
+    connect(radHea219.port, floor5Zone_Shading.heaPorRad219) annotation(
+      Line(points = {{340, 126}, {100, 126}, {100, 124}}, color = {191, 0, 0}));
+    connect(conHea219.port, floor5Zone_Shading.heaPorAir219) annotation(
+      Line(points = {{340, 90}, {348, 90}, {348, 178}, {236, 178}, {236, 128}, {100, 128}}, color = {191, 0, 0}));
+    connect(tanh.y, ratedPower.u) annotation(
+      Line(points = {{260, 106}, {266, 106}}, color = {0, 0, 127}));
+    connect(oveHea.u, ratedPower.y) annotation(
+      Line(points = {{282, 106}, {274, 106}}, color = {0, 0, 127}));
     annotation(
       Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-380, -200}, {200, 200}})),
       Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-380, -200}, {200, 200}}), graphics = {Text(extent = {{-112, 96}, {-58, 58}}, lineColor = {28, 108, 200}, textString = "VAV system 2.19"), Rectangle(extent = {{-178, 134}, {-64, 50}}, lineColor = {28, 108, 200}), Text(extent = {{-280, 44}, {-226, 6}}, lineColor = {28, 108, 200}, textString = "VAV system 2.20"), Rectangle(extent = {{-338, 86}, {-224, 2}}, lineColor = {28, 108, 200})}),
@@ -634,8 +660,8 @@ The envelope thermal properties meet ASHRAE Standard 90.1-2004.
       Modelica.Blocks.Interfaces.RealOutput qdh "Accumulated energy" annotation(
         Placement(transformation(extent = {{100, -48}, {120, -28}})));
       parameter Modelica.SIunits.PressureDifference dp_nominal = 50000 "Nominal pressure raise, used to normalized the filter if use_inputFilter=true,
-                                                                                                                                                                                                                                                                                                                                                                                                                                            to set default values of constantHead and heads, and
-                                                                                                                                                                                                                                                                                                                                                                                                                                            and for default pressure curve if not specified in record per" annotation(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    to set default values of constantHead and heads, and
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    and for default pressure curve if not specified in record per" annotation(
         Dialog(group = "Nominal condition"));
     equation
       connect(dhHX.port_b2, tDHRe.port_a) annotation(

@@ -12,6 +12,8 @@ model wrapped "Wrapped model"
 	Modelica.Blocks.Interfaces.BooleanInput AHU219_oveFanSup_activate "Activation for AHU supply fan speed control signal";
 	Modelica.Blocks.Interfaces.RealInput waterTRVSplitterManifold2Zone_TSetRadNor_u(unit="K", min=285.15, max=313.15) "Radiator setpoint for zone north";
 	Modelica.Blocks.Interfaces.BooleanInput waterTRVSplitterManifold2Zone_TSetRadNor_activate "Activation for Radiator setpoint for zone north";
+	Modelica.Blocks.Interfaces.RealInput oveHea_u(unit="1", min=0.0, max=1.0) "Radiator valve control signal [0-1]";
+	Modelica.Blocks.Interfaces.BooleanInput oveHea_activate "Activation for Radiator valve control signal [0-1]";
 	Modelica.Blocks.Interfaces.RealInput districtHeating_oveTSupSetHea_u(unit="K", min=283.15, max=333.15) "Supply temperature set point for heating";
 	Modelica.Blocks.Interfaces.BooleanInput districtHeating_oveTSupSetHea_activate "Activation for Supply temperature set point for heating";
 	Modelica.Blocks.Interfaces.RealInput AHU220_oveFanRet_u(unit="1", min=0.0, max=1.0) "AHU return fan speed control signal";
@@ -98,6 +100,7 @@ model wrapped "Wrapped model"
 	Modelica.Blocks.Interfaces.RealOutput AHU219_oveCoo_y(unit="1") = mod.AHU219.oveCoo.y "AHU mechanical cooling control signal (0-1, where 1 --> -5000W)";
 	Modelica.Blocks.Interfaces.RealOutput AHU219_oveFanSup_y(unit="1") = mod.AHU219.oveFanSup.y "AHU supply fan speed control signal";
 	Modelica.Blocks.Interfaces.RealOutput waterTRVSplitterManifold2Zone_TSetRadNor_y(unit="K") = mod.waterTRVSplitterManifold2Zone.TSetRadNor.y "Radiator setpoint for zone north";
+	Modelica.Blocks.Interfaces.RealOutput oveHea_y(unit="1") = mod.oveHea.y "Radiator valve control signal [0-1]";
 	Modelica.Blocks.Interfaces.RealOutput districtHeating_oveTSupSetHea_y(unit="K") = mod.districtHeating.oveTSupSetHea.y "Supply temperature set point for heating";
 	Modelica.Blocks.Interfaces.RealOutput AHU220_oveFanRet_y(unit="1") = mod.AHU220.oveFanRet.y "AHU return fan speed control signal";
 	Modelica.Blocks.Interfaces.RealOutput AHU220_oveFanSupSpe_y(unit="1") = mod.AHU220.oveFanSupSpe.y "AHU supply fan speed control signal";
@@ -115,6 +118,7 @@ model wrapped "Wrapped model"
 		AHU219.oveCoo(uExt(y=AHU219_oveCoo_u),activate(y=AHU219_oveCoo_activate)),
 		AHU219.oveFanSup(uExt(y=AHU219_oveFanSup_u),activate(y=AHU219_oveFanSup_activate)),
 		waterTRVSplitterManifold2Zone.TSetRadNor(uExt(y=waterTRVSplitterManifold2Zone_TSetRadNor_u),activate(y=waterTRVSplitterManifold2Zone_TSetRadNor_activate)),
+		oveHea(uExt(y=oveHea_u),activate(y=oveHea_activate)),
 		districtHeating.oveTSupSetHea(uExt(y=districtHeating_oveTSupSetHea_u),activate(y=districtHeating_oveTSupSetHea_activate)),
 		AHU220.oveFanRet(uExt(y=AHU220_oveFanRet_u),activate(y=AHU220_oveFanRet_activate)),
 		AHU220.oveFanSupSpe(uExt(y=AHU220_oveFanSupSpe_u),activate(y=AHU220_oveFanSupSpe_activate)),
