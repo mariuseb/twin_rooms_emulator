@@ -495,11 +495,11 @@ package TwinRooms
         Placement(transformation(origin = {80, 102}, extent = {{-10, -10}, {10, 10}})));
       Modelica.Blocks.Routing.Multiplex3 multiplex3 annotation(
         Placement(transformation(origin = {178, 106}, extent = {{-10, -10}, {10, 10}})));
-      Buildings.Utilities.IO.SignalExchange.Overwrite oveRadGai219(description = "Overwrite shading position for 2.19", u(max = 1, min = 0, unit = "1")) annotation(
+      Buildings.Utilities.IO.SignalExchange.Overwrite oveRadGai219(description = "Overwrite shading position for 2.19", u(max = 10000, min = 0, unit = "1")) annotation(
         Placement(transformation(origin = {6, 130}, extent = {{126, -10}, {136, 0}})));
-      Buildings.Utilities.IO.SignalExchange.Overwrite oveConGai219(description = "Overwrite shading position for 2.19", u(max = 1, min = 0, unit = "1")) annotation(
+      Buildings.Utilities.IO.SignalExchange.Overwrite oveConGai219(description = "Overwrite shading position for 2.19", u(max = 10000, min = 0, unit = "1")) annotation(
         Placement(transformation(origin = {4, 112}, extent = {{126, -10}, {136, 0}})));
-      Buildings.Utilities.IO.SignalExchange.Overwrite oveConLat219(description = "Overwrite shading position for 2.19", u(max = 1, min = 0, unit = "1")) annotation(
+      Buildings.Utilities.IO.SignalExchange.Overwrite oveConLat219(description = "Overwrite shading position for 2.19", u(max = 10000, min = 0, unit = "1")) annotation(
         Placement(transformation(origin = {6, 94}, extent = {{126, -10}, {136, 0}})));
     equation
       connect(room219.weaBus, weaBus) annotation(
@@ -594,37 +594,37 @@ package TwinRooms
         Icon(coordinateSystem(preserveAspectRatio = true, extent = {{-80, -80}, {380, 180}}), graphics = {Rectangle(extent = {{-80, -80}, {380, 180}}, lineColor = {95, 95, 95}, fillColor = {95, 95, 95}, fillPattern = FillPattern.Solid), Rectangle(extent = {{-60, 160}, {360, -60}}, pattern = LinePattern.None, lineColor = {117, 148, 176}, fillColor = {170, 213, 255}, fillPattern = FillPattern.Sphere), Rectangle(extent = {{0, -80}, {294, -60}}, lineColor = {95, 95, 95}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Rectangle(extent = {{0, -74}, {294, -66}}, lineColor = {95, 95, 95}, fillColor = {170, 213, 255}, fillPattern = FillPattern.Solid), Rectangle(extent = {{8, 8}, {294, 100}}, lineColor = {95, 95, 95}, fillColor = {95, 95, 95}, fillPattern = FillPattern.Solid), Rectangle(extent = {{20, 88}, {280, 22}}, pattern = LinePattern.None, lineColor = {117, 148, 176}, fillColor = {170, 213, 255}, fillPattern = FillPattern.Sphere), Polygon(points = {{-56, 170}, {20, 94}, {12, 88}, {-62, 162}, {-56, 170}}, smooth = Smooth.None, fillColor = {95, 95, 95}, fillPattern = FillPattern.Solid, pattern = LinePattern.None), Polygon(points = {{290, 16}, {366, -60}, {358, -66}, {284, 8}, {290, 16}}, smooth = Smooth.None, fillColor = {95, 95, 95}, fillPattern = FillPattern.Solid, pattern = LinePattern.None), Polygon(points = {{284, 96}, {360, 168}, {368, 162}, {292, 90}, {284, 96}}, smooth = Smooth.None, fillColor = {95, 95, 95}, fillPattern = FillPattern.Solid, pattern = LinePattern.None), Rectangle(extent = {{-80, 120}, {-60, -20}}, lineColor = {95, 95, 95}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Rectangle(extent = {{-74, 120}, {-66, -20}}, lineColor = {95, 95, 95}, fillColor = {170, 213, 255}, fillPattern = FillPattern.Solid), Polygon(points = {{-64, -56}, {18, 22}, {26, 16}, {-58, -64}, {-64, -56}}, smooth = Smooth.None, fillColor = {95, 95, 95}, fillPattern = FillPattern.Solid, pattern = LinePattern.None), Rectangle(extent = {{360, 122}, {380, -18}}, lineColor = {95, 95, 95}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Rectangle(extent = {{366, 122}, {374, -18}}, lineColor = {95, 95, 95}, fillColor = {170, 213, 255}, fillPattern = FillPattern.Solid), Rectangle(extent = {{2, 170}, {296, 178}}, lineColor = {95, 95, 95}, fillColor = {170, 213, 255}, fillPattern = FillPattern.Solid), Rectangle(extent = {{2, 160}, {296, 180}}, lineColor = {95, 95, 95}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Rectangle(extent = {{2, 166}, {296, 174}}, lineColor = {95, 95, 95}, fillColor = {170, 213, 255}, fillPattern = FillPattern.Solid)}),
         Documentation(revisions = "<html>
     <ul>
-<li>
-April 30, 2021, by Michael Wetter:<br/>
-Reformulated replaceable class and introduced floor areas in base class
-to avoid access of components that are not in the constraining type.<br/>
-This is for <a href=\"https://github.com/lbl-srg/modelica-buildings/issues/2471\">issue #2471</a>.
-</li>
-<li>
-January 23, 2020, by Milica Grahovac:<br/>
-Updated core zone geometry parameters related to
-room heat and mass balance.
-</li>
-<li>
-November 15, 2019, by Milica Grahovac:<br/>
-Added extend from a partial floor model.
-</li>
-<li>
-May 1, 2013, by Michael Wetter:<br/>
-Declared the parameter record to be a parameter, as declaring its elements
-to be parameters does not imply that the whole record has the variability of a parameter.
-</li>
-</ul>
-</html>", info = "<html>
-<p>
-Model of a floor that consists
-of five thermal zones that are representative of one floor of the
-new construction medium office building for Chicago, IL,
-as described in the set of DOE Commercial Building Benchmarks.
-There are four perimeter zones and one core zone.
-The envelope thermal properties meet ASHRAE Standard 90.1-2004.
-</p>
-</html>"),
+    <li>
+    April 30, 2021, by Michael Wetter:<br/>
+    Reformulated replaceable class and introduced floor areas in base class
+    to avoid access of components that are not in the constraining type.<br/>
+    This is for <a href=\"https://github.com/lbl-srg/modelica-buildings/issues/2471\">issue #2471</a>.
+    </li>
+    <li>
+    January 23, 2020, by Milica Grahovac:<br/>
+    Updated core zone geometry parameters related to
+    room heat and mass balance.
+    </li>
+    <li>
+    November 15, 2019, by Milica Grahovac:<br/>
+    Added extend from a partial floor model.
+    </li>
+    <li>
+    May 1, 2013, by Michael Wetter:<br/>
+    Declared the parameter record to be a parameter, as declaring its elements
+    to be parameters does not imply that the whole record has the variability of a parameter.
+    </li>
+    </ul>
+    </html>", info = "<html>
+    <p>
+    Model of a floor that consists
+    of five thermal zones that are representative of one floor of the
+    new construction medium office building for Chicago, IL,
+    as described in the set of DOE Commercial Building Benchmarks.
+    There are four perimeter zones and one core zone.
+    The envelope thermal properties meet ASHRAE Standard 90.1-2004.
+    </p>
+    </html>"),
         experiment(StartTime = 864000, StopTime = 1728000, __Dymola_Algorithm = "Dassl"));
     end Floor5Zone_Shading;
 
@@ -684,8 +684,8 @@ The envelope thermal properties meet ASHRAE Standard 90.1-2004.
       Modelica.Blocks.Interfaces.RealOutput qdh "Accumulated energy" annotation(
         Placement(transformation(extent = {{100, -48}, {120, -28}})));
       parameter Modelica.SIunits.PressureDifference dp_nominal = 50000 "Nominal pressure raise, used to normalized the filter if use_inputFilter=true,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                to set default values of constantHead and heads, and
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                and for default pressure curve if not specified in record per" annotation(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  to set default values of constantHead and heads, and
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  and for default pressure curve if not specified in record per" annotation(
         Dialog(group = "Nominal condition"));
     equation
       connect(dhHX.port_b2, tDHRe.port_a) annotation(
