@@ -14,7 +14,7 @@ model wrapped "Wrapped model"
 	Modelica.Blocks.Interfaces.BooleanInput waterTRVSplitterManifold2Zone_val220_oveValRad_activate "Activation for Radiator valve control signal [0-1]";
 	Modelica.Blocks.Interfaces.RealInput waterTRVSplitterManifold2Zone_TSetRadNor_u(unit="K", min=285.15, max=313.15) "Radiator setpoint for zone north";
 	Modelica.Blocks.Interfaces.BooleanInput waterTRVSplitterManifold2Zone_TSetRadNor_activate "Activation for Radiator setpoint for zone north";
-	Modelica.Blocks.Interfaces.RealInput oveHea_u(unit="1", min=0.0, max=1.0) "Radiator valve control signal [0-1]";
+	Modelica.Blocks.Interfaces.RealInput oveHea_u(unit="1", min=0.0, max=10000.0) "Radiator valve control signal [0-1]";
 	Modelica.Blocks.Interfaces.BooleanInput oveHea_activate "Activation for Radiator valve control signal [0-1]";
 	Modelica.Blocks.Interfaces.RealInput districtHeating_oveTSupSetHea_u(unit="K", min=283.15, max=333.15) "Supply temperature set point for heating";
 	Modelica.Blocks.Interfaces.BooleanInput districtHeating_oveTSupSetHea_activate "Activation for Supply temperature set point for heating";
