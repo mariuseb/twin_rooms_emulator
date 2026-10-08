@@ -4,12 +4,14 @@ model wrapped "Wrapped model"
 	Modelica.Blocks.Interfaces.BooleanInput AHU219_oveFanSupSpe_activate "Activation for AHU supply fan speed control signal";
 	Modelica.Blocks.Interfaces.RealInput waterTRVSplitterManifold2Zone_val219_oveValRad_u(unit="1", min=0.0, max=1.0) "Radiator valve control signal [0-1]";
 	Modelica.Blocks.Interfaces.BooleanInput waterTRVSplitterManifold2Zone_val219_oveValRad_activate "Activation for Radiator valve control signal [0-1]";
-	Modelica.Blocks.Interfaces.RealInput oveTsupSet219_u(unit="K", min=250.0, max=310.0) "AHU supply temperature setpoint signal";
-	Modelica.Blocks.Interfaces.BooleanInput oveTsupSet219_activate "Activation for AHU supply temperature setpoint signal";
+	Modelica.Blocks.Interfaces.RealInput floor5Zone_Shading_oveConLat219_u(unit="1", min=0.0, max=1.0) "Overwrite shading position for 2.19";
+	Modelica.Blocks.Interfaces.BooleanInput floor5Zone_Shading_oveConLat219_activate "Activation for Overwrite shading position for 2.19";
 	Modelica.Blocks.Interfaces.RealInput AHU219_oveCoo_u(unit="1", min=0.0, max=1.0) "AHU mechanical cooling control signal (0-1, where 1 --> -5000W)";
 	Modelica.Blocks.Interfaces.BooleanInput AHU219_oveCoo_activate "Activation for AHU mechanical cooling control signal (0-1, where 1 --> -5000W)";
 	Modelica.Blocks.Interfaces.RealInput AHU219_oveFanSup_u(unit="1", min=0.0, max=1.0) "AHU supply fan speed control signal";
 	Modelica.Blocks.Interfaces.BooleanInput AHU219_oveFanSup_activate "Activation for AHU supply fan speed control signal";
+	Modelica.Blocks.Interfaces.RealInput waterTRVSplitterManifold2Zone_val220_oveValRad_u(unit="1", min=0.0, max=1.0) "Radiator valve control signal [0-1]";
+	Modelica.Blocks.Interfaces.BooleanInput waterTRVSplitterManifold2Zone_val220_oveValRad_activate "Activation for Radiator valve control signal [0-1]";
 	Modelica.Blocks.Interfaces.RealInput waterTRVSplitterManifold2Zone_TSetRadNor_u(unit="K", min=285.15, max=313.15) "Radiator setpoint for zone north";
 	Modelica.Blocks.Interfaces.BooleanInput waterTRVSplitterManifold2Zone_TSetRadNor_activate "Activation for Radiator setpoint for zone north";
 	Modelica.Blocks.Interfaces.RealInput oveHea_u(unit="1", min=0.0, max=1.0) "Radiator valve control signal [0-1]";
@@ -20,6 +22,8 @@ model wrapped "Wrapped model"
 	Modelica.Blocks.Interfaces.BooleanInput AHU220_oveFanRet_activate "Activation for AHU return fan speed control signal";
 	Modelica.Blocks.Interfaces.RealInput AHU220_oveFanSupSpe_u(unit="1", min=0.0, max=1.0) "AHU supply fan speed control signal";
 	Modelica.Blocks.Interfaces.BooleanInput AHU220_oveFanSupSpe_activate "Activation for AHU supply fan speed control signal";
+	Modelica.Blocks.Interfaces.RealInput floor5Zone_Shading_oveRadGai219_u(unit="1", min=0.0, max=1.0) "Overwrite shading position for 2.19";
+	Modelica.Blocks.Interfaces.BooleanInput floor5Zone_Shading_oveRadGai219_activate "Activation for Overwrite shading position for 2.19";
 	Modelica.Blocks.Interfaces.RealInput floor5Zone_Shading_oveSha220_u(unit="1", min=0.0, max=1.0) "Overwrite shading position for 2.20";
 	Modelica.Blocks.Interfaces.BooleanInput floor5Zone_Shading_oveSha220_activate "Activation for Overwrite shading position for 2.20";
 	Modelica.Blocks.Interfaces.RealInput floor5Zone_Shading_oveSha219_u(unit="1", min=0.0, max=1.0) "Overwrite shading position for 2.19";
@@ -28,10 +32,12 @@ model wrapped "Wrapped model"
 	Modelica.Blocks.Interfaces.BooleanInput AHU220_oveFanSup_activate "Activation for AHU supply fan speed control signal";
 	Modelica.Blocks.Interfaces.RealInput waterTRVSplitterManifold2Zone_TSetRadWes_u(unit="K", min=285.15, max=313.15) "Radiator setpoint for zone west";
 	Modelica.Blocks.Interfaces.BooleanInput waterTRVSplitterManifold2Zone_TSetRadWes_activate "Activation for Radiator setpoint for zone west";
+	Modelica.Blocks.Interfaces.RealInput floor5Zone_Shading_oveConGai219_u(unit="1", min=0.0, max=1.0) "Overwrite shading position for 2.19";
+	Modelica.Blocks.Interfaces.BooleanInput floor5Zone_Shading_oveConGai219_activate "Activation for Overwrite shading position for 2.19";
 	Modelica.Blocks.Interfaces.RealInput AHU219_oveFanRet_u(unit="1", min=0.0, max=1.0) "AHU return fan speed control signal";
 	Modelica.Blocks.Interfaces.BooleanInput AHU219_oveFanRet_activate "Activation for AHU return fan speed control signal";
-	Modelica.Blocks.Interfaces.RealInput waterTRVSplitterManifold2Zone_val220_oveValRad_u(unit="1", min=0.0, max=1.0) "Radiator valve control signal [0-1]";
-	Modelica.Blocks.Interfaces.BooleanInput waterTRVSplitterManifold2Zone_val220_oveValRad_activate "Activation for Radiator valve control signal [0-1]";
+	Modelica.Blocks.Interfaces.RealInput oveTsupSet219_u(unit="K", min=250.0, max=310.0) "AHU supply temperature setpoint signal";
+	Modelica.Blocks.Interfaces.BooleanInput oveTsupSet219_activate "Activation for AHU supply temperature setpoint signal";
 	// Out read
 	Modelica.Blocks.Interfaces.RealOutput reaRadHeaPow219_y(unit="W") = mod.reaRadHeaPow219.y "Radiator heating power";
 	Modelica.Blocks.Interfaces.RealOutput reaFanPow220_y(unit="W") = mod.reaFanPow220.y "AHU Fan power 2.20";
@@ -96,36 +102,42 @@ model wrapped "Wrapped model"
 	Modelica.Blocks.Interfaces.RealOutput reaRadFlow219_y(unit="W") = mod.reaRadFlow219.y "Radiator mass flow 2.19";
 	Modelica.Blocks.Interfaces.RealOutput AHU219_oveFanSupSpe_y(unit="1") = mod.AHU219.oveFanSupSpe.y "AHU supply fan speed control signal";
 	Modelica.Blocks.Interfaces.RealOutput waterTRVSplitterManifold2Zone_val219_oveValRad_y(unit="1") = mod.waterTRVSplitterManifold2Zone.val219.oveValRad.y "Radiator valve control signal [0-1]";
-	Modelica.Blocks.Interfaces.RealOutput oveTsupSet219_y(unit="K") = mod.oveTsupSet219.y "AHU supply temperature setpoint signal";
+	Modelica.Blocks.Interfaces.RealOutput floor5Zone_Shading_oveConLat219_y(unit="1") = mod.floor5Zone_Shading.oveConLat219.y "Overwrite shading position for 2.19";
 	Modelica.Blocks.Interfaces.RealOutput AHU219_oveCoo_y(unit="1") = mod.AHU219.oveCoo.y "AHU mechanical cooling control signal (0-1, where 1 --> -5000W)";
 	Modelica.Blocks.Interfaces.RealOutput AHU219_oveFanSup_y(unit="1") = mod.AHU219.oveFanSup.y "AHU supply fan speed control signal";
+	Modelica.Blocks.Interfaces.RealOutput waterTRVSplitterManifold2Zone_val220_oveValRad_y(unit="1") = mod.waterTRVSplitterManifold2Zone.val220.oveValRad.y "Radiator valve control signal [0-1]";
 	Modelica.Blocks.Interfaces.RealOutput waterTRVSplitterManifold2Zone_TSetRadNor_y(unit="K") = mod.waterTRVSplitterManifold2Zone.TSetRadNor.y "Radiator setpoint for zone north";
 	Modelica.Blocks.Interfaces.RealOutput oveHea_y(unit="1") = mod.oveHea.y "Radiator valve control signal [0-1]";
 	Modelica.Blocks.Interfaces.RealOutput districtHeating_oveTSupSetHea_y(unit="K") = mod.districtHeating.oveTSupSetHea.y "Supply temperature set point for heating";
 	Modelica.Blocks.Interfaces.RealOutput AHU220_oveFanRet_y(unit="1") = mod.AHU220.oveFanRet.y "AHU return fan speed control signal";
 	Modelica.Blocks.Interfaces.RealOutput AHU220_oveFanSupSpe_y(unit="1") = mod.AHU220.oveFanSupSpe.y "AHU supply fan speed control signal";
+	Modelica.Blocks.Interfaces.RealOutput floor5Zone_Shading_oveRadGai219_y(unit="1") = mod.floor5Zone_Shading.oveRadGai219.y "Overwrite shading position for 2.19";
 	Modelica.Blocks.Interfaces.RealOutput floor5Zone_Shading_oveSha220_y(unit="1") = mod.floor5Zone_Shading.oveSha220.y "Overwrite shading position for 2.20";
 	Modelica.Blocks.Interfaces.RealOutput floor5Zone_Shading_oveSha219_y(unit="1") = mod.floor5Zone_Shading.oveSha219.y "Overwrite shading position for 2.19";
 	Modelica.Blocks.Interfaces.RealOutput AHU220_oveFanSup_y(unit="1") = mod.AHU220.oveFanSup.y "AHU supply fan speed control signal";
 	Modelica.Blocks.Interfaces.RealOutput waterTRVSplitterManifold2Zone_TSetRadWes_y(unit="K") = mod.waterTRVSplitterManifold2Zone.TSetRadWes.y "Radiator setpoint for zone west";
+	Modelica.Blocks.Interfaces.RealOutput floor5Zone_Shading_oveConGai219_y(unit="1") = mod.floor5Zone_Shading.oveConGai219.y "Overwrite shading position for 2.19";
 	Modelica.Blocks.Interfaces.RealOutput AHU219_oveFanRet_y(unit="1") = mod.AHU219.oveFanRet.y "AHU return fan speed control signal";
-	Modelica.Blocks.Interfaces.RealOutput waterTRVSplitterManifold2Zone_val220_oveValRad_y(unit="1") = mod.waterTRVSplitterManifold2Zone.val220.oveValRad.y "Radiator valve control signal [0-1]";
+	Modelica.Blocks.Interfaces.RealOutput oveTsupSet219_y(unit="K") = mod.oveTsupSet219.y "AHU supply temperature setpoint signal";
 	// Original model
 	TwinRooms.TwinRooms.TestCase mod(
 		AHU219.oveFanSupSpe(uExt(y=AHU219_oveFanSupSpe_u),activate(y=AHU219_oveFanSupSpe_activate)),
 		waterTRVSplitterManifold2Zone.val219.oveValRad(uExt(y=waterTRVSplitterManifold2Zone_val219_oveValRad_u),activate(y=waterTRVSplitterManifold2Zone_val219_oveValRad_activate)),
-		oveTsupSet219(uExt(y=oveTsupSet219_u),activate(y=oveTsupSet219_activate)),
+		floor5Zone_Shading.oveConLat219(uExt(y=floor5Zone_Shading_oveConLat219_u),activate(y=floor5Zone_Shading_oveConLat219_activate)),
 		AHU219.oveCoo(uExt(y=AHU219_oveCoo_u),activate(y=AHU219_oveCoo_activate)),
 		AHU219.oveFanSup(uExt(y=AHU219_oveFanSup_u),activate(y=AHU219_oveFanSup_activate)),
+		waterTRVSplitterManifold2Zone.val220.oveValRad(uExt(y=waterTRVSplitterManifold2Zone_val220_oveValRad_u),activate(y=waterTRVSplitterManifold2Zone_val220_oveValRad_activate)),
 		waterTRVSplitterManifold2Zone.TSetRadNor(uExt(y=waterTRVSplitterManifold2Zone_TSetRadNor_u),activate(y=waterTRVSplitterManifold2Zone_TSetRadNor_activate)),
 		oveHea(uExt(y=oveHea_u),activate(y=oveHea_activate)),
 		districtHeating.oveTSupSetHea(uExt(y=districtHeating_oveTSupSetHea_u),activate(y=districtHeating_oveTSupSetHea_activate)),
 		AHU220.oveFanRet(uExt(y=AHU220_oveFanRet_u),activate(y=AHU220_oveFanRet_activate)),
 		AHU220.oveFanSupSpe(uExt(y=AHU220_oveFanSupSpe_u),activate(y=AHU220_oveFanSupSpe_activate)),
+		floor5Zone_Shading.oveRadGai219(uExt(y=floor5Zone_Shading_oveRadGai219_u),activate(y=floor5Zone_Shading_oveRadGai219_activate)),
 		floor5Zone_Shading.oveSha220(uExt(y=floor5Zone_Shading_oveSha220_u),activate(y=floor5Zone_Shading_oveSha220_activate)),
 		floor5Zone_Shading.oveSha219(uExt(y=floor5Zone_Shading_oveSha219_u),activate(y=floor5Zone_Shading_oveSha219_activate)),
 		AHU220.oveFanSup(uExt(y=AHU220_oveFanSup_u),activate(y=AHU220_oveFanSup_activate)),
 		waterTRVSplitterManifold2Zone.TSetRadWes(uExt(y=waterTRVSplitterManifold2Zone_TSetRadWes_u),activate(y=waterTRVSplitterManifold2Zone_TSetRadWes_activate)),
+		floor5Zone_Shading.oveConGai219(uExt(y=floor5Zone_Shading_oveConGai219_u),activate(y=floor5Zone_Shading_oveConGai219_activate)),
 		AHU219.oveFanRet(uExt(y=AHU219_oveFanRet_u),activate(y=AHU219_oveFanRet_activate)),
-		waterTRVSplitterManifold2Zone.val220.oveValRad(uExt(y=waterTRVSplitterManifold2Zone_val220_oveValRad_u),activate(y=waterTRVSplitterManifold2Zone_val220_oveValRad_activate))) "Original model with overwrites";
+		oveTsupSet219(uExt(y=oveTsupSet219_u),activate(y=oveTsupSet219_activate))) "Original model with overwrites";
 end wrapped;
