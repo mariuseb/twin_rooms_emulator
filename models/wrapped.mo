@@ -1,28 +1,28 @@
 model wrapped "Wrapped model"
 	// Input overwrite
-	Modelica.Blocks.Interfaces.RealInput waterTRVSplitterManifold2Zone_val219_oveValRad_u(unit="1", min=0.0, max=1.0) "Radiator valve control signal [0-1]";
-	Modelica.Blocks.Interfaces.BooleanInput waterTRVSplitterManifold2Zone_val219_oveValRad_activate "Activation for Radiator valve control signal [0-1]";
+	Modelica.Blocks.Interfaces.RealInput floor5Zone_Shading_oveSha220_u(unit="1", min=0.0, max=1.0) "Overwrite shading position for 2.20";
+	Modelica.Blocks.Interfaces.BooleanInput floor5Zone_Shading_oveSha220_activate "Activation for Overwrite shading position for 2.20";
 	Modelica.Blocks.Interfaces.RealInput floor5Zone_Shading_oveConLat219_u(unit="1", min=0.0, max=10000.0) "Overwrite shading position for 2.19";
 	Modelica.Blocks.Interfaces.BooleanInput floor5Zone_Shading_oveConLat219_activate "Activation for Overwrite shading position for 2.19";
+	Modelica.Blocks.Interfaces.RealInput waterTRVSplitterManifold2Zone_val219_oveValRad_u(unit="1", min=0.0, max=1.0) "Radiator valve control signal [0-1]";
+	Modelica.Blocks.Interfaces.BooleanInput waterTRVSplitterManifold2Zone_val219_oveValRad_activate "Activation for Radiator valve control signal [0-1]";
 	Modelica.Blocks.Interfaces.RealInput waterTRVSplitterManifold2Zone_TSetRadNor_u(unit="K", min=285.15, max=313.15) "Radiator setpoint for zone north";
 	Modelica.Blocks.Interfaces.BooleanInput waterTRVSplitterManifold2Zone_TSetRadNor_activate "Activation for Radiator setpoint for zone north";
 	Modelica.Blocks.Interfaces.RealInput oveHea_u(unit="1", min=0.0, max=10000.0) "Radiator valve control signal [0-1]";
 	Modelica.Blocks.Interfaces.BooleanInput oveHea_activate "Activation for Radiator valve control signal [0-1]";
 	Modelica.Blocks.Interfaces.RealInput districtHeating_oveTSupSetHea_u(unit="K", min=283.15, max=333.15) "Supply temperature set point for heating";
 	Modelica.Blocks.Interfaces.BooleanInput districtHeating_oveTSupSetHea_activate "Activation for Supply temperature set point for heating";
-	Modelica.Blocks.Interfaces.RealInput floor5Zone_Shading_oveCorrTemp1_u(unit="1", min=0.0, max=1.0) "Overwrite shading position for 2.19";
-	Modelica.Blocks.Interfaces.BooleanInput floor5Zone_Shading_oveCorrTemp1_activate "Activation for Overwrite shading position for 2.19";
 	Modelica.Blocks.Interfaces.RealInput floor5Zone_Shading_oveRadGai219_u(unit="1", min=0.0, max=10000.0) "Overwrite shading position for 2.19";
 	Modelica.Blocks.Interfaces.BooleanInput floor5Zone_Shading_oveRadGai219_activate "Activation for Overwrite shading position for 2.19";
-	Modelica.Blocks.Interfaces.RealInput floor5Zone_Shading_oveSha220_u(unit="1", min=0.0, max=1.0) "Overwrite shading position for 2.20";
-	Modelica.Blocks.Interfaces.BooleanInput floor5Zone_Shading_oveSha220_activate "Activation for Overwrite shading position for 2.20";
+	Modelica.Blocks.Interfaces.RealInput floor5Zone_Shading_oveGCorr_u(unit="1", min=0.0, max=1000.0) "Overwrite shading position for 2.19";
+	Modelica.Blocks.Interfaces.BooleanInput floor5Zone_Shading_oveGCorr_activate "Activation for Overwrite shading position for 2.19";
 	Modelica.Blocks.Interfaces.RealInput floor5Zone_Shading_oveSha219_u(unit="1", min=0.0, max=1.0) "Overwrite shading position for 2.19";
 	Modelica.Blocks.Interfaces.BooleanInput floor5Zone_Shading_oveSha219_activate "Activation for Overwrite shading position for 2.19";
 	Modelica.Blocks.Interfaces.RealInput waterTRVSplitterManifold2Zone_TSetRadWes_u(unit="K", min=285.15, max=313.15) "Radiator setpoint for zone west";
 	Modelica.Blocks.Interfaces.BooleanInput waterTRVSplitterManifold2Zone_TSetRadWes_activate "Activation for Radiator setpoint for zone west";
 	Modelica.Blocks.Interfaces.RealInput floor5Zone_Shading_oveConGai219_u(unit="1", min=0.0, max=10000.0) "Overwrite shading position for 2.19";
 	Modelica.Blocks.Interfaces.BooleanInput floor5Zone_Shading_oveConGai219_activate "Activation for Overwrite shading position for 2.19";
-	Modelica.Blocks.Interfaces.RealInput floor5Zone_Shading_oveCorrTemp_u(unit="1", min=0.0, max=1.0) "Overwrite shading position for 2.19";
+	Modelica.Blocks.Interfaces.RealInput floor5Zone_Shading_oveCorrTemp_u(unit="K", min=270.0, max=320.0) "Overwrite shading position for 2.19";
 	Modelica.Blocks.Interfaces.BooleanInput floor5Zone_Shading_oveCorrTemp_activate "Activation for Overwrite shading position for 2.19";
 	Modelica.Blocks.Interfaces.RealInput waterTRVSplitterManifold2Zone_val220_oveValRad_u(unit="1", min=0.0, max=1.0) "Radiator valve control signal [0-1]";
 	Modelica.Blocks.Interfaces.BooleanInput waterTRVSplitterManifold2Zone_val220_oveValRad_activate "Activation for Radiator valve control signal [0-1]";
@@ -68,29 +68,29 @@ model wrapped "Wrapped model"
 	Modelica.Blocks.Interfaces.RealOutput weatherStation_reaWeaWinSpe_y(unit="m/s") = mod.weatherStation.reaWeaWinSpe.y "Wind speed measurement";
 	Modelica.Blocks.Interfaces.RealOutput weatherStation_reaWeaRelHum_y(unit="1") = mod.weatherStation.reaWeaRelHum.y "Outside relative humidity measurement";
 	Modelica.Blocks.Interfaces.RealOutput reaRadFlow219_y(unit="W") = mod.reaRadFlow219.y "Radiator mass flow 2.19";
-	Modelica.Blocks.Interfaces.RealOutput waterTRVSplitterManifold2Zone_val219_oveValRad_y(unit="1") = mod.waterTRVSplitterManifold2Zone.val219.oveValRad.y "Radiator valve control signal [0-1]";
+	Modelica.Blocks.Interfaces.RealOutput floor5Zone_Shading_oveSha220_y(unit="1") = mod.floor5Zone_Shading.oveSha220.y "Overwrite shading position for 2.20";
 	Modelica.Blocks.Interfaces.RealOutput floor5Zone_Shading_oveConLat219_y(unit="1") = mod.floor5Zone_Shading.oveConLat219.y "Overwrite shading position for 2.19";
+	Modelica.Blocks.Interfaces.RealOutput waterTRVSplitterManifold2Zone_val219_oveValRad_y(unit="1") = mod.waterTRVSplitterManifold2Zone.val219.oveValRad.y "Radiator valve control signal [0-1]";
 	Modelica.Blocks.Interfaces.RealOutput waterTRVSplitterManifold2Zone_TSetRadNor_y(unit="K") = mod.waterTRVSplitterManifold2Zone.TSetRadNor.y "Radiator setpoint for zone north";
 	Modelica.Blocks.Interfaces.RealOutput oveHea_y(unit="1") = mod.oveHea.y "Radiator valve control signal [0-1]";
 	Modelica.Blocks.Interfaces.RealOutput districtHeating_oveTSupSetHea_y(unit="K") = mod.districtHeating.oveTSupSetHea.y "Supply temperature set point for heating";
-	Modelica.Blocks.Interfaces.RealOutput floor5Zone_Shading_oveCorrTemp1_y(unit="1") = mod.floor5Zone_Shading.oveCorrTemp1.y "Overwrite shading position for 2.19";
 	Modelica.Blocks.Interfaces.RealOutput floor5Zone_Shading_oveRadGai219_y(unit="1") = mod.floor5Zone_Shading.oveRadGai219.y "Overwrite shading position for 2.19";
-	Modelica.Blocks.Interfaces.RealOutput floor5Zone_Shading_oveSha220_y(unit="1") = mod.floor5Zone_Shading.oveSha220.y "Overwrite shading position for 2.20";
+	Modelica.Blocks.Interfaces.RealOutput floor5Zone_Shading_oveGCorr_y(unit="1") = mod.floor5Zone_Shading.oveGCorr.y "Overwrite shading position for 2.19";
 	Modelica.Blocks.Interfaces.RealOutput floor5Zone_Shading_oveSha219_y(unit="1") = mod.floor5Zone_Shading.oveSha219.y "Overwrite shading position for 2.19";
 	Modelica.Blocks.Interfaces.RealOutput waterTRVSplitterManifold2Zone_TSetRadWes_y(unit="K") = mod.waterTRVSplitterManifold2Zone.TSetRadWes.y "Radiator setpoint for zone west";
 	Modelica.Blocks.Interfaces.RealOutput floor5Zone_Shading_oveConGai219_y(unit="1") = mod.floor5Zone_Shading.oveConGai219.y "Overwrite shading position for 2.19";
-	Modelica.Blocks.Interfaces.RealOutput floor5Zone_Shading_oveCorrTemp_y(unit="1") = mod.floor5Zone_Shading.oveCorrTemp.y "Overwrite shading position for 2.19";
+	Modelica.Blocks.Interfaces.RealOutput floor5Zone_Shading_oveCorrTemp_y(unit="K") = mod.floor5Zone_Shading.oveCorrTemp.y "Overwrite shading position for 2.19";
 	Modelica.Blocks.Interfaces.RealOutput waterTRVSplitterManifold2Zone_val220_oveValRad_y(unit="1") = mod.waterTRVSplitterManifold2Zone.val220.oveValRad.y "Radiator valve control signal [0-1]";
 	// Original model
 	TwinRooms.TwinRooms.TestCase mod(
-		waterTRVSplitterManifold2Zone.val219.oveValRad(uExt(y=waterTRVSplitterManifold2Zone_val219_oveValRad_u),activate(y=waterTRVSplitterManifold2Zone_val219_oveValRad_activate)),
+		floor5Zone_Shading.oveSha220(uExt(y=floor5Zone_Shading_oveSha220_u),activate(y=floor5Zone_Shading_oveSha220_activate)),
 		floor5Zone_Shading.oveConLat219(uExt(y=floor5Zone_Shading_oveConLat219_u),activate(y=floor5Zone_Shading_oveConLat219_activate)),
+		waterTRVSplitterManifold2Zone.val219.oveValRad(uExt(y=waterTRVSplitterManifold2Zone_val219_oveValRad_u),activate(y=waterTRVSplitterManifold2Zone_val219_oveValRad_activate)),
 		waterTRVSplitterManifold2Zone.TSetRadNor(uExt(y=waterTRVSplitterManifold2Zone_TSetRadNor_u),activate(y=waterTRVSplitterManifold2Zone_TSetRadNor_activate)),
 		oveHea(uExt(y=oveHea_u),activate(y=oveHea_activate)),
 		districtHeating.oveTSupSetHea(uExt(y=districtHeating_oveTSupSetHea_u),activate(y=districtHeating_oveTSupSetHea_activate)),
-		floor5Zone_Shading.oveCorrTemp1(uExt(y=floor5Zone_Shading_oveCorrTemp1_u),activate(y=floor5Zone_Shading_oveCorrTemp1_activate)),
 		floor5Zone_Shading.oveRadGai219(uExt(y=floor5Zone_Shading_oveRadGai219_u),activate(y=floor5Zone_Shading_oveRadGai219_activate)),
-		floor5Zone_Shading.oveSha220(uExt(y=floor5Zone_Shading_oveSha220_u),activate(y=floor5Zone_Shading_oveSha220_activate)),
+		floor5Zone_Shading.oveGCorr(uExt(y=floor5Zone_Shading_oveGCorr_u),activate(y=floor5Zone_Shading_oveGCorr_activate)),
 		floor5Zone_Shading.oveSha219(uExt(y=floor5Zone_Shading_oveSha219_u),activate(y=floor5Zone_Shading_oveSha219_activate)),
 		waterTRVSplitterManifold2Zone.TSetRadWes(uExt(y=waterTRVSplitterManifold2Zone_TSetRadWes_u),activate(y=waterTRVSplitterManifold2Zone_TSetRadWes_activate)),
 		floor5Zone_Shading.oveConGai219(uExt(y=floor5Zone_Shading_oveConGai219_u),activate(y=floor5Zone_Shading_oveConGai219_activate)),
