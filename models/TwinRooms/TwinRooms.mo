@@ -100,12 +100,12 @@ package TwinRooms
       Placement(transformation(origin = {260, 60}, extent = {{-10, -10}, {10, 10}})));
     Modelica.Blocks.Math.Gain ratedPower(k = 2000) annotation(
       Placement(transformation(origin = {270, 106}, extent = {{-4, -4}, {4, 4}})));
-    Components.AHUSimple aHUSimple annotation(
-      Placement(transformation(origin = {-116, 98}, extent = {{-16, -10}, {16, 10}})));
     Components.AHUSimple aHUSimple1 annotation(
       Placement(transformation(origin = {-268, 52}, extent = {{-16, -10}, {16, 10}})));
     Modelica.Blocks.Continuous.FirstOrder firstOrder(T = 1800, initType = Modelica.Blocks.Types.Init.InitialOutput, y_start = 0, y(fixed = true)) annotation(
       Placement(transformation(origin = {308, 106}, extent = {{-8, -8}, {8, 8}})));
+    Components.AHUSimplePrescribed aHUSimplePrescribed annotation(
+      Placement(transformation(origin = {-134, 96}, extent = {{-16, -10}, {16, 10}})));
   equation
     connect(weaDat.weaBus, weaBus) annotation(
       Line(points = {{-180, 192}, {-170, 192}, {-170, 180}, {-154, 180}}, color = {255, 204, 51}, thickness = 0.5, smooth = Smooth.None));
@@ -212,10 +212,6 @@ package TwinRooms
       Line(points = {{260, 106}, {266, 106}}, color = {0, 0, 127}));
     connect(oveHea.u, ratedPower.y) annotation(
       Line(points = {{277, 106}, {274, 106}}, color = {0, 0, 127}));
-    connect(aHUSimple.port_a1, floor5Zone_Shading.ports219[1]) annotation(
-      Line(points = {{-100, 102}, {92, 102}, {92, 126}}, color = {0, 127, 255}));
-    connect(aHUSimple.port_b1, floor5Zone_Shading.ports219[2]) annotation(
-      Line(points = {{-100, 94}, {76, 94}, {76, 126}, {92, 126}}, color = {0, 127, 255}));
     connect(pipSupRad.port_a, districtHeating.port_b) annotation(
       Line(points = {{14, -44}, {6, -44}, {6, -122}, {-172, -122}}, color = {0, 127, 255}));
     connect(senTemRadRet.port_b, districtHeating.port_a) annotation(
@@ -230,6 +226,10 @@ package TwinRooms
       Line(points = {{316, 106}, {274, 106}, {274, 78}, {288, 78}}, color = {0, 0, 127}));
     connect(firstOrder.y, product.u2) annotation(
       Line(points = {{316, 106}, {324, 106}, {324, 122}, {262, 122}, {262, 134}, {286, 134}}, color = {0, 0, 127}));
+    connect(aHUSimplePrescribed.port_a1, floor5Zone_Shading.ports219[1]) annotation(
+      Line(points = {{-118, 100}, {92, 100}, {92, 126}}, color = {0, 127, 255}));
+    connect(aHUSimplePrescribed.port_b1, floor5Zone_Shading.ports219[2]) annotation(
+      Line(points = {{-118, 92}, {92, 92}, {92, 126}}, color = {0, 127, 255}));
     annotation(
       Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-380, -200}, {200, 200}})),
       Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-380, -200}, {200, 200}}), graphics = {Text(textColor = {28, 108, 200}, extent = {{-112, 96}, {-58, 58}}, textString = "VAV system 2.19"), Rectangle(lineColor = {28, 108, 200}, extent = {{-178, 134}, {-64, 50}}), Text(textColor = {28, 108, 200}, extent = {{-280, 44}, {-226, 6}}, textString = "VAV system 2.20"), Rectangle(lineColor = {28, 108, 200}, extent = {{-338, 86}, {-224, 2}})}),
@@ -587,8 +587,8 @@ package TwinRooms
       Modelica.Blocks.Interfaces.RealOutput qdh "Accumulated energy" annotation(
         Placement(transformation(extent = {{100, -48}, {120, -28}})));
       parameter Modelica.SIunits.PressureDifference dp_nominal = 50000 "Nominal pressure raise, used to normalized the filter if use_inputFilter=true,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          to set default values of constantHead and heads, and
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          and for default pressure curve if not specified in record per" annotation(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        to set default values of constantHead and heads, and
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        and for default pressure curve if not specified in record per" annotation(
         Dialog(group = "Nominal condition"));
     equation
       connect(dhHX.port_b2, tDHRe.port_a) annotation(
@@ -3126,7 +3126,7 @@ First implementation.
         Placement(transformation(extent = {{150, 30}, {170, 50}})));
       replaceable package Air = Buildings.Media.Air(extraPropertiesNames = {"CO2"}) constrainedby Modelica.Media.Interfaces.PartialMedium;
       replaceable package Water = Buildings.Media.Water constrainedby Modelica.Media.Interfaces.PartialMedium;
-      Buildings.Fluid.Sources.MassFlowSource_T boundary(redeclare package Medium = Air "Moist air", m_flow = 0.01677, T = 293.15, nPorts = 1) annotation(
+      Buildings.Fluid.Sources.MassFlowSource_T boundary(redeclare package Medium = Air "Moist air", m_flow = 0.01677, T = 293.15, nPorts = 1, use_T_in = false) annotation(
         Placement(transformation(origin = {56, 40}, extent = {{-10, -10}, {10, 10}})));
       Buildings.Fluid.Sources.Boundary_pT bou(nPorts = 1, redeclare package Medium = Air "Moist air") annotation(
         Placement(transformation(origin = {60, -36}, extent = {{-10, -10}, {10, 10}})));
@@ -3140,6 +3140,64 @@ First implementation.
         Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-160, -100}, {160, 100}})),
         experiment(StartTime = 3240000, StopTime = 3960000, Interval = 600.0012, Tolerance = 1e-05, __Dymola_Algorithm = "Cvode"));
     end AHUSimple;
+
+    model AHUSimplePrescribed "AHU with supply speed control and hydronic heating battery"
+      parameter Modelica.SIunits.MassFlowRate m_flow_nominal_air = 20 "Nominal mass flow rate - air" annotation(
+        Dialog(group = "Nominal condition"));
+      parameter Modelica.SIunits.MassFlowRate m_flow_nominal_water = 2 "Nominal mass flow rate - water" annotation(
+        Dialog(group = "Nominal condition"));
+      parameter Modelica.SIunits.PressureDifference dp_nominal_ext(displayUnit = "Pa") = 0 "External pressure drop at nominal flow" annotation(
+        Dialog(group = "Nominal condition"));
+      parameter Modelica.SIunits.PressureDifference dp_nominal_rotHex(displayUnit = "Pa") = 150 "Rotary heat exchanger nominal pressure drop" annotation(
+        Dialog(group = "Nominal condition"));
+      parameter Modelica.SIunits.PressureDifference dp_nominal_coilAir(displayUnit = "Pa") = 200 "nominal pressure drop air in coil" annotation(
+        Dialog(group = "Nominal condition"));
+      parameter Modelica.SIunits.PressureDifference dp_nominal_coilWat(displayUnit = "Pa") = 15000 "Nominal pressure drop water in coil" annotation(
+        Dialog(group = "Nominal condition"));
+      parameter Real eps_nominal_rotHex = 0.80 "Nominal heat transfer effectiveness for rotary wheel" annotation(
+        Dialog(group = "Nominal thermal performance"));
+      parameter Modelica.SIunits.HeatFlowRate Q_flow_nominal_coil = 250000 "Nominal heat flow rate for coil" annotation(
+        Dialog(group = "Nominal thermal performance"));
+      parameter Modelica.SIunits.Temperature T_in_air_nominal_coil = 287.15 "Nominal air temperature at coil inlet " annotation(
+        Dialog(group = "Nominal thermal performance"));
+      parameter Modelica.SIunits.Temperature T_in_wat_nominal_coil = 328.15 "Nominal water temperature at port coil inlet" annotation(
+        Dialog(group = "Nominal thermal performance"));
+      Modelica.Fluid.Interfaces.FluidPort_b port_b1(redeclare package Medium = Air) annotation(
+        Placement(transformation(extent = {{150, -46}, {170, -26}})));
+      Modelica.Fluid.Interfaces.FluidPort_a port_a1(redeclare package Medium = Air) annotation(
+        Placement(transformation(extent = {{150, 30}, {170, 50}})));
+      replaceable package Air = Buildings.Media.Air(extraPropertiesNames = {"CO2"}) constrainedby Modelica.Media.Interfaces.PartialMedium;
+      replaceable package Water = Buildings.Media.Water constrainedby Modelica.Media.Interfaces.PartialMedium;
+      Buildings.Fluid.Sources.MassFlowSource_T boundary(redeclare package Medium = Air "Moist air", m_flow = 0.01677, T = 293.15, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(
+        Placement(transformation(origin = {56, 40}, extent = {{-10, -10}, {10, 10}})));
+      Buildings.Fluid.Sources.Boundary_pT bou(nPorts = 1, redeclare package Medium = Air "Moist air") annotation(
+        Placement(transformation(origin = {60, -36}, extent = {{-10, -10}, {10, 10}})));
+      Modelica.Blocks.Sources.Constant const(k = 0.0167) annotation(
+        Placement(transformation(origin = {-38, 56}, extent = {{-10, -10}, {10, 10}})));
+      Modelica.Blocks.Sources.Constant const1(k = 293.15) annotation(
+        Placement(transformation(origin = {-40, 26}, extent = {{-10, -10}, {10, 10}})));
+      Buildings.Utilities.IO.SignalExchange.Overwrite oveFlo(description = "Radiator valve control signal [0-1]", u(max = 10000, min = 0, unit = "1")) "Overwrite for heating input" annotation(
+        Placement(transformation(origin = {-4, 58}, extent = {{6, -6}, {-6, 6}}, rotation = 180)));
+      Buildings.Utilities.IO.SignalExchange.Overwrite oveTemp(description = "Radiator valve control signal [0-1]", u(max = 10000, min = 0, unit = "1")) "Overwrite for heating input" annotation(
+        Placement(transformation(origin = {-4, 34}, extent = {{6, -6}, {-6, 6}}, rotation = 180)));
+    equation
+      connect(boundary.ports[1], port_a1) annotation(
+        Line(points = {{66, 40}, {160, 40}}, color = {0, 127, 255}));
+      connect(port_b1, bou.ports[1]) annotation(
+        Line(points = {{160, -36}, {70, -36}}));
+      connect(const1.y, oveTemp.u) annotation(
+        Line(points = {{-28, 26}, {-12, 26}, {-12, 34}}, color = {0, 0, 127}));
+      connect(oveTemp.y, boundary.T_in) annotation(
+        Line(points = {{2, 34}, {44, 34}, {44, 44}}, color = {0, 0, 127}));
+      connect(const.y, oveFlo.u) annotation(
+        Line(points = {{-26, 56}, {-12, 56}, {-12, 58}}, color = {0, 0, 127}));
+      connect(oveFlo.y, boundary.m_flow_in) annotation(
+        Line(points = {{2, 58}, {44, 58}, {44, 48}}, color = {0, 0, 127}));
+      annotation(
+        Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-160, -100}, {160, 100}}), graphics = {Rectangle(extent = {{-160, 100}, {160, -100}}, lineColor = {28, 108, 200}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Ellipse(extent = {{-20, 60}, {20, 20}}, lineColor = {28, 108, 200}), Line(points = {{12, 56}, {12, 24}, {-20, 40}, {12, 56}}, color = {28, 108, 200}), Ellipse(extent = {{-20, -20}, {20, -60}}, lineColor = {28, 108, 200}), Line(points = {{-12, -24}, {-12, -56}, {20, -40}, {-12, -24}}, color = {28, 108, 200}), Line(points = {{20, -40}, {150, -40}}, color = {28, 108, 200}), Line(points = {{-20, -40}, {-150, -40}}, color = {28, 108, 200}), Line(points = {{-150, 40}, {-20, 40}}, color = {28, 108, 200}), Line(points = {{20, 40}, {150, 40}}, color = {28, 108, 200}), Line(points = {{-82, 40}, {-122, -40}}, color = {28, 108, 200}), Line(points = {{-122, 40}, {-82, -40}}, color = {28, 108, 200}), Rectangle(extent = {{62, -20}, {82, -60}}, lineColor = {28, 108, 200}, fillColor = {238, 46, 47}, fillPattern = FillPattern.Solid), Line(points = {{0, 72}, {0, 60}}, color = {0, 0, 0}), Line(points = {{-60, 90}, {-60, -10}, {0, -10}, {0, -20}}, color = {0, 0, 0}), Line(points = {{0, 72}, {-60, 72}}, color = {0, 0, 0}), Line(points = {{2, -60}, {2, -74}, {-100, -74}, {-100, -96}}, color = {0, 0, 0}, pattern = LinePattern.Dash), Line(points = {{0, 20}, {0, 12}, {-40, 12}, {-40, -74}}, color = {0, 0, 0}, pattern = LinePattern.Dash), Line(points = {{-150, 44}, {-150, 36}}, color = {28, 108, 200}), Line(points = {{-150, -36}, {-150, -44}}, color = {28, 108, 200}), Line(points = {{100, -90}, {100, -54}, {82, -54}}, color = {238, 46, 47}), Line(points = {{62, -54}, {40, -54}, {40, -90}}, color = {28, 108, 200}), Line(points = {{156, -80}, {130, -80}, {130, -40}}, color = {0, 140, 72}, pattern = LinePattern.Dash)}),
+        Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-160, -100}, {160, 100}})),
+        experiment(StartTime = 3240000, StopTime = 3960000, Interval = 600.0012, Tolerance = 1e-05, __Dymola_Algorithm = "Cvode"));
+    end AHUSimplePrescribed;
   end Components;
   annotation(
     uses(Modelica(version = "3.2.3"), Buildings(version = "8.1.0"), SintefBuildings(version = "1"), ModelicaServices(version = "4.0.0")));
