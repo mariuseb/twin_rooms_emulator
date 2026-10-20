@@ -11,7 +11,7 @@ package TwinRooms
       Placement(transformation(extent = {{-200, 182}, {-180, 202}})));
     Buildings.BoundaryConditions.WeatherData.Bus weaBus "Weather Data Bus" annotation(
       Placement(transformation(extent = {{-164, 170}, {-144, 190}}), iconTransformation(extent = {{-360, 170}, {-340, 190}})));
-    parameter Modelica.SIunits.Angle lat = 1.0454522219446 "Latitude";
+    parameter Modelica.SIunits.Angle lat = 1.10707 "Latitude";
     Components.AHUSpeedHHBCooling AHU219(m_flow_nominal_air = m_flow_nominal_air, m_flow_nominal_water = m_flow_nominal_water_AHU, dp_nominal_ext = 200, dp_nominal_coilWat = 1000, Q_flow_nominal_coil = 3000, T_in_air_nominal_coil = 287.15, T_in_wat_nominal_coil = 320.15, redeclare package Air = MediumA, redeclare package Water = MediumW) annotation(
       Placement(transformation(extent = {{-164, 108}, {-132, 128}})));
     Modelica.Blocks.Sources.Constant TAirSupSet(k = 273.15 + 19) annotation(
@@ -1444,10 +1444,19 @@ First implementation.
           Icon(graphics = {Line(points = {{-80, 78}, {-80, -90}}, color = {192, 192, 192}), Polygon(points = {{-80, 90}, {-88, 68}, {-72, 68}, {-80, 90}}, lineColor = {192, 192, 192}, fillColor = {192, 192, 192}, fillPattern = FillPattern.Solid), Polygon(points = {{90, -80}, {68, -72}, {68, -88}, {90, -80}}, lineColor = {192, 192, 192}, fillColor = {192, 192, 192}, fillPattern = FillPattern.Solid), Line(points = {{-90, -80}, {82, -80}}, color = {192, 192, 192}), Line(points = {{-80, -80}, {-56, -80}, {-2, 18}, {66, 18}}, color = {0, 0, 127})}));
       end DamperControlVarSetpnt;
 
-      record TripleArgon18Argon18Clear = Buildings.HeatTransfer.Data.GlazingSystems.Generic(final glass = {Glass4mm(), Glass4mm(), Glass4mm()}, final gas = {Buildings.HeatTransfer.Data.Gases.Argon(x = 0.018), Buildings.HeatTransfer.Data.Gases.Argon(x = 0.018)}, UFra = 0.8) "Triple pane, clear glass 4mm, argon 18, clear glass 4mm, argon 18, clear glass 4mm" annotation(
+      record TripleArgon18Argon18Clear = Buildings.HeatTransfer.Data.GlazingSystems.Generic(final glass = {OuterGlass4mm(), MiddleGlass4mm(), InnerGlass4mm()}, final gas = {Buildings.HeatTransfer.Data.Gases.Argon(x = 0.018), Buildings.HeatTransfer.Data.Gases.Argon(x = 0.018)}, UFra = 0.8) "Triple pane, clear glass 4mm, argon 18, clear glass 4mm, argon 18, clear glass 4mm" annotation(
         defaultComponentPrefixes = "parameter",
         defaultComponentName = "datGlaSys");
       record Glass4mm = Buildings.HeatTransfer.Data.Glasses.Generic(x = 0.004, k = 1.0, tauSol = {0.74}, rhoSol_a = {0.18}, rhoSol_b = {0.18}, tauIR = 0, absIR_a = 0.16, absIR_b = 0.16) "Low emissivity 4mm. Manufacturer: Generic." annotation(
+        defaultComponentPrefixes = "parameter",
+        defaultComponentName = "datGla");
+      record OuterGlass4mm = Buildings.HeatTransfer.Data.Glasses.Generic(x = 0.004, k = 1.0, tauSol = {0.68}, rhoSol_a = {0.25}, rhoSol_b = {0.25}, tauIR = 0, absIR_a = 0.84, absIR_b = 0.01) "Low emissivity 4mm. Manufacturer: Generic." annotation(
+        defaultComponentPrefixes = "parameter",
+        defaultComponentName = "datGla");
+      record MiddleGlass4mm = Buildings.HeatTransfer.Data.Glasses.Generic(x = 0.004, k = 1.0, tauSol = {0.87}, rhoSol_a = {0.08}, rhoSol_b = {0.08}, tauIR = 0, absIR_a = 0.84, absIR_b = 0.84) "Low emissivity 4mm. Manufacturer: Generic." annotation(
+        defaultComponentPrefixes = "parameter",
+        defaultComponentName = "datGla");
+      record InnerGlass4mm = Buildings.HeatTransfer.Data.Glasses.Generic(x = 0.004, k = 1.0, tauSol = {0.68}, rhoSol_a = {0.25}, rhoSol_b = {0.25}, tauIR = 0, absIR_a = 0.01, absIR_b = 0.84) "Low emissivity 4mm. Manufacturer: Generic." annotation(
         defaultComponentPrefixes = "parameter",
         defaultComponentName = "datGla");
     end BaseClasses;
