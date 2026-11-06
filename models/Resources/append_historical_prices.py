@@ -55,6 +55,7 @@ for day in range(365):
 
 #new_price.plot()
 #plt.show()
+new_price.loc[new_price < 0] = 0
 prices["PriceElectricPowerHighlyDynamic"] = new_price.values
 
 prices[["PriceElectricPowerDynamic", "PriceElectricPowerHighlyDynamic"]].plot(drawstyle="steps-post")
