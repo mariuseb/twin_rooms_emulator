@@ -7,7 +7,7 @@ package TwinRooms
     package MediumW = Buildings.Media.Water "Medium model for water";
     Components.Floor5Zone_Shading floor5Zone_Shading(lat = lat, gai(data(MatEmi = 8.64E-6*0.01))) annotation(
       Placement(transformation(extent = {{50, 114}, {156, 174}})));
-    Buildings.BoundaryConditions.WeatherData.ReaderTMY3 weaDat(filNam = ModelicaServices.ExternalReferences.loadResource("Resources/NOR_TD_Trondheim-Zeblab_2023_fixed.mos"), computeWetBulbTemperature = true) annotation(
+    Buildings.BoundaryConditions.WeatherData.ReaderTMY3 weaDat(filNam = ModelicaServices.ExternalReferences.loadResource("Resources/NOR_TD_Trondheim-Voll.012570_TMYx.2009-2023.mos"), computeWetBulbTemperature = true) annotation(
       Placement(transformation(extent = {{-200, 182}, {-180, 202}})));
     Buildings.BoundaryConditions.WeatherData.Bus weaBus "Weather Data Bus" annotation(
       Placement(transformation(extent = {{-164, 170}, {-144, 190}}), iconTransformation(extent = {{-360, 170}, {-340, 190}})));
@@ -610,8 +610,8 @@ The envelope thermal properties meet ASHRAE Standard 90.1-2004.
       Modelica.Blocks.Interfaces.RealOutput qdh "Accumulated energy" annotation(
         Placement(transformation(extent = {{100, -48}, {120, -28}})));
       parameter Modelica.SIunits.PressureDifference dp_nominal = 50000 "Nominal pressure raise, used to normalized the filter if use_inputFilter=true,
-                          to set default values of constantHead and heads, and
-                          and for default pressure curve if not specified in record per" annotation(
+                                                                                                                                to set default values of constantHead and heads, and
+                                                                                                                                and for default pressure curve if not specified in record per" annotation(
         Dialog(group = "Nominal condition"));
     equation
       connect(dhHX.port_b2, tDHRe.port_a) annotation(
@@ -3007,6 +3007,10 @@ First implementation.
         Placement(transformation(extent = {{158, -8}, {178, 12}})));
       Buildings.Utilities.IO.SignalExchange.Overwrite oveCoo(description = "AHU mechanical cooling control signal (0-1, where 1 --> -5000W)", u(min = 0, max = 1, unit = "1")) "Overwrite for supply fan speed control signal" annotation(
         Placement(transformation(extent = {{6, -6}, {-6, 6}}, rotation = 180, origin = {86, -6})));
+      Buildings.Utilities.IO.SignalExchange.Read reaUhex(KPIs = Buildings.Utilities.IO.SignalExchange.SignalTypes.SignalsForKPIs.None, description = "AHU air temperature exiting heat recovery in supply air stream", y(unit = "K")) "Read air temperature exiting heat recovery in supply air stream" annotation(
+        Placement(transformation(origin = {8, 8}, extent = {{6, 6}, {-6, -6}}, rotation = 180)));
+      Buildings.Utilities.IO.SignalExchange.Read reaTinHex(KPIs = Buildings.Utilities.IO.SignalExchange.SignalTypes.SignalsForKPIs.None, description = "AHU air temperature exiting heat recovery in supply air stream", y(unit = "K")) "Read air temperature exiting heat recovery in supply air stream" annotation(
+        Placement(transformation(origin = {-52, -38}, extent = {{6, 6}, {-6, -6}}, rotation = 180)));
     equation
       connect(fanSu.port_a, senTemIn2.port_b) annotation(
         Line(points = {{-10, -40}, {-16, -40}}, color = {0, 127, 255}));
@@ -3116,6 +3120,10 @@ First implementation.
         Line(points = {{141, 76}, {174, 76}, {174, 30}, {102, 30}, {102, 16}, {70, 16}, {70, -6}, {78.8, -6}}, color = {0, 0, 127}));
       connect(oveCoo.y, hea.u) annotation(
         Line(points = {{92.6, -6}, {106, -6}, {106, -2}, {118, -2}}, color = {0, 0, 127}));
+      connect(reaUhex.u, conPIDhex.y) annotation(
+        Line(points = {{0, 8}, {-10, 8}, {-10, 18}, {-32, 18}, {-32, 2}}, color = {0, 0, 127}));
+      connect(reaTinHex.u, senTemIn1.T) annotation(
+        Line(points = {{-60, -38}, {-66, -38}, {-66, -16}, {-90, -16}, {-90, -28}}, color = {0, 0, 127}));
       annotation(
         Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-160, -100}, {160, 100}}), graphics = {Rectangle(extent = {{-160, 100}, {160, -100}}, lineColor = {28, 108, 200}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid), Ellipse(extent = {{-20, 60}, {20, 20}}, lineColor = {28, 108, 200}), Line(points = {{12, 56}, {12, 24}, {-20, 40}, {12, 56}}, color = {28, 108, 200}), Ellipse(extent = {{-20, -20}, {20, -60}}, lineColor = {28, 108, 200}), Line(points = {{-12, -24}, {-12, -56}, {20, -40}, {-12, -24}}, color = {28, 108, 200}), Line(points = {{20, -40}, {150, -40}}, color = {28, 108, 200}), Line(points = {{-20, -40}, {-150, -40}}, color = {28, 108, 200}), Line(points = {{-150, 40}, {-20, 40}}, color = {28, 108, 200}), Line(points = {{20, 40}, {150, 40}}, color = {28, 108, 200}), Line(points = {{-82, 40}, {-122, -40}}, color = {28, 108, 200}), Line(points = {{-122, 40}, {-82, -40}}, color = {28, 108, 200}), Rectangle(extent = {{62, -20}, {82, -60}}, lineColor = {28, 108, 200}, fillColor = {238, 46, 47}, fillPattern = FillPattern.Solid), Line(points = {{0, 72}, {0, 60}}, color = {0, 0, 0}), Line(points = {{-60, 90}, {-60, -10}, {0, -10}, {0, -20}}, color = {0, 0, 0}), Line(points = {{0, 72}, {-60, 72}}, color = {0, 0, 0}), Line(points = {{2, -60}, {2, -74}, {-100, -74}, {-100, -96}}, color = {0, 0, 0}, pattern = LinePattern.Dash), Line(points = {{0, 20}, {0, 12}, {-40, 12}, {-40, -74}}, color = {0, 0, 0}, pattern = LinePattern.Dash), Line(points = {{-150, 44}, {-150, 36}}, color = {28, 108, 200}), Line(points = {{-150, -36}, {-150, -44}}, color = {28, 108, 200}), Line(points = {{100, -90}, {100, -54}, {82, -54}}, color = {238, 46, 47}), Line(points = {{62, -54}, {40, -54}, {40, -90}}, color = {28, 108, 200}), Line(points = {{156, -80}, {130, -80}, {130, -40}}, color = {0, 140, 72}, pattern = LinePattern.Dash)}),
         Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-160, -100}, {160, 100}})),

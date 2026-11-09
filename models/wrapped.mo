@@ -35,7 +35,7 @@ model wrapped "Wrapped model"
 	Modelica.Blocks.Interfaces.RealOutput reaFanPow220_y(unit="W") = mod.reaFanPow220.y "AHU Fan power 2.20";
 	Modelica.Blocks.Interfaces.RealOutput weatherStation_reaWeaTWetBul_y(unit="K") = mod.weatherStation.reaWeaTWetBul.y "Wet bulb temperature measurement";
 	Modelica.Blocks.Interfaces.RealOutput reaPumPow_y(unit="W") = mod.reaPumPow.y "Heating pump power";
-	Modelica.Blocks.Interfaces.RealOutput districtHeating_reaHeaRet_y(unit="K") = mod.districtHeating.reaHeaRet.y "Return temperature for heating";
+	Modelica.Blocks.Interfaces.RealOutput AHU219_reaUhex_y(unit="K") = mod.AHU219.reaUhex.y "AHU air temperature exiting heat recovery in supply air stream";
 	Modelica.Blocks.Interfaces.RealOutput weatherStation_reaWeaWinDir_y(unit="rad") = mod.weatherStation.reaWeaWinDir.y "Wind direction measurement";
 	Modelica.Blocks.Interfaces.RealOutput reaVenHeaPow220_y(unit="W") = mod.reaVenHeaPow220.y "Ventilation heating power 2.20";
 	Modelica.Blocks.Interfaces.RealOutput weatherStation_reaWeaNOpa_y(unit="1") = mod.weatherStation.reaWeaNOpa.y "Opaque sky cover measurement";
@@ -56,8 +56,10 @@ model wrapped "Wrapped model"
 	Modelica.Blocks.Interfaces.RealOutput weatherStation_reaWeaLat_y(unit="rad") = mod.weatherStation.reaWeaLat.y "Latitude of the location";
 	Modelica.Blocks.Interfaces.RealOutput floor5Zone_Shading_reaAuxPow_y(unit="W") = mod.floor5Zone_Shading.reaAuxPow.y "Aux power consumption";
 	Modelica.Blocks.Interfaces.RealOutput reaRadTSup219_y(unit="W") = mod.reaRadTSup219.y "Radiator supply temp 2.19";
+	Modelica.Blocks.Interfaces.RealOutput districtHeating_reaHeaRet_y(unit="K") = mod.districtHeating.reaHeaRet.y "Return temperature for heating";
 	Modelica.Blocks.Interfaces.RealOutput AHU219_reaTCoiSup_y(unit="K") = mod.AHU219.reaTCoiSup.y "AHU heating coil supply water temperature";
 	Modelica.Blocks.Interfaces.RealOutput reaAHUCoo219_y(unit="W") = mod.reaAHUCoo219.y "AHU cooling power 219";
+	Modelica.Blocks.Interfaces.RealOutput reaVenHeaPow219_y(unit="W") = mod.reaVenHeaPow219.y "Ventilation heating power 2.19";
 	Modelica.Blocks.Interfaces.RealOutput floor5Zone_Shading_reaT220_y(unit="K") = mod.floor5Zone_Shading.reaT220.y "Temperature of room 220";
 	Modelica.Blocks.Interfaces.RealOutput weatherStation_reaWeaSolTim_y(unit="s") = mod.weatherStation.reaWeaSolTim.y "Solar time";
 	Modelica.Blocks.Interfaces.RealOutput weatherStation_reaWeaTDewPoi_y(unit="K") = mod.weatherStation.reaWeaTDewPoi.y "Dew point temperature measurement";
@@ -71,7 +73,7 @@ model wrapped "Wrapped model"
 	Modelica.Blocks.Interfaces.RealOutput floor5Zone_Shading_reaCO2Sou_y(unit="ppm") = mod.floor5Zone_Shading.reaCO2Sou.y "Temperature of south zone";
 	Modelica.Blocks.Interfaces.RealOutput weatherStation_reaWeaSolDec_y(unit="rad") = mod.weatherStation.reaWeaSolDec.y "Solar declination angle measurement";
 	Modelica.Blocks.Interfaces.RealOutput weatherStation_reaWeaHGloHor_y(unit="W/m2") = mod.weatherStation.reaWeaHGloHor.y "Global horizontal solar irradiation measurement";
-	Modelica.Blocks.Interfaces.RealOutput reaVenHeaPow219_y(unit="W") = mod.reaVenHeaPow219.y "Ventilation heating power 2.19";
+	Modelica.Blocks.Interfaces.RealOutput AHU219_reaTinHex_y(unit="K") = mod.AHU219.reaTinHex.y "AHU air temperature exiting heat recovery in supply air stream";
 	Modelica.Blocks.Interfaces.RealOutput weatherStation_reaWeaNTot_y(unit="1") = mod.weatherStation.reaWeaNTot.y "Sky cover measurement";
 	Modelica.Blocks.Interfaces.RealOutput AHU219_reaTRetAir_y(unit="K") = mod.AHU219.reaTRetAir.y "AHU return air temperature";
 	Modelica.Blocks.Interfaces.RealOutput AHU220_reaTCoiSup_y(unit="K") = mod.AHU220.reaTCoiSup.y "AHU heating coil supply water temperature";
