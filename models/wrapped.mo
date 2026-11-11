@@ -66,6 +66,7 @@ model wrapped "Wrapped model"
 	Modelica.Blocks.Interfaces.RealOutput reaVenHeaEne219_y(unit="J") = mod.reaVenHeaEne219.y "Ventilation heating energy 2.19";
 	Modelica.Blocks.Interfaces.RealOutput reaFanPow219_y(unit="W") = mod.reaFanPow219.y "AHU Fan power 2.19";
 	Modelica.Blocks.Interfaces.RealOutput weatherStation_reaWeaSolHouAng_y(unit="rad") = mod.weatherStation.reaWeaSolHouAng.y "Solar hour angle measurement";
+	Modelica.Blocks.Interfaces.RealOutput AHU219_reaTSupSet_y(unit="K") = mod.AHU219.reaTSupSet.y "AHU air temperature exiting heat recovery in supply air stream";
 	Modelica.Blocks.Interfaces.RealOutput districtHeating_reaHeaSup_y(unit="K") = mod.districtHeating.reaHeaSup.y "Supply temperature for heating";
 	Modelica.Blocks.Interfaces.RealOutput reaRadHeaPow220_y(unit="W") = mod.reaRadHeaPow220.y "Radiator heating power";
 	Modelica.Blocks.Interfaces.RealOutput reaTemAHURet_y(unit="K") = mod.reaTemAHURet.y "Water temperature from heating coil";
